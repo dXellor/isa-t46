@@ -24,4 +24,8 @@ public class UserMapper {
     public static User UserDtoToUser(UserDto userDto){
         return modelMapper.map(userDto, User.class);
     }
+    public static User UserRegistrationDtoToUser(UserRegistrationDto userRegistrationDto){
+        return modelMapper.map(userRegistrationDto, User.class);
+    }
+
 }
