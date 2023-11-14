@@ -2,6 +2,9 @@ package com.isat46.isaback.controller;
 
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Operation(summary = "get page of all users", description = "get page of all users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "page of users returned successfully")
+    })
     @GetMapping(value = "/all")
     public ResponseEntity<Page<UserDto>> getUsersPage(Pageable page){
         Page<UserDto> usersPage = userService.findAllPaged(page);
