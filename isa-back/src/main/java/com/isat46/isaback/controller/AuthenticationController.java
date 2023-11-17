@@ -37,7 +37,7 @@ public class AuthenticationController {
     public ResponseEntity<UserDto> registerNewUser(@Parameter(required = true) @Valid @RequestBody UserRegistrationDto userRegistrationDto){
         UserDto newUser = authenticationService.registerUser(userRegistrationDto);
         if(newUser != null)
-            return new ResponseEntity<>(newUser, HttpStatus.OK);
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
