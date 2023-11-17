@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,26 +36,10 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "page of users returned successfully")
     })
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/all")
     public ResponseEntity<Page<UserDto>> getUsersPage(Pageable page){
         Page<UserDto> usersPage = userService.findAllPaged(page);
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
-
-    @Operation(summary = "creates new user", description = "creates new user")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "user created successfully",
-                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
-            @ApiResponse(responseCode = "400", description = "bad request")
-    })
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> registerNewUser(@Parameter(required = true) @Valid @RequestBody UserRegistrationDto userRegistrationDto){
-        UserDto newUser = userService.registerNew(userRegistrationDto);
-        if(newUser != null)
-            return new ResponseEntity<>(newUser, HttpStatus.OK);
-        else{
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
 }
