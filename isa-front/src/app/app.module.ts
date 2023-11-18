@@ -13,6 +13,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TokenInterceptor } from './util/token-interceptor';
 import { RegisterViewComponent } from './view/register-view/register-view.component';
+import { VerificationViewComponent } from './view/verification-view/verification-view.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { RegisterViewComponent } from './view/register-view/register-view.compon
     NavbarComponent,
     LoginViewComponent,
     RegisterViewComponent,
+    VerificationViewComponent,
   ],
   imports: [
     BrowserModule,
