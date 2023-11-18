@@ -9,3 +9,17 @@ INSERT INTO isadb."role" (name) VALUES ('ROLE_COMPADMIN');
 INSERT INTO isadb."user_role" (user_id, role_id) VALUES (1, 1);
 INSERT INTO isadb."user_role" (user_id, role_id) VALUES (2, 2);
 INSERT INTO isadb."user_role" (user_id, role_id) VALUES (3, 3);
+
+INSERT INTO isadb."address" (city, country, street, zip_code) VALUES ('Novi Sad', 'Serbia', 'Bulevar Oslobodjenja 12', 21000);
+INSERT INTO isadb."address" (city, country, street, zip_code) VALUES ('Novi Sad', 'Serbia', 'Bulevar Oslobodjenja 12', 21000);
+INSERT INTO isadb."address" (city, country, street, zip_code) VALUES ('Novi Sad', 'Serbia', 'Bulevar Oslobodjenja 12', 21000);
+
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Gaming INC', 'Gaming company', 4.5, 1);
+
+INSERT INTO isadb."equipment" (name, description, price) VALUES ('Playstation 5', 'Playstation 5', 500);
+INSERT INTO isadb."equipment" (name, description, price) VALUES ('Xbox Series X', 'Xbox Series X', 500);
+INSERT INTO isadb."equipment" (name, description, price) VALUES ('Nintendo Switch', 'Nintendo Switch', 300);
+INSERT INTO isadb."equipment" (name, description, price) VALUES ('Playstation 4', 'Playstation 4', 300);
+
+INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (1, 1);
+INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (1, 2);
