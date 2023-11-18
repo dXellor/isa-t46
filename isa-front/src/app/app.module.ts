@@ -12,12 +12,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TokenInterceptor } from './util/token-interceptor';
+import { RegisterViewComponent } from './view/register-view/register-view.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    LoginViewComponent
+    LoginViewComponent,
+    RegisterViewComponent,
   ],
   imports: [
     BrowserModule,
