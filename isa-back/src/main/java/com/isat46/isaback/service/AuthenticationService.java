@@ -23,14 +23,33 @@ public class AuthenticationService {
     private RoleRepository roleRepository;
 
     @Autowired
+    VerificationTokenService verificationTokenService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public UserDto registerUser(UserRegistrationDto userRegistrationDto){
         User newUser = UserMapper.UserRegistrationDtoToUser(userRegistrationDto);
+        verificationTokenService.GenerateVerificationToken(newUser);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setEnabled(false);
         List<Role> roles = roleRepository.findByName("ROLE_USER");
         return UserMapper.UserToUserDto(userRepository.save(newUser));
     }
 
+    public UserDto verify(String verificationToken){
+        String email = verificationTokenService.getEmailAndVerify(verificationToken);
+        if(email.equals("")){
+            return null;
+        }
+
+        User user = userRepository.findByEmail(email);
+        if(user.isEnabled()){
+            return null;
+        }
+
+        user.setEnabled(true);
+        userRepository.save(user);
+        return UserMapper.UserToUserDto(user);
+    }
 }
