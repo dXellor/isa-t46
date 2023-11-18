@@ -31,6 +31,7 @@ public class EmailAspect {
     private VerificationTokenRepository verificationTokenRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailAspect.class);
+
     private final String url = "http://localhost:4200/verify/";
 
     @Async
