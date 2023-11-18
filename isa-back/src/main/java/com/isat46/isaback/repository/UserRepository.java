@@ -7,5 +7,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-    public Page<User> findAll(Pageable pageable);
+    Page<User> findAll(Pageable pageable);
+    User findByEmail(String email);
 }

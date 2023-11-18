@@ -1,0 +1,24 @@
+spring.datasource.driverClassName=org.postgresql.Driver
+spring.sql.init.platform=redacted
+spring.datasource.url=redacted
+
+spring.datasource.username=redacted
+spring.datasource.password=redacted
+
+spring.jpa.properties.hibernate.default_schema=redacted
+spring.jpa.hibernate.ddl-auto = create
+spring.jpa.show-sql = true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQL95Dialect
+spring.jpa.open-in-view=false
+spring.sql.init.mode=always
+
+jwt.setup.secret=redacted
+
+spring.mail.host = smtp.gmail.com
+spring.mail.username = redacted
+spring.mail.password = redacted
+spring.mail.port=redacted
+spring.mail.properties.mail.smtp.starttls.enable = true
+
