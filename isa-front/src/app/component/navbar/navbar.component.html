@@ -1,8 +1,9 @@
 <div class="navbar">
     <h2 style="width: 100%;">ISA-T46 MEMA</h2>
     <div class="navbar-items">
-        <button class="btn" mat-raised-button>Register</button>
-        <button class="btn" mat-raised-button>Log In</button>
-        <button class="btn" mat-raised-button>Home</button>
+        <button *ngIf="currentUser" class="btn" mat-raised-button (click)="logOut()">Log out</button>
+        <button *ngIf="!currentUser" class="btn" mat-raised-button routerLink="/register">Register</button>
+        <button *ngIf="!currentUser" class="btn" mat-raised-button routerLink="/login">Log In</button>
+        <button class="btn" mat-raised-button routerLink="/">Home</button>
     </div>
 </div>
