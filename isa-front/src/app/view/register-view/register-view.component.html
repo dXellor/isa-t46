@@ -1,0 +1,35 @@
+<form [formGroup]="registerForm">
+    <div class="formHolder">
+        <mat-form-field>
+            <input formControlName="email" matInput placeholder="email" required>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="password" matInput placeholder="password" required type="password">
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="repeatedPassword" matInput placeholder="repeated password" required type="password">
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="firstName" matInput placeholder="First name" required>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="lastName" matInput placeholder="Last name" required>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="city" matInput placeholder="City">
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="country" matInput placeholder="Country">
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="phoneNumber" matInput placeholder="Phone number">
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="profession" matInput placeholder="Profession">
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="companyInformation" matInput placeholder="Company Information">
+        </mat-form-field>
+    </div>
+</form>
+<button [disabled]="!registerForm.valid" color="primary" mat-raised-button (click)="register()">Register</button>

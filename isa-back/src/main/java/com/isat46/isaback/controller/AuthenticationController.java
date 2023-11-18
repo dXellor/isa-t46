@@ -7,7 +7,6 @@ import com.isat46.isaback.dto.user.UserRegistrationDto;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.service.AuthenticationService;
 import com.isat46.isaback.util.TokenUtils;
-import io.jsonwebtoken.Jwt;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,9 +26,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/auth")
 public class AuthenticationController {
 

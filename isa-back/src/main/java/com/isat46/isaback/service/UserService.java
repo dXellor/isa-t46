@@ -20,8 +20,8 @@ public class UserService {
         return userRepository.findAll(page).map(UserMapper::UserToUserDto);
     }
 
-    public UserDto registerNew(UserRegistrationDto userRegistrationDto){
-        User newUser = userRepository.save(UserMapper.UserRegistrationDtoToUser(userRegistrationDto));
+    public UserDto findByEmail(String email){
+        User newUser = userRepository.findByEmail(email);
         return UserMapper.UserToUserDto(newUser);
     }
 }

@@ -31,7 +31,8 @@ public class EmailAspect {
     private VerificationTokenRepository verificationTokenRepository;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailAspect.class);
-    private final String url = "http://localhost:8080/api/auth/verify/";
+
+    private final String url = "http://localhost:4200/verify/";
 
     @Async
     @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.AuthenticationService.registerUser(..))", returning = "result")
