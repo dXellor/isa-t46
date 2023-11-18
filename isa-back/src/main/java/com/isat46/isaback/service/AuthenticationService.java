@@ -34,6 +34,7 @@ public class AuthenticationService {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setEnabled(false);
         List<Role> roles = roleRepository.findByName("ROLE_USER");
+        newUser.setRoles(roles);
         return UserMapper.UserToUserDto(userRepository.save(newUser));
     }
 
