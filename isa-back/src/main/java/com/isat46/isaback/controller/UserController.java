@@ -34,7 +34,7 @@ public class UserController {
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
-    @Operation(summary = "get page of all users", description = "get page of all users")
+    @Operation(summary = "get page of all company admins", description = "get page of all company admins")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "page of users returned successfully")
     })
