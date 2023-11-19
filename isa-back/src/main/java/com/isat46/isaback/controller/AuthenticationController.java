@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -64,6 +65,7 @@ public class AuthenticationController {
                     content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
             @ApiResponse(responseCode = "400", description = "bad request")
     })
+    @PreAuthorize("hasRole('SYSADMIN')")
     @PostMapping(value = "/register/ca", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> registerNewCompanyAdmin(@Parameter(required = true) @Valid @RequestBody AdminRegistrationDto adminRegistrationDto){
         UserDto newUser = authenticationService.registerNewCompanyAdmin(adminRegistrationDto);

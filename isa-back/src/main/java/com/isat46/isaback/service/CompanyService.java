@@ -30,5 +30,10 @@ public class CompanyService {
         Company company = companyRepository.save(CompanyMapper.CompanyRegistrationDtoToCompany(companyRegistrationDto));
         return CompanyMapper.CompanyToCompanyDto(company);
     }
+
+    public CompanyDto updateCompany(CompanyDto companyDto){
+        Company updatedCompany = companyRepository.save(CompanyMapper.CompanyDtoToCompany(companyDto));
+        return CompanyMapper.CompanyToCompanyDto(updatedCompany);
+    }
 }
 

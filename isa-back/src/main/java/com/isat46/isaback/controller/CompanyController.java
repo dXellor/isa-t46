@@ -13,15 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/companies")
 public class CompanyController {
 
@@ -41,12 +40,25 @@ public class CompanyController {
 
     @Operation(summary = "create new company", description = "create new company")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "page of companies returned successfully"),
+            @ApiResponse(responseCode = "201", description = "company created successfully"),
             @ApiResponse(responseCode = "400", description = "bad request")
     })
+    @PreAuthorize("hasRole('SYSADMIN')")
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CompanyDto> registerNewCompany(@Parameter(required = true) @Valid @RequestBody CompanyRegistrationDto companyRegistrationDto){
         CompanyDto newCompany = companyService.registerNewCompany(companyRegistrationDto);
-        return new ResponseEntity<>(newCompany, HttpStatus.OK);
+        return new ResponseEntity<>(newCompany, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "update company information", description = "update company information")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "company info updated successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasAnyRole('COMPADMIN', 'SYSADMIN')")
+    @PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CompanyDto> updateCompany(@Parameter(required = true) @Valid @RequestBody CompanyDto companyDto){
+        CompanyDto updatedCompany = companyService.updateCompany(companyDto);
+        return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
     }
 }
