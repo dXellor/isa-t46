@@ -4,24 +4,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class EquipmentDto {
 
-        @JsonProperty
+        @JsonProperty("id")
         private int id;
 
+        @NotNull
         @NotBlank
-        @JsonProperty
+        @JsonProperty("name")
         private String name;
 
+        @NotNull
         @NotBlank
-        @JsonProperty
+        @JsonProperty("description")
         private String description;
 
+        @NotNull
+        @Min(1)
         @NotBlank
-        @JsonProperty
+        @JsonProperty("price")
         private double price;
 }
