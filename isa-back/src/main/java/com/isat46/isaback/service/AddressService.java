@@ -24,4 +24,9 @@ public class AddressService {
             throw new NotFoundException("Address not found for this company id :: " + companyId);
         }
     }
+
+    public AddressDto addNewAddress(AddressDto addressDto){
+        Address address = addressRepository.save(AddressMapper.AddressDtoToAddress(addressDto));
+        return AddressMapper.AddressToAddressDto(address);
+    }
 }

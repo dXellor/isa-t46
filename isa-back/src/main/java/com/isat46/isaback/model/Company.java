@@ -2,6 +2,8 @@ package com.isat46.isaback.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
@@ -36,11 +38,9 @@ public class Company {
     private List<Equipment> equipment;
 
     @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "company_admin",
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
     private List<User> admins;
-
-
-
 }
