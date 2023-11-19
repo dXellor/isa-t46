@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './component/navbar/navbar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { LoginViewComponent } from './view/login-view/login-view.component'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +20,7 @@ import { CompanyAdminFormComponent } from './component/company-admin-form/compan
 import { CompanyFormComponent } from './component/company-form/company-form.component';
 import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
 import { UserEditComponent } from './view/user-edit/user-edit.component';
+import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,7 @@ import { UserEditComponent } from './view/user-edit/user-edit.component';
     CompanyFormComponent,
     CompanyManagingViewComponent,
     UserEditComponent,
+    EquipmentCollectionViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ import { UserEditComponent } from './view/user-edit/user-edit.component';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
     HttpClientModule,
     BrowserAnimationsModule

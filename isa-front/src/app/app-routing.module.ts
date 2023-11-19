@@ -7,6 +7,7 @@ import { UserManagingViewComponent } from './view/user-managing-view/user-managi
 import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
 import { UserEditComponent } from './view/user-edit/user-edit.component';
 import { authGuard } from './guards/auth.guard';
+import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginViewComponent, },
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'verify/:token', component: VerificationViewComponent, },
   { path: 'manage-users', component: UserManagingViewComponent, },
   { path: 'manage-companies', component: CompanyManagingViewComponent, },
+  { path: 'equipment-collection', component: EquipmentCollectionViewComponent, },
   { path: 'user-edit', component: UserEditComponent, canActivate: [authGuard]},
 ];
 
