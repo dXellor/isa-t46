@@ -17,7 +17,6 @@ import java.security.Principal;
 
 
 @Controller
-@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/user")
 public class UserController {
 

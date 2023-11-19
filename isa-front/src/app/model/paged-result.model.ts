@@ -1,4 +1,6 @@
+import {Company} from "./company.model";
+
 export interface PagedResult<T>{
-    results: T[];
+    content: T[];
     totalPages: number;
 }

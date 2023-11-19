@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/auth")
 public class AuthenticationController {
 
