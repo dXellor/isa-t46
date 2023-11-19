@@ -18,7 +18,6 @@ export class CompanyFormComponent {
     this.companyForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-      averageRating: new FormControl(5, [Validators.required]),
       street: new FormControl('', [Validators.required]),
       city: new FormControl('', [Validators.required]),
       country: new FormControl('', [Validators.required]),
@@ -36,7 +35,6 @@ export class CompanyFormComponent {
     let company: Company = {
       name: this.companyForm.value.name || "",
       description: this.companyForm.value.description || "",
-      averageRating: this.companyForm.value.averageRating || 3,
       address: companyAdress,
     };
 

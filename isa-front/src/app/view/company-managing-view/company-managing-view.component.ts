@@ -46,6 +46,7 @@ export class CompanyManagingViewComponent {
 
   addNewCompany(): void {
     this.showForm = true;
+    this.showCompanyAdmins = false;
   }
 
   companyAdded(): void {
@@ -57,10 +58,13 @@ export class CompanyManagingViewComponent {
     this.selectedCompany = company;
     this.currentCompanyAdmins = company.admins;
     this.availableAdmins = this.allCompanyAdmins;
+
     if(this.currentCompanyAdmins){
       let ids = this.currentCompanyAdmins.map(cca => cca.id);
       this.availableAdmins = this.availableAdmins.filter((ca) => ids.indexOf(ca.id) == -1);
     }
+
+    this.showForm = false;
     this.showCompanyAdmins = true;
   }
 
