@@ -20,6 +20,8 @@ INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Playstat
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Xbox Series X', 'Console', 'Xbox Series X', 500);
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Nintendo Switch', 'Console', 'Nintendo Switch', 300);
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Playstation 4', 'Console', 'Playstation 4', 300);
+INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Bandage pack x10', 'Bandages', 'Bandages', 100);
+INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Bandage pack x50', 'Bandages', 'Bandages', 400);
 
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (1, 1);
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (1, 2);
