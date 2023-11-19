@@ -2,6 +2,7 @@ package com.isat46.isaback.controller;
 
 import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.company.CompanyRegistrationDto;
+import com.isat46.isaback.dto.company.CompanySearchDto;
 import com.isat46.isaback.service.CompanyService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/companies")
@@ -70,5 +72,16 @@ public class CompanyController {
     public ResponseEntity<CompanyDto> updateCompany(@Parameter(required = true) @Valid @RequestBody CompanyDto companyDto){
         CompanyDto updatedCompany = companyService.updateCompany(companyDto);
         return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
+    }
+
+    @Operation(summary = "search by name, city, country", description = "search by name, city, country")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "searched successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @GetMapping("/searchByNameCityCountry")
+    public ResponseEntity<List<CompanySearchDto>> searchByNameCityCountry(@RequestParam(required = false) String name, @RequestParam(required = false) String city, @RequestParam(required = false) String country) {
+        List<CompanySearchDto> searchedDtos =  companyService.searchByNameCityCountry(name, city, country);
+        return new ResponseEntity<>(searchedDtos, HttpStatus.OK);
     }
 }

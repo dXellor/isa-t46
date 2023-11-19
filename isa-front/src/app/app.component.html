@@ -1,4 +1,38 @@
 <app-navbar></app-navbar>
 <div class="main">
     <router-outlet></router-outlet>
+
+    <div>
+        <label for="name">Name:</label>
+        <input class="input-search" type="text" id="name" [(ngModel)]="searchName" placeholder="Enter name">
+      </div>
+      
+      <div>
+        <label for="city">City:</label>
+        <input class="input-search" type="text" id="city" [(ngModel)]="searchCity"  placeholder="Enter city" >
+      </div>
+      
+      <div>
+        <label for="country">Country:</label>
+        <input class="input-search" type="text" id="country" [(ngModel)]="searchCountry" placeholder="Enter country">
+      </div>
+      
+      <button class="btn" (click)="searchCompanies()">Search</button>
+      
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Average Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let company of companies">
+            <td>{{ company.name }}</td>
+            <td>{{ company.description }}</td>
+            <td>{{ company.averageRating }}</td>
+          </tr>
+        </tbody>
+      </table>
 </div>

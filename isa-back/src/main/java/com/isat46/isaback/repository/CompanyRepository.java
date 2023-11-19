@@ -15,4 +15,7 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     @Query("SELECT c FROM Company c JOIN c.equipment e WHERE e.id = :equipmentId")
     Page<Company> findCompaniesThatHaveEquipment(@Param("equipmentId") Integer equipmentId, Pageable page);
+
+    List<Company> findByNameIgnoreCaseContainingAndAddressCityIgnoreCaseContainingAndAddressCountryIgnoreCaseContaining(
+            String name, String city, String country);
 }
