@@ -4,12 +4,13 @@ import { LoginViewComponent } from './view/login-view/login-view.component';
 import { RegisterViewComponent } from './view/register-view/register-view.component';
 import { VerificationViewComponent } from './view/verification-view/verification-view.component';
 import { UserEditComponent } from './view/user-edit/user-edit.component';
+import { authGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginViewComponent, },
   { path: 'register', component: RegisterViewComponent},
   { path: 'verify/:token', component: VerificationViewComponent, },
-  { path: 'user-edit', component: UserEditComponent},
+  { path: 'user-edit', component: UserEditComponent, canActivate: [authGuard]},
 ];
 
 @NgModule({
