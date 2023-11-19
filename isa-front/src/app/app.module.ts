@@ -14,6 +14,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TokenInterceptor } from './util/token-interceptor';
 import { RegisterViewComponent } from './view/register-view/register-view.component';
 import { VerificationViewComponent } from './view/verification-view/verification-view.component';
+import { UserManagingViewComponent } from './view/user-managing-view/user-managing-view.component';
+import { CompanyAdminFormComponent } from './component/company-admin-form/company-admin-form.component';
+import { CompanyFormComponent } from './component/company-form/company-form.component';
+import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
 import { UserEditComponent } from './view/user-edit/user-edit.component';
 
 @NgModule({
@@ -23,6 +27,10 @@ import { UserEditComponent } from './view/user-edit/user-edit.component';
     LoginViewComponent,
     RegisterViewComponent,
     VerificationViewComponent,
+    UserManagingViewComponent,
+    CompanyAdminFormComponent,
+    CompanyFormComponent,
+    CompanyManagingViewComponent,
     UserEditComponent,
   ],
   imports: [

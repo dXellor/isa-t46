@@ -36,6 +36,17 @@ public class UserController {
         return new ResponseEntity<>(usersPage, HttpStatus.OK);
     }
 
+    @Operation(summary = "get page of all company admins", description = "get page of all company admins")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "page of users returned successfully")
+    })
+    @PreAuthorize("hasRole('SYSADMIN')")
+    @GetMapping(value = "/all/ca")
+    public ResponseEntity<Page<UserDto>> getCompanyAdminsPage(Pageable page){
+        Page<UserDto> companyAdminsPage = userService.findAllCompanyAdminsPaged(page);
+        return new ResponseEntity<>(companyAdminsPage, HttpStatus.OK);
+    }
+
     @Operation(summary = "get user from jwt", description = "get user from jwt")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "user returned successfully")

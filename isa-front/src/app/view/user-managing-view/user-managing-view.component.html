@@ -1,0 +1,30 @@
+<div class="user-managing-container">
+    <div class="user-list">
+        <h2>Users</h2>
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Email</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>PhoneNumber</th>
+                <th>Profession</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let u of users">
+                    <td>{{u.id}}</td>
+                    <td>{{u.email}}</td>
+                    <td>{{u.firstName}}</td>
+                    <td>{{u.lastName}}</td>
+                    <td>{{u.phoneNumber}}</td>
+                    <td>{{u.profession}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn" mat-raised-button (click)="addNewCompanyAdmin()">Add new Company Admin</button>
+    </div>
+
+    <div class="form-container">
+        <app-company-admin-form *ngIf="showCompanyAdminForm" (companyAdminAdded)="companyAdminAdded()"></app-company-admin-form>
+    </div>
+</div>

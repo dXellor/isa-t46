@@ -20,6 +20,10 @@ public class UserService {
         return userRepository.findAll(page).map(UserMapper::UserToUserDto);
     }
 
+    public Page<UserDto> findAllCompanyAdminsPaged(Pageable page){
+        return userRepository.findAllCompanyAdmins(page).map(UserMapper::UserToUserDto);
+    }
+
     public UserDto findByEmail(String email){
         User newUser = userRepository.findByEmail(email);
         return UserMapper.UserToUserDto(newUser);
