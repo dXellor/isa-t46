@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { PagedResult } from '../model/paged-result.model';
 import { User } from '../model/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { EditUserRequest } from '../model/edit-user-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class UserService {
 
   getUser(): Observable<User>{
     return this.http.get<User>(this.url);
+  }
+
+  updateUser(editUserInfo: EditUserRequest): Observable<User>{
+    return this.http.post<User>(`${this.url}` , editUserInfo);
   }
 
   //OTHER

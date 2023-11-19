@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TokenInterceptor } from './util/token-interceptor';
 import { RegisterViewComponent } from './view/register-view/register-view.component';
 import { VerificationViewComponent } from './view/verification-view/verification-view.component';
+import { UserEditComponent } from './view/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { VerificationViewComponent } from './view/verification-view/verification
     LoginViewComponent,
     RegisterViewComponent,
     VerificationViewComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule,

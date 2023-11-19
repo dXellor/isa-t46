@@ -9,6 +9,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import com.isat46.isaback.model.User;
+
 @Getter
 @Setter
 public class UserDto {
@@ -47,4 +49,22 @@ public class UserDto {
 
     @JsonProperty("companyInformation")
     private String companyInformation;
+
+    public UserDto(){}
+    public UserDto(User user){
+        this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getCity(), user.getCountry(),
+                user.getPhoneNumber(), user.getProfession(), user.getCompanyInformation());
+    }
+
+    public UserDto(Integer id, String email, String firstName, String lastName, String city, String country, String phoneNumber, String profession, String companyInformation) {
+        this.id = id;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.city = city;
+        this.country = country;
+        this.phoneNumber = phoneNumber;
+        this.profession = profession;
+        this.companyInformation = companyInformation;
+    }
 }
