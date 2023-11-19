@@ -26,6 +26,11 @@ public class EquipmentDto {
         private String description;
 
         @NotNull
+        @NotBlank
+        @JsonProperty("type")
+        private String type;
+
+        @NotNull
         @Min(1)
         @NotBlank
         @JsonProperty("price")

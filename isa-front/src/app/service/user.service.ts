@@ -27,6 +27,10 @@ export class UserService {
     return this.http.get<PagedResult<User>>(`${this.url}/all`);
   }
 
+  getAllCompanyAdmins(): Observable<PagedResult<User>>{
+    return this.http.get<PagedResult<User>>(`${this.url}/all/ca`);
+  }
+
   getUser(): Observable<User>{
     return this.http.get<User>(this.url);
   }

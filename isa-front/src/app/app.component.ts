@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Company } from './model/company-model';
+import { Company } from './model/company.model';
 import { CompanyService } from './service/company.service';
 
 @Component({
@@ -23,9 +23,9 @@ export class AppComponent {
   }
 
   getAllCompanies(): void {
-    this.companyService.findAll()
+    this.companyService.getAll()
       .subscribe((data) => {
-        this.companies = data;
+        this.companies = data.content;
       });
   }
 
