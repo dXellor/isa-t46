@@ -12,17 +12,21 @@ export class CompanyService {
 
   private url = `${environment.apiUrl}/companies`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getAll(): Observable<PagedResult<Company>>{
+  getAll(): Observable<PagedResult<Company>> {
     return this.http.get<PagedResult<Company>>(`${this.url}/all`)
   }
 
-  addCompany(company: Company): Observable<Company>{
+  addCompany(company: Company): Observable<Company> {
     return this.http.post<Company>(`${this.url}`, company)
   }
 
-  updateCompany(company: Company): Observable<Company>{
+  updateCompany(company: Company): Observable<Company> {
     return this.http.put<Company>(`${this.url}`, company)
+  }
+
+  getCompanyByAdminId(adminId: number): Observable<Company> {
+    return this.http.get<Company>(`${this.url}/admin/${adminId}`);
   }
 }

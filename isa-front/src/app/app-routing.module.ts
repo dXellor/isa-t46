@@ -7,14 +7,16 @@ import { UserManagingViewComponent } from './view/user-managing-view/user-managi
 import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
 import { UserEditComponent } from './view/user-edit/user-edit.component';
 import { authGuard } from './guards/auth.guard';
+import { CompanyProfileViewComponent } from './view/company-profile-view/company-profile-view.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginViewComponent, },
-  { path: 'register', component: RegisterViewComponent},
+  { path: 'register', component: RegisterViewComponent },
   { path: 'verify/:token', component: VerificationViewComponent, },
   { path: 'manage-users', component: UserManagingViewComponent, },
   { path: 'manage-companies', component: CompanyManagingViewComponent, },
-  { path: 'user-edit', component: UserEditComponent, canActivate: [authGuard]},
+  { path: 'user-edit', component: UserEditComponent, canActivate: [authGuard] },
+  { path: 'company-profile', component: CompanyProfileViewComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({

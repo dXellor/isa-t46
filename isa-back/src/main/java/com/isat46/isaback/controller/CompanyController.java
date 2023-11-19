@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/companies")
 public class CompanyController {
 
@@ -71,4 +72,17 @@ public class CompanyController {
         CompanyDto updatedCompany = companyService.updateCompany(companyDto);
         return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
     }
+
+    @Operation(summary = "get company by admin id", description = "get company by admin id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "company returned successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasAnyRole('COMPADMIN', 'SYSADMIN')")
+    @GetMapping(value = "/admin/{adminId}")
+    public ResponseEntity<CompanyDto> getCompanyByAdminId(@PathVariable Integer adminId){
+        CompanyDto company = companyService.findCompanyByAdminId(adminId);
+        return new ResponseEntity<>(company, HttpStatus.OK);
+    }
+
 }

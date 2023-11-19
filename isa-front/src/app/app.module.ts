@@ -19,6 +19,10 @@ import { CompanyAdminFormComponent } from './component/company-admin-form/compan
 import { CompanyFormComponent } from './component/company-form/company-form.component';
 import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
 import { UserEditComponent } from './view/user-edit/user-edit.component';
+import { CompanyProfileViewComponent } from './view/company-profile-view/company-profile-view.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -32,6 +36,7 @@ import { UserEditComponent } from './view/user-edit/user-edit.component';
     CompanyFormComponent,
     CompanyManagingViewComponent,
     UserEditComponent,
+    CompanyProfileViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +47,10 @@ import { UserEditComponent } from './view/user-edit/user-edit.component';
     MatFormFieldModule,
     MatInputModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatCardModule,
+    FlexLayoutModule,
   ],
   providers: [
     {

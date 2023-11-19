@@ -1,0 +1,9 @@
+.admin-card {
+    margin-bottom: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0;
+    /* Light gray background */
+    color: #333;
+    /* Dark text color */
+}

@@ -39,5 +39,10 @@ public class CompanyService {
         Company updatedCompany = companyRepository.save(CompanyMapper.CompanyDtoToCompany(companyDto));
         return CompanyMapper.CompanyToCompanyDto(updatedCompany);
     }
+
+    public CompanyDto findCompanyByAdminId(Integer adminId){
+        Company company = companyRepository.findByAdminId(adminId);
+        return CompanyMapper.CompanyToCompanyDto(company);
+    }
 }
 
