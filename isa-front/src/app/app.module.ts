@@ -16,6 +16,8 @@ import { RegisterViewComponent } from './view/register-view/register-view.compon
 import { VerificationViewComponent } from './view/verification-view/verification-view.component';
 import { UserManagingViewComponent } from './view/user-managing-view/user-managing-view.component';
 import { CompanyAdminFormComponent } from './component/company-admin-form/company-admin-form.component';
+import { CompanyFormComponent } from './component/company-form/company-form.component';
+import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { CompanyAdminFormComponent } from './component/company-admin-form/compan
     VerificationViewComponent,
     UserManagingViewComponent,
     CompanyAdminFormComponent,
+    CompanyFormComponent,
+    CompanyManagingViewComponent,
   ],
   imports: [
     BrowserModule,

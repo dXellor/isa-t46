@@ -1,0 +1,28 @@
+<div class="company-managing-container">
+    <div class="user-list">
+        <h2>Companies</h2>
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Description</th>
+                <th>Average rating</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of companies">
+                    <td>{{c.id}}</td>
+                    <td>{{c.name}}</td>
+                    <td>{{c.address.street}} {{c.address.city}}, {{c.address.country}} {{c.address.zipCode}}</td>
+                    <td>{{c.description}}</td>
+                    <td>{{c.averageRating}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <button class="btn" mat-raised-button (click)="addNewCompany()">Add new Company</button>
+    </div>
+
+    <div class="form-container">
+        <app-company-form *ngIf="showForm" (companyAdded)="companyAdded()"></app-company-form>
+    </div>
+</div>
