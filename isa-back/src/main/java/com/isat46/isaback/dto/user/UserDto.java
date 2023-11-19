@@ -1,6 +1,7 @@
 package com.isat46.isaback.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.isat46.isaback.model.Role;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import com.isat46.isaback.model.User;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -49,6 +52,9 @@ public class UserDto {
 
     @JsonProperty("companyInformation")
     private String companyInformation;
+
+    @JsonProperty("roles")
+    private List<Role> roles;
 
     public UserDto(){}
     public UserDto(User user){

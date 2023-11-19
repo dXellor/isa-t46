@@ -13,7 +13,7 @@ export class CompanyService {
 
   private url = `${environment.apiUrl}/companies`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<PagedResult<Company>>{
     return this.http.get<PagedResult<Company>>(`${this.url}/all`);
@@ -29,5 +29,9 @@ export class CompanyService {
 
   getByEquipment(equipmentId: number): Observable<PagedResult<Company>>{
     return this.http.get<PagedResult<Company>>(`${this.url}/${equipmentId}`);
+  }
+
+  getCompanyByAdminId(adminId: number): Observable<Company> {
+    return this.http.get<Company>(`${this.url}/admin/${adminId}`);
   }
 }
