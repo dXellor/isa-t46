@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { Company } from '../model/company.model';
 import { Observable } from 'rxjs';
 import { PagedResult } from '../model/paged-result.model';
+import { Equipment } from '../model/equipment.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,18 @@ export class CompanyService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<PagedResult<Company>>{
-    return this.http.get<PagedResult<Company>>(`${this.url}/all`)
+    return this.http.get<PagedResult<Company>>(`${this.url}/all`);
   }
 
   addCompany(company: Company): Observable<Company>{
-    return this.http.post<Company>(`${this.url}`, company)
+    return this.http.post<Company>(`${this.url}`, company);
   }
 
   updateCompany(company: Company): Observable<Company>{
-    return this.http.put<Company>(`${this.url}`, company)
+    return this.http.put<Company>(`${this.url}`, company);
+  }
+
+  getByEquipment(equipmentId: number): Observable<PagedResult<Company>>{
+    return this.http.get<PagedResult<Company>>(`${this.url}/${equipmentId}`);
   }
 }
