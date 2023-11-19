@@ -18,6 +18,7 @@ import { UserManagingViewComponent } from './view/user-managing-view/user-managi
 import { CompanyAdminFormComponent } from './component/company-admin-form/company-admin-form.component';
 import { CompanyFormComponent } from './component/company-form/company-form.component';
 import { CompanyManagingViewComponent } from './view/company-managing-view/company-managing-view.component';
+import { UserEditComponent } from './view/user-edit/user-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CompanyManagingViewComponent } from './view/company-managing-view/compa
     CompanyAdminFormComponent,
     CompanyFormComponent,
     CompanyManagingViewComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule,

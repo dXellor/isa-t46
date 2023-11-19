@@ -18,11 +18,13 @@ public class Equipment {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "type", nullable = false)
+    private String type;
+
     @Column(name = "description", nullable = false)
     private String description;
 
     @Column(name = "price", nullable = false)
     private double price;
-
 
 }

@@ -28,4 +28,11 @@ public class UserService {
         User newUser = userRepository.findByEmail(email);
         return UserMapper.UserToUserDto(newUser);
     }
+
+    public User update(User user){
+        return userRepository.save(user);
+    }
+    public User findOne(int id) {
+        return userRepository.findById(id).orElseGet(null);
+    }
 }

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/companies")
 public class CompanyController {
 
@@ -35,6 +34,17 @@ public class CompanyController {
     @GetMapping(value = "/all")
     public ResponseEntity<Page<CompanyDto>> getCompaniesPage(Pageable page){
         Page<CompanyDto> companiesPage = companyService.findAllPaged(page);
+        return new ResponseEntity<>(companiesPage, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get page of companies that have equipment", description = "get page of companies that have equipment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "page of companies that have equipment returned successfully")
+    })
+    @PreAuthorize("hasAnyRole('USER', 'SYSADMIN', 'COMPADMIN')")
+    @GetMapping(value = "/{equipmentId}")
+    public ResponseEntity<Page<CompanyDto>> getCompaniesThatHaveEquipment(@PathVariable Integer equipmentId, Pageable page){
+        Page<CompanyDto> companiesPage = companyService.findCompaniesThatHaveEquipment(equipmentId, page);
         return new ResponseEntity<>(companiesPage, HttpStatus.OK);
     }
 
