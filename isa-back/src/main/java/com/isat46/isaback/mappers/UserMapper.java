@@ -1,5 +1,6 @@
 package com.isat46.isaback.mappers;
 
+import com.isat46.isaback.dto.user.AdminRegistrationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.dto.user.UserRegistrationDto;
 import com.isat46.isaback.model.User;
@@ -26,6 +27,10 @@ public class UserMapper {
     }
     public static User UserRegistrationDtoToUser(UserRegistrationDto userRegistrationDto){
         return modelMapper.map(userRegistrationDto, User.class);
+    }
+
+    public static User AdminRegistrationDtoToUser(AdminRegistrationDto adminRegistrationDto){
+        return modelMapper.map(adminRegistrationDto, User.class);
     }
 
 }

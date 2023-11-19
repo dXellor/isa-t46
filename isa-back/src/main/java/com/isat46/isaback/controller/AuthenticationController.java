@@ -1,6 +1,7 @@
 package com.isat46.isaback.controller;
 
 import com.isat46.isaback.dto.auth.JwtDto;
+import com.isat46.isaback.dto.user.AdminRegistrationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.dto.user.UserLoginDto;
 import com.isat46.isaback.dto.user.UserRegistrationDto;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -49,6 +51,23 @@ public class AuthenticationController {
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> registerNewUser(@Parameter(required = true) @Valid @RequestBody UserRegistrationDto userRegistrationDto){
         UserDto newUser = authenticationService.registerUser(userRegistrationDto);
+        if(newUser != null)
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "creates new company admin", description = "creates new company admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "company admin created successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('SYSADMIN')")
+    @PostMapping(value = "/register/ca", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> registerNewCompanyAdmin(@Parameter(required = true) @Valid @RequestBody AdminRegistrationDto adminRegistrationDto){
+        UserDto newUser = authenticationService.registerNewCompanyAdmin(adminRegistrationDto);
         if(newUser != null)
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         else{
