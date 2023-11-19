@@ -1,4 +1,5 @@
 import { Address } from "./address.model";
+import { User } from "./user.model";
 
 export interface Company {
     id?: number,
@@ -6,4 +7,5 @@ export interface Company {
     address: Address,
     description: string,
     averageRating?: number,
+    admins?: User[]
 }

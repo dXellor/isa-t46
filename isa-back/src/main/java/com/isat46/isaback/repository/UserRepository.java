@@ -9,5 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     Page<User> findAll(Pageable pageable);
+    @Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = 'ROLE_COMPADMIN'")
+    Page<User> findAllCompanyAdmins(Pageable pageable);
     User findByEmail(String email);
 }

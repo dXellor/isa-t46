@@ -8,6 +8,7 @@
                 <th>Address</th>
                 <th>Description</th>
                 <th>Average rating</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 <tr *ngFor="let c of companies">
@@ -16,6 +17,9 @@
                     <td>{{c.address.street}} {{c.address.city}}, {{c.address.country}} {{c.address.zipCode}}</td>
                     <td>{{c.description}}</td>
                     <td>{{c.averageRating}}</td>
+                    <td>
+                        <button class="table-btn" mat-raised-button (click)="openManageAdmins(c)">Manage Admins</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -24,5 +28,54 @@
 
     <div class="form-container">
         <app-company-form *ngIf="showForm" (companyAdded)="companyAdded()"></app-company-form>
+        <!-- Should maybe be in separate component/components: -->
+        <div *ngIf="showCompanyAdmins" >
+            <div class="all-admins-list">
+                <h3>Available admins</h3>
+                <table>
+                    <thead>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Email</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ca of availableAdmins">
+                            <td>{{ca.firstName}}</td>
+                            <td>{{ca.lastName}}</td>
+                            <td>{{ca.email}}</td>
+                            <td>
+                                <button class="table-btn" mat-raised-button (click)="addAdmin(ca)">Add</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="company-admins-list">
+                <h3>Company admins</h3>
+                <table>
+                    <thead>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Email</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let ca of currentCompanyAdmins">
+                            <td>{{ca.firstName}}</td>
+                            <td>{{ca.lastName}}</td>
+                            <td>{{ca.email}}</td>
+                            <td>
+                                <button class="table-btn" mat-raised-button (click)="removeAdmin(ca)">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="button-container">
+                <button class="btn" mat-raised-button (click)="cancelUpdate()">Cancel</button>
+                <button class="btn" mat-raised-button (click)="updateCompany()">Confirm</button>
+            </div>
+        </div>
     </div>
 </div>
