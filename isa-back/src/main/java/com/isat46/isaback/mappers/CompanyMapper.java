@@ -1,6 +1,7 @@
 package com.isat46.isaback.mappers;
 
 import com.isat46.isaback.dto.company.CompanyDto;
+import com.isat46.isaback.dto.company.CompanyRegistrationDto;
 import com.isat46.isaback.model.Company;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,9 @@ public class CompanyMapper {
 
     public static Company CompanyDtoToCompany(CompanyDto companyDto){
         return modelMapper.map(companyDto, Company.class);
+    }
+
+    public static Company CompanyRegistrationDtoToCompany(CompanyRegistrationDto companyRegistrationDto){
+        return modelMapper.map(companyRegistrationDto, Company.class);
     }
 }
