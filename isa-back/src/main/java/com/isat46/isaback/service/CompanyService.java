@@ -24,6 +24,10 @@ public class CompanyService {
         return companyRepository.findAll(page).map(CompanyMapper::CompanyToCompanyDto);
     }
 
+    public Page<CompanyDto> findCompaniesThatHaveEquipment(int equipmentId, Pageable page){
+        return companyRepository.findCompaniesThatHaveEquipment(equipmentId, page).map(CompanyMapper::CompanyToCompanyDto);
+    }
+
     public CompanyDto registerNewCompany(CompanyRegistrationDto companyRegistrationDto){
         AddressDto addressDto = addressService.addNewAddress(companyRegistrationDto.getAddress());
         companyRegistrationDto.setAddress(addressDto);
