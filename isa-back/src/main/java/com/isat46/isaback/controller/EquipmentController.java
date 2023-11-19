@@ -10,11 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(value = "/equipment")
@@ -41,6 +43,20 @@ public class EquipmentController {
     @GetMapping(value = "/company/{companyId}")
     public ResponseEntity<Page<EquipmentDto>> getEquipmentByCompanyId(@PathVariable Integer companyId, Pageable page){
         Page<EquipmentDto> equipmentPage = equipmentService.findEquipmentByCompanyId(companyId, page);
+        return new ResponseEntity<>(equipmentPage, HttpStatus.OK);
+    }
+
+    @Operation(summary = "filter equipment", description = "filter equipment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "page of filtered equipment returned successfully")
+    })
+    @PreAuthorize("hasAnyRole('USER', 'SYSADMIN', 'COMPADMIN')")
+    @GetMapping(value = "")
+    public ResponseEntity<Page<EquipmentDto>> getFilteredEquipment(@RequestParam(required = false, defaultValue = "") String name,
+                                                                   @RequestParam(required = false, defaultValue = "") String type,
+                                                                   @RequestParam(required = false, defaultValue = "0") double priceMin,
+                                                                   @RequestParam(required = false, defaultValue = "1000000") double priceMax, Pageable page){
+        Page<EquipmentDto> equipmentPage = equipmentService.filterEquipment(name, type, priceMin, priceMax, page);
         return new ResponseEntity<>(equipmentPage, HttpStatus.OK);
     }
 }

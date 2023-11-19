@@ -27,5 +27,10 @@ public class EquipmentService {
         return equipmentPage.map(EquipmentMapper::EquipmentToEquipmentDto);
     }
 
+    public Page<EquipmentDto> filterEquipment(String name, String type, double priceMin, double priceMax, Pageable pageable){
+        Page<Equipment> equipmentPage = equipmentRepository.filterEquipment(name, priceMin, priceMax, type, pageable);
+        return equipmentPage.map(EquipmentMapper::EquipmentToEquipmentDto);
+    }
+
 
 }
