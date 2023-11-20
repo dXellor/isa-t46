@@ -4,3 +4,10 @@
     flex-direction: column;
     border: 1px solid green;
 }
+
+.user-info {
+    margin-left: 500px;
+    margin-top: -670px;
+    font-size: medium;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
