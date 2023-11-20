@@ -1,6 +1,37 @@
 <div class="company-managing-container">
     <div class="user-list">
         <h2>Companies</h2>
+
+        <div class="search-div">
+          <div>
+            <label class="labels-search" for="name">Name:</label>
+            <input class="input-search" type="text" id="name" [(ngModel)]="searchName" placeholder="Enter name">
+          </div>
+          
+          <div>
+            <label class="labels-search" for="city">City:</label>
+            <input class="input-search" type="text" id="city" [(ngModel)]="searchCity"  placeholder="Enter city" >
+          </div>
+          
+          <div>
+            <label class="labels-search" for="country">Country:</label>
+            <input class="input-search" type="text" id="country" [(ngModel)]="searchCountry" placeholder="Enter country">
+          </div>
+          
+          <button class="btn_search" mat-raised-button (click)="searchCompanies()">Search</button>
+        </div>
+
+        <div class="filter-div">
+            <p class="text-filter">Average Rating Range</p>
+            <label class="labels-search" for="minAverageRating">Min:</label>
+            <input id="minAverageRating" class="input-filter" placeholder="Min rate" type="number" [(ngModel)]="avgRatingMin" />
+          
+            <label class="labels-search" for="maxAverageRating">Max:</label>
+            <input id="maxAverageRating" class="input-filter" placeholder="Max rate" type="number" [(ngModel)]="avgRatingMax" />
+
+            <button class="btn_search" mat-raised-button (click)="filterCompanies()">Filter</button>
+        </div>
+
         <table>
             <thead>
                 <th>Id</th>

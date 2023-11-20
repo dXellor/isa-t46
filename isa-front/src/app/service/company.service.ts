@@ -31,6 +31,16 @@ export class CompanyService {
     return this.http.get<PagedResult<Company>>(`${this.url}/${equipmentId}`);
   }
 
+  searchCompanies(name?: string, city?: string, country?: string): Observable<PagedResult<Company>> {
+    const params = { name, city, country };
+    return this.http.get<PagedResult<Company>>(`${this.url}/searchByNameCityCountry`, { params });
+  }
+
+  filterCompanies(avgRatingMin?: number, avgRatingMax?: number): Observable<PagedResult<Company>>{
+    const params = {avgRatingMin, avgRatingMax};
+    return this.http.get<PagedResult<Company>>(`${this.url}/filterByRating`, { params });
+  }
+  
   getCompanyByAdminId(adminId: number): Observable<Company> {
     return this.http.get<Company>(`${this.url}/admin/${adminId}`);
   }

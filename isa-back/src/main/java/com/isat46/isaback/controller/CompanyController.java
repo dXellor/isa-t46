@@ -73,6 +73,32 @@ public class CompanyController {
         return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
     }
 
+    @Operation(summary = "search by name, city, country", description = "search by name, city, country")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "searched successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @GetMapping("/searchByNameCityCountry")
+    public ResponseEntity<Page<CompanyDto>> searchByNameCityCountry(@RequestParam(required = false) String name, @RequestParam(required = false) String city, @RequestParam(required = false) String country, Pageable page) {
+        Page<CompanyDto> searchedDtos =  companyService.searchByNameCityCountry(name, city, country, page);
+        return new ResponseEntity<>(searchedDtos, HttpStatus.OK);
+    }
+
+    @Operation(summary = "filter by min and max average rating", description = "filter by min and max average rating")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "filtered successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @GetMapping("/filterByRating")
+    public ResponseEntity<Page<CompanyDto>> filterByRatingRange(@RequestParam(required = false) Double avgRatingMin, @RequestParam(required = false) Double avgRatingMax, Pageable page) {
+        Page<CompanyDto> searchedDtos =  companyService.filterByRatingRange(
+                avgRatingMin != null ? avgRatingMin : 0.0,
+                avgRatingMax != null ? avgRatingMax : 5.0,
+                page
+        );
+        return new ResponseEntity<>(searchedDtos, HttpStatus.OK);
+    }
+
     @Operation(summary = "get company by admin id", description = "get company by admin id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "company returned successfully"),
@@ -84,5 +110,4 @@ public class CompanyController {
         CompanyDto company = companyService.findCompanyByAdminId(adminId);
         return new ResponseEntity<>(company, HttpStatus.OK);
     }
-
 }

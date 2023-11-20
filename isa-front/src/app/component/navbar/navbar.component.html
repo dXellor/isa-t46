@@ -2,11 +2,8 @@
     <h2 style="width: 100%;">ISA-T46 MEMA</h2>
     <div class="navbar-items">
         <button *ngIf="currentUser" class="btn" mat-raised-button (click)="logOut()">Log out</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/company-profile">Manage company
-            profile</button>
+        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/company-profile">Manage company profile</button>
         <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/manage-users">Manage users</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/manage-companies">Manage
-            companies</button>
         <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/manage-companies">Manage companies</button>
         <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/equipment-collection">Browse equipment</button>
         <button *ngIf="currentUser" class="btn" mat-raised-button [routerLink]="['user-edit']">Edit profile</button>

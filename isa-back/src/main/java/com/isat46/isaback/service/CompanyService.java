@@ -40,6 +40,28 @@ public class CompanyService {
         return CompanyMapper.CompanyToCompanyDto(updatedCompany);
     }
 
+    public Page<CompanyDto> searchByNameCityCountry(String name, String city, String country, Pageable page) {
+        Page<Company> companies = companyRepository
+                .findByNameIgnoreCaseContainingAndAddressCityIgnoreCaseContainingAndAddressCountryIgnoreCaseContaining(
+                        name, city, country, page);
+
+        if(!companies.hasContent()){
+            return Page.empty();
+        }
+
+        return companies.map(CompanyMapper::CompanyToCompanyDto);
+    }
+
+    public Page<CompanyDto> filterByRatingRange(double minAverageRating, double maxAverageRating, Pageable page) {
+        Page<Company> companies = companyRepository.findByAverageRatingBetween(minAverageRating, maxAverageRating, page);
+
+        if (!companies.hasContent()) {
+            return Page.empty();
+        }
+
+        return companies.map(CompanyMapper::CompanyToCompanyDto);
+    }
+
     public CompanyDto findCompanyByAdminId(Integer adminId){
         Company company = companyRepository.findByAdminId(adminId);
         return CompanyMapper.CompanyToCompanyDto(company);
