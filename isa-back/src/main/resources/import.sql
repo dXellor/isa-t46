@@ -26,6 +26,11 @@ INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Bandage 
 
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (1, 1);
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (1, 2);
+
+
+INSERT INTO isadb."company_admin"(company_id, admin_id) VALUES (1, 3);
+INSERT INTO isadb."company_admin"(company_id, admin_id) VALUES (1, 2);
+
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (2, 1);
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (2, 2);
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (2, 3);

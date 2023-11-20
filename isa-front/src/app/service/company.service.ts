@@ -13,7 +13,7 @@ export class CompanyService {
 
   private url = `${environment.apiUrl}/companies`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(): Observable<PagedResult<Company>>{
     return this.http.get<PagedResult<Company>>(`${this.url}/all`);
@@ -39,5 +39,9 @@ export class CompanyService {
   filterCompanies(avgRatingMin?: number, avgRatingMax?: number): Observable<PagedResult<Company>>{
     const params = {avgRatingMin, avgRatingMax};
     return this.http.get<PagedResult<Company>>(`${this.url}/filterByRating`, { params });
+  }
+  
+  getCompanyByAdminId(adminId: number): Observable<Company> {
+    return this.http.get<Company>(`${this.url}/admin/${adminId}`);
   }
 }

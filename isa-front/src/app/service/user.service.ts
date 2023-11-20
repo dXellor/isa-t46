@@ -52,4 +52,8 @@ export class UserService {
       },
     });
   }
+
+  getCurrentUser(): User{
+    return this.loggedInUserSubject.getValue();
+  }
 }
