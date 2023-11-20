@@ -35,7 +35,7 @@ export class CompanyProfileViewComponent implements OnInit {
           street: [this.company.address.street, Validators.required],
           city: [this.company.address.city, Validators.required],
           country: [this.company.address.country, Validators.required],
-          zip: [this.company.address.zipCode, [Validators.required, Validators.pattern('^[0-9]{5}$')]]
+          zipCode: [this.company.address.zipCode, [Validators.required, Validators.pattern('^[0-9]{5}$')]]
         }),
         equipment: this.formBuilder.array(this.company.equipment || []),
         admins: this.formBuilder.array(this.company.admins || [])
