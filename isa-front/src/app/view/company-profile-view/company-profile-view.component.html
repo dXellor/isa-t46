@@ -45,7 +45,7 @@
         <div *ngIf="companyForm&&user">
             <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
                 <div formGroupName="address">
-                    <div *ngFor="let controlName of ['street', 'city', 'country', 'zip']">
+                    <div *ngFor="let controlName of ['street', 'city', 'country', 'zipCode']">
                         <mat-form-field appearance="fill">
                             <mat-label>{{ controlName }}</mat-label>
                             <input matInput [formControlName]="controlName" [readonly]="!editMode">
