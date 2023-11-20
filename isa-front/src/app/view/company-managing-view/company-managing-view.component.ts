@@ -21,6 +21,10 @@ export class CompanyManagingViewComponent {
   public showForm: boolean;
   public showCompanyAdmins: boolean;
 
+  searchName: string = '';
+  searchCity: string = '';
+  searchCountry: string = '';
+
   constructor(private companyService: CompanyService, private userService: UserService) { }
 
   ngOnInit(): void {
@@ -91,5 +95,16 @@ export class CompanyManagingViewComponent {
   removeAdmin(companyAdmin: User): void {
     this.currentCompanyAdmins = this.currentCompanyAdmins?.filter((user) => user.id != companyAdmin.id);
     this.availableAdmins.push(companyAdmin);
+  }
+
+  searchCompanies(): void {
+    if(this.searchName === null){this.searchName=''}
+    if(this.searchCity === null){this.searchCity=''}
+    if(this.searchCountry === null){this.searchCountry=''}
+    this.companyService.searchCompanies(this.searchName, this.searchCity, this.searchCountry).subscribe({
+      next: (response: PagedResult<Company>) => {
+        this.companies = response.content;
+      }
+    });
   }
 }

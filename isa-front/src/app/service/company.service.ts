@@ -31,8 +31,8 @@ export class CompanyService {
     return this.http.get<PagedResult<Company>>(`${this.url}/${equipmentId}`);
   }
 
-  searchCompanies(name?: string, city?: string, country?: string): Observable<Company[]> {
+  searchCompanies(name?: string, city?: string, country?: string): Observable<PagedResult<Company>> {
     const params = { name, city, country };
-    return this.http.get<Company[]>(`${this.url}/searchByNameCityCountry`, { params });
+    return this.http.get<PagedResult<Company>>(`${this.url}/searchByNameCityCountry`, { params });
   }
 }

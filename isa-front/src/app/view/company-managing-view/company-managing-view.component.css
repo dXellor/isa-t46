@@ -49,3 +49,23 @@ tbody tr.active-row {
     margin-top: 20px;
     gap: 30px;
 }
+
+.search-div{
+    display: flex;
+    padding: 10px;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.btn-search{
+    gap: 15px;
+    padding: 10px;
+}
+
+.labels-search{
+    padding: 10px;
+}
+
+.input-search{
+    padding: 10px;
+}
