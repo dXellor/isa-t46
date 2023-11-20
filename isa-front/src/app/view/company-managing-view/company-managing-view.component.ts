@@ -25,6 +25,9 @@ export class CompanyManagingViewComponent {
   searchCity: string = '';
   searchCountry: string = '';
 
+  avgRatingMin: null;
+  avgRatingMax: null;
+
   constructor(private companyService: CompanyService, private userService: UserService) { }
 
   ngOnInit(): void {
@@ -102,6 +105,14 @@ export class CompanyManagingViewComponent {
     if(this.searchCity === null){this.searchCity=''}
     if(this.searchCountry === null){this.searchCountry=''}
     this.companyService.searchCompanies(this.searchName, this.searchCity, this.searchCountry).subscribe({
+      next: (response: PagedResult<Company>) => {
+        this.companies = response.content;
+      }
+    });
+  }
+
+  filterCompanies() : void {
+    this.companyService.filterCompanies(this.avgRatingMin, this.avgRatingMax).subscribe({
       next: (response: PagedResult<Company>) => {
         this.companies = response.content;
       }

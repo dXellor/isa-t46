@@ -69,3 +69,23 @@ tbody tr.active-row {
 .input-search{
     padding: 10px;
 }
+
+.filter-div{
+    display: flex;
+    padding: 10px;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.labels-filter{
+    display: flex;
+}
+
+.input-filter{
+    padding: 10px;
+    height: 17px;
+}
+
+.text-filter{
+    margin-top: 10px;
+}

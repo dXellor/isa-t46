@@ -82,4 +82,19 @@ public class CompanyController {
         Page<CompanyDto> searchedDtos =  companyService.searchByNameCityCountry(name, city, country, page);
         return new ResponseEntity<>(searchedDtos, HttpStatus.OK);
     }
+
+    @Operation(summary = "filter by min and max average rating", description = "filter by min and max average rating")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "filtered successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @GetMapping("/filterByRating")
+    public ResponseEntity<Page<CompanyDto>> filterByRatingRange(@RequestParam(required = false) Double avgRatingMin, @RequestParam(required = false) Double avgRatingMax, Pageable page) {
+        Page<CompanyDto> searchedDtos =  companyService.filterByRatingRange(
+                avgRatingMin != null ? avgRatingMin : 0.0,
+                avgRatingMax != null ? avgRatingMax : 5.0,
+                page
+        );
+        return new ResponseEntity<>(searchedDtos, HttpStatus.OK);
+    }
 }

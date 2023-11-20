@@ -35,4 +35,9 @@ export class CompanyService {
     const params = { name, city, country };
     return this.http.get<PagedResult<Company>>(`${this.url}/searchByNameCityCountry`, { params });
   }
+
+  filterCompanies(avgRatingMin?: number, avgRatingMax?: number): Observable<PagedResult<Company>>{
+    const params = {avgRatingMin, avgRatingMax};
+    return this.http.get<PagedResult<Company>>(`${this.url}/filterByRating`, { params });
+  }
 }

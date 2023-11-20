@@ -18,4 +18,6 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
     Page<Company> findByNameIgnoreCaseContainingAndAddressCityIgnoreCaseContainingAndAddressCountryIgnoreCaseContaining(
             String name, String city, String country, Pageable page);
+
+    Page<Company> findByAverageRatingBetween(double minAverageRating, double maxAverageRating, Pageable page);
 }

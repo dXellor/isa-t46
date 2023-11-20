@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'manage-users', component: UserManagingViewComponent, },
   { path: 'manage-companies', component: CompanyManagingViewComponent, },
   { path: 'equipment-collection', component: EquipmentCollectionViewComponent, },
-  { path: 'user-edit', component: UserEditComponent, canActivate: [authGuard]},
+  { path: 'user-edit', component: UserEditComponent},
 ];
 
 @NgModule({

@@ -45,7 +45,17 @@ public class CompanyService {
                 .findByNameIgnoreCaseContainingAndAddressCityIgnoreCaseContainingAndAddressCountryIgnoreCaseContaining(
                         name, city, country, page);
 
-        if(companies == null){
+        if(!companies.hasContent()){
+            return Page.empty();
+        }
+
+        return companies.map(CompanyMapper::CompanyToCompanyDto);
+    }
+
+    public Page<CompanyDto> filterByRatingRange(double minAverageRating, double maxAverageRating, Pageable page){
+        Page<Company> companies = companyRepository.findByAverageRatingBetween(minAverageRating, maxAverageRating, page);
+
+        if(!companies.hasContent()){
             return Page.empty();
         }
 
