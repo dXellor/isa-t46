@@ -1,0 +1,41 @@
+<form [formGroup]="editUserForm">
+    <div class="formHolder">
+        <mat-form-field>
+            <input formControlName="firstName" matInput [(ngModel)]="user.firstName" required type="firstName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="lastName" matInput [(ngModel)]="user.lastName" required type="lastName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="email" matInput [(ngModel)]="user.email" required readonly="true" >
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="city" matInput [(ngModel)]="user.city"  required type="city">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="country" matInput [(ngModel)]="user.country"  required type="country">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="phoneNumber" matInput [(ngModel)]="user.phoneNumber"  required type="phoneNumber">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="profession" matInput [(ngModel)]="user.profession"  required type="profession">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input formControlName="companyInformation" matInput [(ngModel)]="user.companyInformation"  required type="companyInformation">
+        </mat-form-field>
+    </div>
+</form>
+<button [disabled]="!editUserForm.valid" color="primary" mat-raised-button (click)="updateUser()">Edit</button>
+
+<div class="user-info">
+    <p>Loyalty program: Silver</p>
+    <p>Penal points: 1</p>
+</div>

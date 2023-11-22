@@ -1,0 +1,78 @@
+<h2>Equipment</h2>
+<div class="equipment-collection-container">
+    <div class="filter-container">
+        <form [formGroup]="filterForm">
+            <div class="form-fields">
+                <mat-form-field>
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name" type="text"/>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Min Price</mat-label>
+                    <input matInput formControlName="priceMin" type="number" min="0"/>
+                </mat-form-field>
+        
+                <mat-form-field>
+                    <mat-label>Max Price</mat-label>
+                    <input matInput formControlName="priceMax" type="number" min="0"/>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Type</mat-label>
+                    <mat-select formControlName="type" matInput>
+                        <mat-option *ngFor="let t of possibleTypes" [value]="t">{{t}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <button class="btn" type="submit" (click)="filterEquipment()" mat-raised-button>
+                Search
+            </button>
+        </form>
+    </div>
+    <div>
+        <div class="equipment-list">
+            <table>
+                <thead>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let e of equipment">
+                        <td>{{e.id}}</td>
+                        <td>{{e.name}}</td>
+                        <td>{{e.type}}</td>
+                        <td>{{e.description}}</td>
+                        <td>
+                            <button class="table-btn" mat-raised-button (click)="openCompanyList(e)">See Companies</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="popup" [class]="openCompanyPopup ? 'show' : ''">
+    <div class="close" (click)="closePopup()">X</div>
+    <div class="company-list">
+        <h3>Companies with selected equipment</h3>
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>averageRating</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of companiesWithEquipment">
+                    <td>{{c.id}}</td>
+                    <td>{{c.name}}</td>
+                    <td>{{c.averageRating}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
