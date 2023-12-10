@@ -25,6 +25,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
+import { MapComponent } from './component/map/map.component';
+import {NgOptimizedImage} from "@angular/common";
+import { ToastModule} from "primeng/toast";
+import { MessageModule} from "primeng/message";
+import {MatStepperModule} from "@angular/material/stepper";
+import {MessagesModule} from "primeng/messages";
 
 @NgModule({
   declarations: [
@@ -40,22 +46,28 @@ import { EquipmentCollectionViewComponent } from './view/equipment-collection-vi
     UserEditComponent,
     CompanyProfileViewComponent,
     EquipmentCollectionViewComponent,
+    MapComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    MatButtonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatIconModule,
-    MatCardModule,
-    FlexLayoutModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatCardModule,
+        FlexLayoutModule,
+        NgOptimizedImage,
+        ToastModule,
+        MessageModule,
+        MatStepperModule,
+        MessagesModule
+    ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

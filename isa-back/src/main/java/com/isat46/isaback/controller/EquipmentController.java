@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/equipment")
+@RequestMapping(value = "api/equipment")
 public class EquipmentController {
 
     @Autowired

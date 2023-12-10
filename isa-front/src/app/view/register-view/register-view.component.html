@@ -1,35 +1,69 @@
-<form [formGroup]="registerForm">
-    <div class="formHolder">
-        <mat-form-field>
-            <input formControlName="email" matInput placeholder="email" required>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="password" matInput placeholder="password" required type="password">
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="repeatedPassword" matInput placeholder="repeated password" required type="password">
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="firstName" matInput placeholder="First name" required>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="lastName" matInput placeholder="Last name" required>
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="city" matInput placeholder="City">
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="country" matInput placeholder="Country">
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="phoneNumber" matInput placeholder="Phone number">
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="profession" matInput placeholder="Profession">
-        </mat-form-field>
-        <mat-form-field>
-            <input formControlName="companyInformation" matInput placeholder="Company Information">
-        </mat-form-field>
-    </div>
+<div class="content">
+<form [formGroup]="registerForm" class="styled-form">
+    <mat-horizontal-stepper [linear]="true">
+        <ng-template matStepperIcon="edit">
+            <mat-icon>done</mat-icon>
+        </ng-template>
+        <ng-template matStepperIcon="done">
+            <mat-icon>done</mat-icon>
+        </ng-template>
+        <mat-step [stepControl]="registerForm.get('personalInfo')" [completed]="registerForm.get('personalInfo').valid">
+            <ng-template matStepLabel>Personal info</ng-template>
+            <div formGroupName="personalInfo" class="formHolder">
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="firstName" matInput placeholder="First name" required>
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="lastName" matInput placeholder="Last name" required>
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="city" matInput placeholder="City">
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="country" matInput placeholder="Country">
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="phoneNumber" matInput placeholder="Phone number">
+                </mat-form-field>
+                <button mat-raised-button class="next-btn" matStepperNext (click)="onNextClick()">Next</button>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="registerForm.get('userInfo')">
+            <ng-template matStepLabel>User info</ng-template>
+            <div formGroupName="userInfo" class="formHolder">
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="email" matInput placeholder="Email" required>
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="password" matInput placeholder="Password" required type="password">
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="repeatedPassword" matInput placeholder="Repeat Password" required type="password">
+                </mat-form-field>
+                <div class="btn-container">
+                <button mat-raised-button class="prev-btn" matStepperPrevious (click)="onBackClick()">Back</button>
+                <button mat-raised-button class="next-btn" matStepperNext (click)="onNextClick()">Next</button>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="registerForm.get('companyInfo')">
+            <ng-template matStepLabel>Company info</ng-template>
+            <div formGroupName="companyInfo" class="formHolder">
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="profession" matInput placeholder="Profession">
+                </mat-form-field>
+                <mat-form-field class="field" appearance="outline">
+                    <input formControlName="companyInformation" matInput placeholder="Company Information">
+                </mat-form-field>
+                <div class="btn-container">
+                <button mat-raised-button class="prev-btn" matStepperPrevious (click)="onBackClick()">Back</button>
+                <button color="warn" class="register-btn" mat-raised-button (click)="register()" [disabled]="!registerForm.get('companyInfo').valid">Register</button>
+                </div>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
 </form>
-<button [disabled]="!registerForm.valid" color="primary" mat-raised-button (click)="register()">Register</button>
+<div class="message">
+<p-messages></p-messages>
+</div>
+</div>

@@ -16,3 +16,10 @@
 .btn {
     margin-left: 1%;
 }
+img{
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+}
