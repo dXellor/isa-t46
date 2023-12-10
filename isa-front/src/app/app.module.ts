@@ -31,6 +31,7 @@ import { ToastModule} from "primeng/toast";
 import { MessageModule} from "primeng/message";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MessagesModule} from "primeng/messages";
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,8 @@ import {MessagesModule} from "primeng/messages";
         ToastModule,
         MessageModule,
         MatStepperModule,
-        MessagesModule
+        MessagesModule,
+        MatSidenavModule
     ],
   providers: [
     {
