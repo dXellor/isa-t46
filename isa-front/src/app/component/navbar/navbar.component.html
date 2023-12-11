@@ -1,14 +1,38 @@
 <div class="navbar">
-    <h2 style="width: 100%;">ISA-T46 MEMA</h2>
+    <h2 class="app-name" routerLink="/">ISA-T46 MEMA</h2>
     <div class="navbar-items">
-        <button *ngIf="currentUser" class="btn" mat-raised-button (click)="logOut()">Log out</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/company-profile">Manage company profile</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/manage-users">Manage users</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/manage-companies">Manage companies</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button routerLink="/equipment-collection">Browse equipment</button>
-        <button *ngIf="currentUser" class="btn" mat-raised-button [routerLink]="['user-edit']">Edit profile</button>
-        <button *ngIf="!currentUser" class="btn" mat-raised-button routerLink="/register">Register</button>
-        <button *ngIf="!currentUser" class="btn" mat-raised-button routerLink="/login">Log In</button>
-        <button class="btn" mat-raised-button routerLink="/">Home</button>
+      <img src="assets/images/burgundy.jpg" alt="Profile Picture" class="navbar-picture"  (click)="toggleMenu($event)" *ngIf="currentUser">
+      <button *ngIf="!currentUser" class="nav-btn" mat-raised-button routerLink="/login"><mat-icon>login</mat-icon>Sign In</button>
     </div>
+  <div #overlayContainer class="overlay-container" [class.open]="isOverlayOpen">
+    <div class="overlay-content">
+      <div class="user-profile">
+        <img src="assets/images/burgundy.jpg"  alt="Profile Picture" class="profile-picture">
+        <div class="user-info" *ngIf="currentUser">
+          <p><b>{{currentUser.firstName}} {{currentUser.lastName}}</b></p>
+          <p>{{currentUser.email}}</p>
+        </div>
+      </div>
+      <div class="options">
+        <div class="option">
+        <button *ngIf="currentUser" class="btn" (click)="closeOverlay()" mat-flat-button [routerLink]="['user-edit']"><mat-icon>manage_accounts</mat-icon> Edit profile</button>
+        <button *ngIf="currentUser && hasRole('ROLE_SYSADMIN')" (click)="closeOverlay()" class="btn" mat-flat-button routerLink="/manage-users"><mat-icon>people_outline</mat-icon>Manage users</button>
+        <hr>
+        </div>
+        <div class="option">
+      <button *ngIf="currentUser && hasRole('ROLE_COMPADMIN')" (click)="closeOverlay()" class="btn" mat-flat-button routerLink="/company-profile"><mat-icon>business</mat-icon>Manage company profile</button>
+      <button *ngIf="currentUser && hasRole('ROLE_SYSADMIN')" (click)="closeOverlay()" class="btn" mat-flat-button routerLink="/manage-companies"><mat-icon>add_business</mat-icon>Manage companies</button>
+        <hr *ngIf="currentUser && (hasRole('ROLE_SYSADMIN') || hasRole('ROLE_COMPADMIN')) ">
+        </div>
+        <div class="option">
+      <button *ngIf="currentUser && hasRole('ROLE_SYSADMIN')" (click)="closeOverlay()" class="btn" mat-flat-button routerLink="/equipment-collection"><mat-icon>list</mat-icon>Browse equipment</button>
+        <hr *ngIf="currentUser && hasRole('ROLE_SYSADMIN')">
+          </div>
+        <div class="option">
+      <button *ngIf="currentUser" class="btn" mat-flat-button (click)="logOut();closeOverlay()"><mat-icon>logout</mat-icon> Sign out</button>
+          </div>
+      </div>
+    </div>
+  </div>
 </div>
+

@@ -12,12 +12,10 @@ import { EquipmentFilterCriteria } from '../model/equipment-filter-criteria.mode
 export class EquipmentService {
 
   private url = `${environment.apiUrl}/equipment`;
-  private temporari = `http://localhost:8080/equipment`; // without api in string, don't want to mess up someones work, so didn't change it in controller but it's without 'api' in controller / -zanya
-
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<PagedResult<Equipment>>{
-    return this.http.get<PagedResult<Equipment>>(`${this.temporari}/all`)
+    return this.http.get<PagedResult<Equipment>>(`${this.url}/all`)
   }
 
   getFiltered(filter: EquipmentFilterCriteria): Observable<PagedResult<Equipment>>{
@@ -26,6 +24,6 @@ export class EquipmentService {
       .set('priceMin', filter.priceMin ? filter.priceMin?.toString() : "")
       .set('priceMax', filter.priceMax ? filter.priceMax?.toString() : "")
       .set('type', filter.type ? filter.type?.toString() : "")
-    return this.http.get<PagedResult<Equipment>>(`${this.temporari}`, { params })
+    return this.http.get<PagedResult<Equipment>>(`${this.url}`, { params })
   }
 }

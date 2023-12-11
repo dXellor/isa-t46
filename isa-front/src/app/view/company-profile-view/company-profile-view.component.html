@@ -1,21 +1,12 @@
 <div fxLayout="row" fxLayoutGap="20px">
-    <!-- Form part 1 -->
+    <!-- Company info section -->
     <div fxFlex="33">
         <div *ngIf="companyForm&&user">
             <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
                 <div *ngFor="let controlName of ['name', 'description', 'averageRating']">
                     <mat-form-field appearance="fill">
                         <mat-label>{{ controlName }}</mat-label>
-                        <input matInput [formControlName]="controlName" [readonly]="!editMode">
-                        <mat-error *ngIf="companyForm.get(controlName).hasError('required')">
-                            reting is required.
-                        </mat-error>
-                        <mat-error *ngIf="companyForm.get(controlName).hasError('min')">
-                            rating must be at least 1.
-                        </mat-error>
-                        <mat-error *ngIf="companyForm.get(controlName).hasError('max')">
-                            rating must be at most 5.
-                        </mat-error>
+                        <input matInput [formControlName]="controlName" [readonly]="!editMode || isRatingField(controlName)">
                     </mat-form-field>
                 </div>
                 <div formArrayName="equipment">
@@ -60,6 +51,7 @@
                 </div>
             </form>
         </div>
+        <app-map [address]="company.address" style="width: 100%; height: 100%;"></app-map>
     </div>
 
     <!-- Admins section -->

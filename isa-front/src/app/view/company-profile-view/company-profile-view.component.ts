@@ -72,4 +72,8 @@ export class CompanyProfileViewComponent implements OnInit {
     equipment.removeAt(index);
     this.company.equipment.splice(index, 1);
   }
+
+  isRatingField(controlName: string): boolean {
+    return controlName === 'averageRating';
+  }
 }

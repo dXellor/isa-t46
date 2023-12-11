@@ -1,3 +1,9 @@
+export interface UserRole{
+  id?: number,
+  name: string,
+  authority: string
+}
+
 export interface User{
     id?: number,
     email: string,
@@ -7,5 +13,6 @@ export interface User{
     country: string,
     phoneNumber: string,
     profession: string,
-    companyInformation: string
+    companyInformation: string,
+    roles?: UserRole[]
 }

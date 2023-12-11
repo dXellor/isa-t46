@@ -1,6 +1,56 @@
+.styled-form {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.mat-horizontal-stepper-header {
+    padding: 10px;
+    background-color: #3f51b5;
+    color: white;
+}
+
 .formHolder {
-    width: 20%;
     display: flex;
     flex-direction: column;
-    border: 1px solid green;
+    gap: 10px;
 }
+
+.field{
+    width:30%;
+    margin:auto;
+}
+.next-btn{
+    border-radius: 10px;
+    width: 20%;
+    margin:auto;
+}
+
+.next-btn:enabled{
+    background-color: #ffb0d9;
+}
+
+.prev-btn{
+    border-radius: 10px;
+    width: 20%;
+    margin:auto;
+    background-color: #b0cfff;
+}
+.register-btn{
+    border-radius: 10px;
+    width: 20%;
+    margin:auto;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    margin:auto;
+    gap: 10px;
+    width:100%;
+}
+.message{
+    width:50%;
+    margin:auto;
+}
+
