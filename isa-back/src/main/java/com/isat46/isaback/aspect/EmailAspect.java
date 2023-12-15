@@ -93,7 +93,7 @@ public class EmailAspect {
             message.setContent(multipart);
             messageHelper.setTo("nikola7simic@gmail.com");
             messageHelper.setFrom("${spring.mail.username}");
-            messageHelper.setSubject("Verify your email address");
+            messageHelper.setSubject("Reservation confirmation");
             javaMailSender.send(message);
 
             FileSystemUtils.deleteFile(QRCodeUtils.QR_CODE_IMAGE_PATH + "qrcodeid.png");
