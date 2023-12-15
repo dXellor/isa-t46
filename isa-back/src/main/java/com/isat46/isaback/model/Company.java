@@ -31,6 +31,7 @@ public class Company {
     @Column(name = "average_rating", nullable = false)
     private double averageRating;
 
+    //Deprecated
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "company_equipment",
