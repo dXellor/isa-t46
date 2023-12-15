@@ -25,6 +25,10 @@ public class Reservation {
     @JoinColumn(name = "admin_id")
     private User companyAdmin;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     @Column(name = "note")
     private String note;
 

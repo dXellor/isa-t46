@@ -36,5 +36,5 @@ INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (2, 3);
 INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (2, 5);
 
 -- predefined appointments
-INSERT INTO isadb."reservation" (date_time, duration, status, admin_id) VALUES ('2023-12-15 11:29:20.376', 15, 0, 3)
-INSERT INTO isadb."reservation" (date_time, duration, status, admin_id) VALUES ('2023-12-10 12:00:00.0', 20, 0, 3)
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-15 11:29:20.376', 15, 0, 3, 1)
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-10 12:00:00.0', 20, 0, 3, 1)

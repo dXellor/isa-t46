@@ -1,6 +1,7 @@
 package com.isat46.isaback.dto.reservation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.isat46.isaback.dto.company.CompanyInfoDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import com.sun.istack.NotNull;
@@ -24,6 +25,9 @@ public class ReservationDto {
 
     @JsonProperty("companyAdmin")
     private UserDto companyAdmin;
+
+    @JsonProperty("company")
+    private CompanyInfoDto company;
 
     @JsonProperty("note")
     private String note;

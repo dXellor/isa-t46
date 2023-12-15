@@ -1,5 +1,7 @@
 package com.isat46.isaback.util;
 
+import com.isat46.isaback.dto.reservation.ReservationDto;
+
 public class ReservationUtils {
 
     public static String emailTemplate = """
@@ -12,4 +14,35 @@ public class ReservationUtils {
                 </body>
             </html>
             """;
+
+    private static String reservationInformationTemplate = """
+            Reservation Id: %d
+            
+            --COMPANY INFORMATION--
+            Name: %s
+            Description: %s
+            Address: %s
+            
+            --RESERVATION INFORMATION--
+            Company admin in charge of reservation: %s %s
+            Employee: %s %s
+            Date and time: %s
+            Duration: %d minutes
+            Note: %s
+            """;
+
+    public static String getReservationInformation(ReservationDto reservationDto){
+        return String.format(reservationInformationTemplate,
+                reservationDto.getId(),
+                reservationDto.getCompany().getName(),
+                reservationDto.getCompany().getDescription(),
+                reservationDto.getCompany().getAddress().toString(),
+                reservationDto.getCompanyAdmin().getFirstName(),
+                reservationDto.getCompanyAdmin().getLastName(),
+                reservationDto.getEmployee().getFirstName(),
+                reservationDto.getEmployee().getLastName(),
+                reservationDto.getDateTime().toString(),
+                reservationDto.getDuration(),
+                reservationDto.getNote().isEmpty() ? "/" : reservationDto.getNote());
+    }
 }

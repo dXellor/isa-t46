@@ -1,5 +1,6 @@
 package com.isat46.isaback.aspect;
 
+import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.model.VerificationToken;
 import com.isat46.isaback.repository.VerificationTokenRepository;
@@ -63,14 +64,14 @@ public class EmailAspect {
     }
 
     @Async
-    @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.UserService.findByEmail(..))", returning = "result")
+    @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.ReservationService.updateReservation(..))", returning = "result")
     public void sendReservationConfirmationEmail(JoinPoint joinPoint, Object result){
-        //Result will be reservation when its implemented
-        UserDto user = ((UserDto) result);
-        LOGGER.info("Sending reservation confirmation email to " + user.getEmail());
+        ReservationDto reservationDto = ((ReservationDto) result);
+        UserDto employee = reservationDto.getEmployee();
+        LOGGER.info("Sending reservation confirmation email to " + employee.getEmail());
 
         try {
-            QRCodeUtils.generateReservationQRCodeImage("wow, this is epic", 500, 500, "qrcodeid.png");
+            QRCodeUtils.generateReservationQRCodeImage(ReservationUtils.getReservationInformation(reservationDto), 500, 500, "qrcodeid.png");
         }catch (Exception e){
             LOGGER.error("QR code error: " + e.toString());
         }
@@ -80,7 +81,7 @@ public class EmailAspect {
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, "utf-8");
         try {
             MimeBodyPart messageBodyContent = new MimeBodyPart();
-            messageBodyContent.setContent(String.format(ReservationUtils.emailTemplate, user.getFirstName(), user.getLastName()),"text/html");
+            messageBodyContent.setContent(String.format(ReservationUtils.emailTemplate, employee.getFirstName(), employee.getLastName()),"text/html");
             multipart.addBodyPart(messageBodyContent);
 
             MimeBodyPart messageAttachment = new MimeBodyPart();
