@@ -16,6 +16,16 @@ INSERT INTO isadb."address" (city, country, street, zip_code) VALUES ('Novi Sad'
 
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Gaming INC', 'Gaming company', 4.5, 1);
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Actual Medical Facility', 'Gaming not allowed', 5, 2);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('MediTech Solutions', 'Leading provider of medical technology', 4.5, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('HealthBridge Pharmaceuticals', 'Specializes in the development and manufacture of pharmaceuticals', 4.7, 2);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('LifeCare Hospitals', 'Network of hospitals providing high-quality healthcare', 4.6, 3);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Vitalis Diagnostics', 'Provider of diagnostic services and medical imaging', 4.8, 4);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('BioHeal Laboratories', 'Biotechnology company focused on the development of new medical treatments', 4.9, 5);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('TheraMed Therapeutics', 'Develops and markets a wide range of therapeutic products', 4.4, 6);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('ProLife Clinics', 'Network of clinics providing a variety of healthcare services', 4.3, 7);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('GenomeGen Biotech', 'Specializes in genetic testing and personalized medicine', 4.7, 8);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('NeuroSphere Neurology', 'Provides comprehensive neurological services', 4.5, 9);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('CardioPure Heart Centers', 'Specializes in cardiovascular health', 4.6, 10);
 
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Playstation 5', 'Console', 'Playstation 5', 500);
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Xbox Series X', 'Console', 'Xbox Series X', 500);

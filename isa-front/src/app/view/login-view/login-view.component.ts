@@ -5,6 +5,7 @@ import { LoginRequest } from 'src/app/model/auth/login-request.model';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
 import {MessageService} from "primeng/api";
+import { roleRoutes } from "../../model/user.model";
 
 @Component({
   selector: 'app-login-view',
@@ -15,6 +16,7 @@ import {MessageService} from "primeng/api";
 export class LoginViewComponent {
 
   public loginForm: FormGroup;
+
 
   constructor(private fb: FormBuilder, private authService: AuthService, private userService: UserService, private router: Router, private messageService: MessageService){
     this.loginForm = this.fb.group({
@@ -34,7 +36,8 @@ export class LoginViewComponent {
         this.userService.setLoggedInUser();
         this.messageService.add({severity:'success', summary:'Successfully signed in'});
         setTimeout(() =>{
-          this.router.navigate(['/']);
+          const userRole = this.userService.getCurrentUser().roles[0].name;
+          this.router.navigate([roleRoutes[userRole]]);
         }, 1000);
       },
 

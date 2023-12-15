@@ -32,6 +32,9 @@ import { MessageModule} from "primeng/message";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MessagesModule} from "primeng/messages";
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { UserHomeViewComponent } from './view/user-home-view/user-home-view.component';
+import { CompanyCardComponent } from './component/company-card/company-card.component';
+import { UserCompanyProfileViewComponent } from './view/user-company-profile-view/user-company-profile-view.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,9 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     CompanyProfileViewComponent,
     EquipmentCollectionViewComponent,
     MapComponent,
+    UserHomeViewComponent,
+    CompanyCardComponent,
+    UserCompanyProfileViewComponent,
   ],
     imports: [
         BrowserModule,
