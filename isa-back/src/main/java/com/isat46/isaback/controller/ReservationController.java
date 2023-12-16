@@ -1,8 +1,6 @@
 package com.isat46.isaback.controller;
 
 import com.isat46.isaback.dto.reservation.ReservationDto;
-import com.isat46.isaback.dto.user.UserDto;
-import com.isat46.isaback.dto.user.UserRegistrationDto;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

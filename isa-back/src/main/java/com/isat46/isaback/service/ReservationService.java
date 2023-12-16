@@ -41,7 +41,7 @@ public class ReservationService {
 
         reservationDto.setCompanyAdmin(admin);
         reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
-        reservationDto.setStatus("PENDING");
+        reservationDto.setStatus("APPOINTMENT");
         Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
@@ -52,6 +52,7 @@ public class ReservationService {
             return null;
 
         reservationDto.setEmployee(employee);
+        reservationDto.setStatus("PENDING");
         Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
