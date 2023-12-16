@@ -1,5 +1,6 @@
 package com.isat46.isaback.controller;
 
+import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,17 +40,16 @@ public class ReservationController {
         return new ResponseEntity<>(reservationsPage, HttpStatus.OK);
     }
 
-    @Operation(summary = "creates new reservation (company admin only)", description = "creates new reservation (company admin only)")
+    @Operation(summary = "creates new appointment (company admin only)", description = "creates new appointment (company admin only)")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "reservation created successfully",
-                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = ReservationDto.class)) }),
+            @ApiResponse(responseCode = "201", description = "appointment created successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentCreationDto.class)) }),
             @ApiResponse(responseCode = "400", description = "bad request")
     })
     @PreAuthorize("hasRole('COMPADMIN')")
     @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReservationDto> createNewReservation(@Parameter(required = true) @Valid @RequestBody ReservationDto reservationDto,
-                                                               Principal user){
-        ReservationDto newReservation = reservationService.createNewReservation(reservationDto, user.getName());
+    public ResponseEntity<ReservationDto> createNewAppointment(@Parameter(required = true) @Valid @RequestBody AppointmentCreationDto appointmentCreationDto){
+        ReservationDto newReservation = reservationService.createNewAppointment(appointmentCreationDto);
         if(newReservation != null)
             return new ResponseEntity<>(newReservation, HttpStatus.CREATED);
         else{

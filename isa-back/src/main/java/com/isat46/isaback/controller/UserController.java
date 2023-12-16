@@ -66,7 +66,7 @@ public class UserController {
     @PostMapping(consumes = "application/json")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
 
-        User user = userService.findOne(userDto.getId());
+        UserDto user = userService.findOne(userDto.getId());
 
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -81,7 +81,7 @@ public class UserController {
         user.setProfession(userDto.getProfession());
         user.setCompanyInformation(userDto.getCompanyInformation());
 
-        user = userService.update(user);
-        return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
+        UserDto updatedUser = userService.update(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 }

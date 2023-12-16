@@ -1,5 +1,6 @@
 package com.isat46.isaback.mappers;
 
+import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.model.Reservation;
 import org.modelmapper.ModelMapper;
@@ -22,5 +23,12 @@ public class ReservationMapper {
 
     public static Reservation ReservationDtoToReservation(ReservationDto reservationDto){
         return modelMapper.map(reservationDto, Reservation.class);
+    }
+
+    public static ReservationDto AppointmentCreationDtoToReservationDto(AppointmentCreationDto appointmentCreationDto){
+        ReservationDto reservationDto = new ReservationDto();
+        reservationDto.setDateTime(appointmentCreationDto.getDateTime());
+        reservationDto.setDuration(appointmentCreationDto.getDuration());
+        return reservationDto;
     }
 }

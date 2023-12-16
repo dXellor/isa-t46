@@ -2,6 +2,7 @@ package com.isat46.isaback.service;
 
 import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.company.CompanyInfoDto;
+import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.mappers.CompanyMapper;
@@ -30,8 +31,8 @@ public class ReservationService {
         return reservationRepository.findAll(page).map(ReservationMapper::ReservationToReservationDto);
     }
 
-    public ReservationDto createNewReservation(ReservationDto reservationDto, String adminEmail){
-        UserDto admin = userService.findByEmail(adminEmail);
+    public ReservationDto createNewAppointment(AppointmentCreationDto appointmentCreationDto){
+        UserDto admin = userService.findOne(appointmentCreationDto.getCompanyAdminId());
         if(admin == null)
             return null;
 
@@ -39,6 +40,7 @@ public class ReservationService {
         if(company == null)
             return null;
 
+        ReservationDto reservationDto = ReservationMapper.AppointmentCreationDtoToReservationDto(appointmentCreationDto);
         reservationDto.setCompanyAdmin(admin);
         reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
         reservationDto.setStatus("APPOINTMENT");
