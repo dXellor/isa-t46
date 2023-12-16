@@ -3,6 +3,7 @@ package com.isat46.isaback.service;
 import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.company.CompanyInfoDto;
 import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
+import com.isat46.isaback.dto.reservation.ReservationCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.mappers.CompanyMapper;
@@ -27,6 +28,12 @@ public class ReservationService {
     @Autowired
     CompanyService companyService;
 
+    @Autowired
+    InventoryService inventoryService;
+
+    @Autowired
+    ReservationItemService reservationItemService;
+
     public Page<ReservationDto> findAllPaged(Pageable page){
         return reservationRepository.findAll(page).map(ReservationMapper::ReservationToReservationDto);
     }
@@ -48,14 +55,25 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
 
-    public ReservationDto updateReservation(ReservationDto reservationDto, String employeeEmail){
+    public ReservationDto createReservationWithPredefinedAppointment(ReservationCreationDto reservationCreationDto, String employeeEmail){
         UserDto employee = userService.findByEmail(employeeEmail);
         if(employee == null)
             return null;
 
+        ReservationDto reservationDto = ReservationMapper.ReservationToReservationDto(reservationRepository.findById(reservationCreationDto.getReservationId()).orElseGet(null));
+        if(reservationDto == null)
+            //Predefined appointment does not exist
+            return null;
+
+        if(!inventoryService.areReservationItemsInStock(reservationCreationDto.getReservationItems()))
+            //Items are not in stock
+            return null;
+
         reservationDto.setEmployee(employee);
         reservationDto.setStatus("PENDING");
+        reservationDto.setNote(reservationCreationDto.getNote());
         Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+        reservationItemService.addReservationItems(reservationCreationDto.getReservationItems(), reservation);
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
 }

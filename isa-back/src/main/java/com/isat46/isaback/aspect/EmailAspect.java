@@ -68,7 +68,7 @@ public class EmailAspect {
     }
 
     @Async
-    @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.ReservationService.updateReservation(..))", returning = "result")
+    @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.ReservationService.createReservationWithPredefinedAppointment(..))", returning = "result")
     public void sendReservationConfirmationEmail(JoinPoint joinPoint, Object result){
         ReservationDto reservationDto = ((ReservationDto) result);
         UserDto employee = reservationDto.getEmployee();

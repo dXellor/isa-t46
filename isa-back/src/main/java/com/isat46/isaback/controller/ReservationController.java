@@ -1,6 +1,7 @@
 package com.isat46.isaback.controller;
 
 import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
+import com.isat46.isaback.dto.reservation.ReservationCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -57,7 +58,7 @@ public class ReservationController {
         }
     }
 
-    @Operation(summary = "updates reservation with items (employee only)", description = "updates reservation with items (employee only)")
+    @Operation(summary = "creates reservation with items (employee only, predefined appointment)", description = "creates reservation with items (employee only, predefined appointment)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "reservation updated successfully",
                     content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = ReservationDto.class)) }),
@@ -65,9 +66,9 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('USER')")
     @PutMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReservationDto> updateReservation(@Parameter(required = true) @Valid @RequestBody ReservationDto reservationDto,
+    public ResponseEntity<ReservationDto> createReservationWithPredefinedAppointment(@Parameter(required = true) @Valid @RequestBody ReservationCreationDto reservationCreationDto,
                                                                Principal user){
-        ReservationDto newReservation = reservationService.updateReservation(reservationDto, user.getName());
+        ReservationDto newReservation = reservationService.createReservationWithPredefinedAppointment(reservationCreationDto, user.getName());
         if(newReservation != null)
             return new ResponseEntity<>(newReservation, HttpStatus.OK);
         else{
