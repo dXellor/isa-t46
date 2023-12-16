@@ -4,6 +4,7 @@ import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.model.VerificationToken;
 import com.isat46.isaback.repository.VerificationTokenRepository;
+import com.isat46.isaback.service.ReservationItemService;
 import com.isat46.isaback.util.FileSystemUtils;
 import com.isat46.isaback.util.QRCodeUtils;
 import com.isat46.isaback.util.ReservationUtils;
@@ -38,6 +39,9 @@ public class EmailAspect {
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
+    @Autowired
+    private ReservationItemService reservationItemService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailAspect.class);
 
     private final String url = "http://localhost:4200/verify/";
@@ -68,10 +72,15 @@ public class EmailAspect {
     public void sendReservationConfirmationEmail(JoinPoint joinPoint, Object result){
         ReservationDto reservationDto = ((ReservationDto) result);
         UserDto employee = reservationDto.getEmployee();
-        LOGGER.info("Sending reservation confirmation email to " + employee.getEmail());
+        /*
+         *  SET EMAIL TO YOUR EMAIL WHEN DEBUGING
+         */
+        String emailTo = employee.getEmail();
+
+        LOGGER.info("Sending reservation confirmation email to " + emailTo);
 
         try {
-            QRCodeUtils.generateReservationQRCodeImage(ReservationUtils.getReservationInformation(reservationDto), 500, 500, "qrcodeid.png");
+            QRCodeUtils.generateReservationQRCodeImage(ReservationUtils.getReservationInformation(reservationDto, reservationItemService.findReservationItemsByReservationId(3)), 500, 500, "qrcodeid.png");
         }catch (Exception e){
             LOGGER.error("QR code error: " + e.toString());
         }
@@ -91,7 +100,7 @@ public class EmailAspect {
             multipart.addBodyPart(messageAttachment);
 
             message.setContent(multipart);
-            messageHelper.setTo("nikola7simic@gmail.com");
+            messageHelper.setTo(emailTo);
             messageHelper.setFrom("${spring.mail.username}");
             messageHelper.setSubject("Reservation confirmation");
             javaMailSender.send(message);

@@ -25,4 +25,8 @@ public class ReservationItemDto {
     @NotBlank
     @JsonProperty("count")
     private int count;
+
+    public String toInformationString(){
+        return inventoryItem.getEquipment().getName() + " | " + count + " | " + inventoryItem.getEquipment().getPrice() * count + "$";
+    }
 }

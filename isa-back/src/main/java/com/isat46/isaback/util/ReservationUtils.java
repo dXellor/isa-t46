@@ -1,6 +1,9 @@
 package com.isat46.isaback.util;
 
 import com.isat46.isaback.dto.reservation.ReservationDto;
+import com.isat46.isaback.dto.reservation.ReservationItemDto;
+
+import java.util.List;
 
 public class ReservationUtils {
 
@@ -29,9 +32,15 @@ public class ReservationUtils {
             Date and time: %s
             Duration: %d minutes
             Note: %s
+            
+            --RESERVATION ITEMS--
+            Item | Count | Price
+            %s
             """;
 
-    public static String getReservationInformation(ReservationDto reservationDto){
+    public static String getReservationInformation(ReservationDto reservationDto, List<ReservationItemDto> reservationItems){
+
+
         return String.format(reservationInformationTemplate,
                 reservationDto.getId(),
                 reservationDto.getCompany().getName(),
@@ -43,6 +52,21 @@ public class ReservationUtils {
                 reservationDto.getEmployee().getLastName(),
                 reservationDto.getDateTime().toString(),
                 reservationDto.getDuration(),
-                reservationDto.getNote().isEmpty() ? "/" : reservationDto.getNote());
+                reservationDto.getNote().isEmpty() ? "/" : reservationDto.getNote(),
+                getReservationItemsInformation(reservationItems));
+    }
+
+    private static String getReservationItemsInformation(List<ReservationItemDto> reservationItems){
+        StringBuilder sb = new StringBuilder();
+        double totalPrice = 0;
+
+        for(ReservationItemDto item : reservationItems){
+            sb.append(item.toInformationString());
+            sb.append("\n");
+            totalPrice += item.getInventoryItem().getEquipment().getPrice() * item.getCount();
+        }
+
+        sb.append(String.format("Total price: %.2f $", totalPrice));
+        return sb.toString();
     }
 }
