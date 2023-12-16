@@ -1,6 +1,7 @@
 package com.isat46.isaback.mappers;
 
 import com.isat46.isaback.dto.company.CompanyDto;
+import com.isat46.isaback.dto.company.CompanyInfoDto;
 import com.isat46.isaback.dto.company.CompanyRegistrationDto;
 import com.isat46.isaback.model.Company;
 import org.modelmapper.ModelMapper;
@@ -35,5 +36,9 @@ public class CompanyMapper {
 
     public static Company CompanyRegistrationDtoToCompany(CompanyRegistrationDto companyRegistrationDto){
         return modelMapper.map(companyRegistrationDto, Company.class);
+    }
+
+    public static CompanyInfoDto CompanyDtoToCompanyInfoDto(CompanyDto companyDto){
+        return modelMapper.map(companyDto, CompanyInfoDto.class);
     }
 }

@@ -53,9 +53,6 @@ public class UserDto {
     @JsonProperty("companyInformation")
     private String companyInformation;
 
-    @JsonProperty("roles")
-    private List<Role> roles;
-
     public UserDto(){}
     public UserDto(User user){
         this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getCity(), user.getCountry(),

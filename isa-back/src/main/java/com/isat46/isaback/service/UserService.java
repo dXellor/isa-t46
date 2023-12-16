@@ -29,10 +29,11 @@ public class UserService {
         return UserMapper.UserToUserDto(newUser);
     }
 
-    public User update(User user){
-        return userRepository.save(user);
+    public UserDto update(UserDto user){
+        return UserMapper.UserToUserDto(userRepository.save(UserMapper.UserDtoToUser(user)));
     }
-    public User findOne(int id) {
-        return userRepository.findById(id).orElseGet(null);
+
+    public UserDto findOne(int id) {
+        return UserMapper.UserToUserDto(userRepository.findById(id).orElseGet(null));
     }
 }

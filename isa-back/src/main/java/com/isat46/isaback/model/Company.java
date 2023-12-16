@@ -31,14 +31,15 @@ public class Company {
     @Column(name = "average_rating", nullable = false)
     private double averageRating;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    //Deprecated
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "company_equipment",
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
     private List<Equipment> equipment;
 
-    @OneToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "company_admin",
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
