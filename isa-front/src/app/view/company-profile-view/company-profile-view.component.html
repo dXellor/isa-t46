@@ -6,16 +6,18 @@
                 <div *ngFor="let controlName of ['name', 'description', 'averageRating']">
                     <mat-form-field appearance="fill">
                         <mat-label>{{ controlName }}</mat-label>
-                        <input matInput [formControlName]="controlName" [readonly]="!editMode || isRatingField(controlName)">
+                        <input matInput [formControlName]="controlName"
+                            [readonly]="!editMode || isRatingField(controlName)" placeholder="rating">
                     </mat-form-field>
                 </div>
                 <div formArrayName="equipment">
                     <div *ngFor="let equipment of companyForm.get('equipment').value; let i = index">
                         <mat-form-field appearance="fill">
                             <mat-label>Equipment {{ i + 1 }}</mat-label>
-                            <input matInput [value]="equipment.name" readonly="">
+                            <input matInput [value]="equipment.name" readonly="" placeholder="equipment">
                         </mat-form-field>
-                        <button mat-icon-button color="warn" (click)="removeEquipment(i)" *ngIf="editMode">
+                        <button mat-icon-button color="warn" (click)="removeEquipment(i)" *ngIf="editMode"
+                            type="button">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </div>
@@ -39,7 +41,8 @@
                     <div *ngFor="let controlName of ['street', 'city', 'country', 'zipCode']">
                         <mat-form-field appearance="fill">
                             <mat-label>{{ controlName }}</mat-label>
-                            <input matInput [formControlName]="controlName" [readonly]="!editMode">
+                            <input matInput [formControlName]="controlName" [readonly]="!editMode"
+                                placeholder="zipCode">
                             <mat-error *ngIf="companyForm.get('address').get(controlName).hasError('required')">
                                 {{ controlName }} is required.
                             </mat-error>
@@ -51,11 +54,11 @@
                 </div>
             </form>
         </div>
-        <app-map [address]="company.address" style="width: 100%; height: 100%;"></app-map>
+        <app-map [address]="company.address" *ngIf="company?.address"></app-map>
     </div>
 
     <!-- Admins section -->
-    <div fxFlex="33">
+    <div fxFlex="33" *ngIf="company?.admins">
         <h2>Company Admins</h2>
         <div *ngFor="let admin of this.company.admins; let i = index">
             <mat-card class="admin-card">

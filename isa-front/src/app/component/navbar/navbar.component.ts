@@ -1,6 +1,6 @@
-import {Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild} from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import {User, UserRole} from 'src/app/model/user.model';
+import { User, UserRole } from 'src/app/model/user.model';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -8,13 +8,13 @@ import { UserService } from 'src/app/service/user.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit{
-  @ViewChild('overlayContainer',  { static: false })  overlayContainer: ElementRef | undefined;
+export class NavbarComponent implements OnInit {
+  @ViewChild('overlayContainer', { static: false }) overlayContainer: ElementRef | undefined;
 
   public currentUser: User = null;
   isOverlayOpen: boolean = false;
 
-  constructor(private userService: UserService, private router: Router, private rendered: Renderer2){}
+  constructor(private userService: UserService, private router: Router, private rendered: Renderer2) { }
 
   @HostListener('document:click', ['$event'])
   handleClick(event: Event) {
@@ -23,22 +23,22 @@ export class NavbarComponent implements OnInit{
     }
   }
 
-  ngOnInit(): void{
+  ngOnInit(): void {
     this.userService.setLoggedInUser();
     this.userService.loggedInUserTrigger.subscribe(user => {
       this.currentUser = user;
     });
   }
 
-  logOut(): void{
+  logOut(): void {
     window.localStorage.removeItem('jwt');
     this.userService.setLoggedInUser();
     this.router.navigate(['/']);
   }
 
-  hasRole(selectedRole: string): boolean{
-    for(let role of this.currentUser.roles){
-      if(role.name === selectedRole)
+  hasRole(selectedRole: string): boolean {
+    for (let role of this.currentUser.roles) {
+      if (role.name === selectedRole)
         return true;
     }
     return false;

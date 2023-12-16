@@ -7,3 +7,8 @@
     color: #333;
     /* Dark text color */
 }
+
+app-map {
+    width: 100%;
+    height: 100%;
+}

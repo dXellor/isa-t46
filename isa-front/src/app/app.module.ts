@@ -26,15 +26,18 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
 import { MapComponent } from './component/map/map.component';
-import {NgOptimizedImage} from "@angular/common";
-import { ToastModule} from "primeng/toast";
-import { MessageModule} from "primeng/message";
-import {MatStepperModule} from "@angular/material/stepper";
-import {MessagesModule} from "primeng/messages";
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { NgOptimizedImage } from "@angular/common";
+import { ToastModule } from "primeng/toast";
+import { MessageModule } from "primeng/message";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MessagesModule } from "primeng/messages";
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { UserHomeViewComponent } from './view/user-home-view/user-home-view.component';
 import { CompanyCardComponent } from './component/company-card/company-card.component';
-import { UserCompanyProfileViewComponent } from './view/user-company-profile-view/user-company-profile-view.component';
+import { CompanyInfoViewComponent } from './view/company-info-view/company-info-view.component';
+import { EquipmentSelectorComponent } from './component/equipment-selector/equipment-selector.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { UserAppointmentFormComponent } from './component/user-appointment-form/user-appointment-form.component';
 
 @NgModule({
   declarations: [
@@ -53,29 +56,32 @@ import { UserCompanyProfileViewComponent } from './view/user-company-profile-vie
     MapComponent,
     UserHomeViewComponent,
     CompanyCardComponent,
-    UserCompanyProfileViewComponent,
+    CompanyInfoViewComponent,
+    EquipmentSelectorComponent,
+    UserAppointmentFormComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatButtonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        MatCardModule,
-        FlexLayoutModule,
-        NgOptimizedImage,
-        ToastModule,
-        MessageModule,
-        MatStepperModule,
-        MessagesModule,
-        MatSidenavModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatCardModule,
+    FlexLayoutModule,
+    NgOptimizedImage,
+    ToastModule,
+    MessageModule,
+    MatStepperModule,
+    MessagesModule,
+    MatSidenavModule,
+    MatDialogModule
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

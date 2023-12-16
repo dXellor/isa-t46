@@ -1,0 +1,7 @@
+<div class="container">
+  <div class="companies">
+    <div class="card-div" *ngFor="let company of companies">
+      <app-company-card [company]="company" (click)="showCompanyProfile(company)"></app-company-card>
+    </div>
+  </div>
+</div>

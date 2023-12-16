@@ -1,17 +1,18 @@
 .navbar {
-    background-color: #A7C7E7;;
-    padding: 0.5rem;
-    display: flex;
-    height: 5vh;
-    align-items: center;
+  background-color: #A7C7E7;
+  ;
+  padding: 0.5rem;
+  display: flex;
+  height: 5vh;
+  align-items: center;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .navbar-items {
-    display: flex;
-    width: 90%;
-    flex-direction: row-reverse;
-    align-items: center;
+  display: flex;
+  width: 90%;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 
@@ -25,7 +26,7 @@
   color: black;
   transition: right 0.3s ease-out;
   z-index: 999;
-  border-radius:10px;
+  border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -58,6 +59,7 @@
 .user-info {
   margin-left: 10px;
 }
+
 .user-info p {
   margin: 0;
   padding: 0;
@@ -67,42 +69,53 @@
   display: inline-block;
   width: 95%;
   margin-bottom: 5px;
-  background-color: white!important;
-  text-align:left;
+  background-color: white !important;
+  text-align: left;
   font-family: Ubuntu, serif
 }
 
 .btn:hover {
   background-color: #fafafa !important;
-  text-decoration:none;
+  text-decoration: none;
 }
 
-.navbar-icon{
-  width:45px;
-  height:45px;
+.navbar-icon {
+  width: 45px;
+  height: 45px;
 }
 
-.menu-icon{
-  width:30px;
-  height:30px;
+.menu-icon {
+  width: 30px;
+  height: 30px;
 }
 
-.nav-btn{
-  width:15%;
-  margin-left:20px;
+.nav-btn {
+  width: 15%;
+  margin-left: 20px;
+  box-shadow: inset 0 0 0 0 #f9c9e2;
+  transition: ease-out 0.9s;
+  outline: none;
+  color: white;
+  background-color: #304674;
+  border: none;
+  border-radius: 5px;
 }
 
-.app-name{
-  width:100%;
+.nav-btn:hover {
+  box-shadow: inset 300px 0 0 0 #f9c9e2;
+}
+
+.app-name {
+  width: 100%;
   font-family: Ubuntu, serif
 }
 
-.app-name:hover{
+.app-name:hover {
   color: #e599c2;
   cursor: default;
 }
 
-.navbar-picture{
+.navbar-picture {
   border-radius: 50%;
   width: 30px;
   height: 30px;

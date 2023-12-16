@@ -31,7 +31,7 @@ export class EquipmentCollectionViewComponent {
   }
 
   ngOnInit(): void {
-      this.getAllEquipment();
+    this.getAllEquipment();
   }
 
   getAllEquipment(): void {
@@ -61,7 +61,7 @@ export class EquipmentCollectionViewComponent {
   }
 
   extractTypes(): void {
-    this.possibleTypes = [...new Set( this.equipment.map(e => e.type)) ];
+    this.possibleTypes = [...new Set(this.equipment.map(e => e.type))];
     console.log("POSSIBLE");
     console.log(this.possibleTypes);
   }

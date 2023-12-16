@@ -9,7 +9,8 @@ import { UserEditComponent } from './view/user-edit/user-edit.component';
 import { authGuard } from './guards/auth.guard';
 import { CompanyProfileViewComponent } from './view/company-profile-view/company-profile-view.component';
 import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
-import {UserHomeViewComponent} from "./view/user-home-view/user-home-view.component";
+import { UserHomeViewComponent } from "./view/user-home-view/user-home-view.component";
+import { CompanyInfoViewComponent } from "./view/company-info-view/company-info-view.component";
 
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'user-edit', component: UserEditComponent, canActivate: [authGuard] },
   { path: 'company-profile', component: CompanyProfileViewComponent, canActivate: [authGuard] },
   { path: 'equipment-collection', component: EquipmentCollectionViewComponent, },
-  { path: 'user-home', component: UserHomeViewComponent}
+  { path: 'user-home', component: UserHomeViewComponent },
+  { path: 'company-info', component: CompanyInfoViewComponent }
 ];
 
 @NgModule({

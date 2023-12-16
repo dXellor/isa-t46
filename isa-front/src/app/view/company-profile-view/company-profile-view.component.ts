@@ -19,12 +19,12 @@ export class CompanyProfileViewComponent implements OnInit {
   constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe(user => {
+    this.userService.setLoggedInUser();
+    this.userService.loggedInUserTrigger.subscribe(user => {
       this.user = user;
     });
-    this.companyService.getCompanyByAdminId(3).subscribe(company => {
+    this.companyService.getCompanyByAdminId(this.user.id).subscribe(company => {
       this.company = company;
-      console.log(company);
       this.companyForm = this.formBuilder.group({
         id: [this.company.id],
         name: [this.company.name, Validators.required],
@@ -55,7 +55,6 @@ export class CompanyProfileViewComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.companyForm.value);
     if (this.companyForm.valid) {
       this.company = this.companyForm.value;
       this.toggleEditMode();

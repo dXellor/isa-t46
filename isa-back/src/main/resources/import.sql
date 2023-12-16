@@ -19,13 +19,24 @@ INSERT INTO isadb."company" (name, description, average_rating, address_id) VALU
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('MediTech Solutions', 'Leading provider of medical technology', 4.5, 1);
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('HealthBridge Pharmaceuticals', 'Specializes in the development and manufacture of pharmaceuticals', 4.7, 2);
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('LifeCare Hospitals', 'Network of hospitals providing high-quality healthcare', 4.6, 3);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Vitalis Diagnostics', 'Provider of diagnostic services and medical imaging', 4.8, 4);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('BioHeal Laboratories', 'Biotechnology company focused on the development of new medical treatments', 4.9, 5);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('TheraMed Therapeutics', 'Develops and markets a wide range of therapeutic products', 4.4, 6);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('ProLife Clinics', 'Network of clinics providing a variety of healthcare services', 4.3, 7);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('GenomeGen Biotech', 'Specializes in genetic testing and personalized medicine', 4.7, 8);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('NeuroSphere Neurology', 'Provides comprehensive neurological services', 4.5, 9);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('CardioPure Heart Centers', 'Specializes in cardiovascular health', 4.6, 10);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Vitalis Diagnostics', 'Provider of diagnostic services and medical imaging', 4.8, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('BioHeal Laboratories', 'Biotechnology company focused on the development of new medical treatments', 4.9, 2);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('TheraMed Therapeutics', 'Develops and markets a wide range of therapeutic products', 4.4, 3);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('ProLife Clinics', 'Network of clinics providing a variety of healthcare services', 4.3, 3);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('GenomeGen Biotech', 'Specializes in genetic testing and personalized medicine', 4.7, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('NeuroSphere Neurology', 'Provides comprehensive neurological services', 4.5, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('CardioPure Heart Centers', 'Specializes in cardiovascular health', 4.6, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Tech Giants', 'Leading provider of technology solutions', 4.5, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('HealthCare Plus', 'Specializes in healthcare services', 4.7, 2);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('EduTech Innovations', 'Leading provider of educational technology', 4.6, 3);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Green Energy Solutions', 'Provider of renewable energy solutions', 4.8, 3);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Foodie Restaurants', 'Network of restaurants providing high-quality food', 4.9, 3);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('AutoMoto Vehicles', 'Specializes in the development and manufacture of vehicles', 4.4, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Fashionista Clothing', 'Network of stores providing a variety of clothing items', 4.3, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('TravelWorld Agencies', 'Specializes in travel and tourism', 4.7, 2);
+
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('FitLife Gyms', 'Provides comprehensive fitness services', 4.5, 2);
+INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('HomeDecor Interiors', 'Specializes in interior design and decoration', 4.6, 1);
 
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Playstation 5', 'Console', 'Playstation 5', 500);
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Xbox Series X', 'Console', 'Xbox Series X', 500);
