@@ -80,6 +80,11 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
 
+    public List<ReservationDto> findByDay(int year, int month, int day)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByDay(year, month, day));
+    }
+
     public List<ReservationDto> findByWeek(int year, int month, int day)
     {
         return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByWeek(year, month, day));

@@ -77,7 +77,20 @@ public class ReservationController {
         }
     }
 
-    @Operation(summary = "returns reservations by week", description = "returns reservations by week - passed date is the first day of the week")
+    @Operation(summary = "returns reservations by day", description = "returns reservations by day")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentCreationDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/day/{year}/{month}/{day}")
+    public ResponseEntity<List<ReservationDto>> findByDay(@PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day){
+        List<ReservationDto> reservations = reservationService.findByDay(year, month, day);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "returns reservations by week", description = "returns reservations by week - passed date should be the first day of the week")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "reservations returned successfully",
                     content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentCreationDto.class)) }),

@@ -36,23 +36,24 @@ export class CompanyCalendarViewComponent {
     this.getByMonth();
   }
 
+  getByDay() {
+    this.events = [];
+    this.reservationService.getByDay(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, this.currentDate.getDate()).subscribe({
+      next: (response: Reservation[]) => {
+        if(!response) return;
+
+        this.loadEvents(response);
+      }
+    });
+  }
+
   getByWeek() {
     this.events = [];
-    console.log(this.currentDate);
     this.reservationService.getByWeek(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, this.currentDate.getDate()).subscribe({
       next: (response: Reservation[]) => {
         if(!response) return;
 
-        response.forEach((reservation) => {
-          let newEvent = 
-          {
-            start: new Date(reservation.dateTime),
-            end: addMinutes(new Date(reservation.dateTime), reservation.duration),
-            title: reservation.employee ? reservation.employee.firstName + " " + reservation.employee.lastName : "Anonymous",
-          }
-          this.events.push(newEvent);
-        })
-        this.refresh.next();
+        this.loadEvents(response);
       }
     });
   }
@@ -62,17 +63,8 @@ export class CompanyCalendarViewComponent {
     this.reservationService.getByMonth(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1).subscribe({
       next: (response: Reservation[]) => {
         if(!response) return;
-        response.forEach((reservation) => {
-          
-          let newEvent = 
-          {
-            start: new Date(reservation.dateTime),
-            end: addMinutes(new Date(reservation.dateTime), reservation.duration),
-            title: reservation.employee ? reservation.employee.firstName + " " + reservation.employee.lastName : "Anonymous",
-          }
-          this.events.push(newEvent);
-        })
-        this.refresh.next();
+
+        this.loadEvents(response);
       }
     });
   }
@@ -83,45 +75,46 @@ export class CompanyCalendarViewComponent {
       next: (response: Reservation[]) => {
         if(!response) return;
 
-        response.forEach((reservation) => {
-          let newEvent = 
-          {
-            start: new Date(reservation.dateTime),
-            end: addMinutes(new Date(reservation.dateTime), reservation.duration),
-            title: reservation.employee ? reservation.employee.firstName + " " + reservation.employee.lastName : "Anonymous",
-          }
-          this.events.push(newEvent);
-        })
-        this.refresh.next();
+        this.loadEvents(response);
       }
     });
   }
 
-  previousClicked() {
-    this.getDependingOnView(this.view);
+  loadEvents(reservations: Reservation[]) {
+    reservations.forEach((reservation) => {
+      let newEvent = 
+      {
+        start: new Date(reservation.dateTime),
+        end: addMinutes(new Date(reservation.dateTime), reservation.duration),
+        title: reservation.employee ? reservation.employee.firstName + " " + reservation.employee.lastName : "Anonymous",
+      }
+      this.events.push(newEvent);
+    })
+    this.refresh.next();
   }
 
-  todayClicked() {
-    this.getDependingOnView(this.view);
-  }
-
-  nextClicked() {
-    this.getDependingOnView(this.view);
+  calendarMoveClicked() {
+    this.getDependingOnView(this.yearView ? 'year' : this.view);
   }
 
   setView(view: CalendarView) {
     this.view = view;
+    this.yearView = false;
 
     this.getDependingOnView(view);
+  }
+
+  setYearlyView() {
+    this.yearView = true;
   }
 
   getDependingOnView(view: string) {
     switch(view)
     {
-      case 'year': this.getByMonth(); break;
+      case 'year': this.getByYear(); break;
       case 'month': this.getByMonth(); break;
       case 'week': this.getByWeek(); break;
-      //case 'day': this.getByDay(); break;
+      case 'day': this.getByDay(); break;
     }
   }
 }

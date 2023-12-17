@@ -12,6 +12,10 @@ export class ReservationService {
   private url = `${environment.apiUrl}/reservation`;
   constructor(private http: HttpClient) {}
 
+  getByDay(year: number, month: number, day: number): Observable<Reservation[]>{
+    return this.http.get<Reservation[]>(`${this.url}/day/${year}/${month}/${day}`);
+  }
+
   getByWeek(year: number, month: number, day: number): Observable<Reservation[]>{
     return this.http.get<Reservation[]>(`${this.url}/week/${year}/${month}/${day}`);
   }

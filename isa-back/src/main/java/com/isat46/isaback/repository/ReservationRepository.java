@@ -15,6 +15,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     Page<Reservation> findAll(Pageable pageable);
 
+    @Query("SELECT r FROM Reservation r WHERE EXTRACT(year FROM r.dateTime) = :year AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(day FROM r.dateTime) = :day")
+    List<Reservation> findByDay(@Param("year") int year, @Param("month") int month, @Param("day") int day);
+
     @Query("SELECT r FROM Reservation r WHERE EXTRACT(year FROM r.dateTime) = :year AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(day FROM r.dateTime) BETWEEN :day AND :day + 6")
     List<Reservation> findByWeek(@Param("year") int year, @Param("month") int month, @Param("day") int day);
 

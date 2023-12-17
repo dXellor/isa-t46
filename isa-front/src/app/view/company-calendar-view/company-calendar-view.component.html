@@ -8,7 +8,7 @@
             mwlCalendarPreviousView
             [view]="view"
             [(viewDate)]="currentDate"
-            (click)="previousClicked()"
+            (click)="calendarMoveClicked()"
           >
             Previous
           </button>
@@ -17,7 +17,7 @@
             mat-raised-button
             mwlCalendarToday
             [(viewDate)]="currentDate"
-            (click)="todayClicked()"
+            (click)="calendarMoveClicked()"
           >
             Today
           </button>
@@ -26,7 +26,7 @@
             mwlCalendarNextView
             [view]="view"
             [(viewDate)]="currentDate"
-            (click)="nextClicked()"
+            (click)="calendarMoveClicked()"
           >
             Next
           </button>
@@ -38,7 +38,13 @@
     <div>
         <div class="btn-group">
           <button
-          mat-raised-button
+            mat-raised-button
+            (click)="setYearlyView()"
+          >
+            Year
+          </button>
+          <button
+            mat-raised-button
             (click)="setView(CalendarView.Month)"
             [class.active]="view === CalendarView.Month"
           >
@@ -96,8 +102,8 @@
         </thead>
         <tbody>
             <tr *ngFor="let e of events">
-                <td>{{e.start}}</td>
-                <td>{{e.end}}</td>
+                <td>{{ e.start | date: "dd.MM.y hh:mm"}}</td>
+                <td>{{ e.end | date: "dd.MM.y hh:mm"}}</td>
                 <td>{{e.title}}</td>
             </tr>
         </tbody>
