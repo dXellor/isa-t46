@@ -37,7 +37,6 @@ export class NavbarComponent implements OnInit{
   }
 
   hasRole(selectedRole: string): boolean{
-    console.log(this.currentUser);
     for(let role of this.currentUser.roles){
       if(role.name === selectedRole)
         return true;

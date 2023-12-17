@@ -20,7 +20,7 @@ public class RoleDto {
     private String name;
 
     public RoleDto(){}
-    
+
     public RoleDto(Role role){
         this(role.getId(), role.getName());
     }

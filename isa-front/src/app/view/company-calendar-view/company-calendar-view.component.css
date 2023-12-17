@@ -1,0 +1,10 @@
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+}
+
+.calendar-header > div {
+    display: flex;
+    justify-content: center;
+}
