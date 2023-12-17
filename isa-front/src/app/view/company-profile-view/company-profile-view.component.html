@@ -66,4 +66,23 @@
             </mat-card>
         </div>
     </div>
+
+    <div>
+        <h2>Appointments section</h2>
+        <button mat-flat-button (click)="addAppointment()">Add appointment</button>
+        <form [formGroup]="appointmentForm">
+            <mat-form-field>
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="start" formControlName="dateTime">
+                <mat-datepicker-toggle matIconSuffix [for]="start"></mat-datepicker-toggle>
+                <mat-datepicker #start>
+                    <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Cancel</button>
+                        <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                    </mat-datepicker-actions>
+                </mat-datepicker>
+                <mat-hint>MM/DD/YYYY</mat-hint>
+            </mat-form-field>
+        </form>
+    </div>
 </div>

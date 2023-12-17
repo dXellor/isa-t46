@@ -4,6 +4,12 @@ import { Equipment } from 'src/app/model/equipment.model';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { UserAppointmentFormComponent } from '../user-appointment-form/user-appointment-form.component';
+import { ReservationService } from 'src/app/service/reservation/reservation.service';
+import { Reservation } from 'src/app/model/reservation/reservation.model';
+import { UserService } from 'src/app/service/user.service';
+import { User } from 'src/app/model/user.model';
+import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -23,16 +29,28 @@ import { UserAppointmentFormComponent } from '../user-appointment-form/user-appo
 })
 export class EquipmentSelectorComponent implements OnInit {
   selectedEquipment: Equipment[] = [];
-  predefinedAppointments: Equipment[] = [];
+  predefinedAppointments: Reservation[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public companyEquipment: Equipment[], private dialog: MatDialog) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public companyEquipment: Equipment[], private dialog: MatDialog, private reservationService: ReservationService, private userService: UserService) { }
 
   ngOnInit(): void {
-
+    this.reservationService.getAllPaged().subscribe(result => {
+      this.predefinedAppointments = result.content;
+    })
   }
 
   createNewAppointmentDate(): void {
     this.dialog.open(UserAppointmentFormComponent, { data: this.predefinedAppointments })
   }
 
+  formatAppointment(appointment: Reservation): string {
+    const dateTime = new Date(appointment.dateTime);
+    const date = `${dateTime.getDate()}.${dateTime.getMonth() + 1}.${dateTime.getFullYear()}`;
+    const time = `${dateTime.getHours()}:${String(dateTime.getMinutes()).padStart(2, '0')}`;
+    const duration = appointment.duration;
+    const firstName = appointment.companyAdmin.firstName;
+    const lastName = appointment.companyAdmin.lastName;
+
+    return `${date} - ${time} - ${duration} - ${firstName} - ${lastName}`;
+  }
 }

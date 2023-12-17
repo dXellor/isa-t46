@@ -1,7 +1,8 @@
 <div class="container">
     <p *ngFor="let equipment of companyEquipment">{{equipment.name}}</p>
     <mat-select placeholder="select date" class="predefined-dates">
-        <mat-option *ngFor="let equipment of companyEquipment" [value]="equipment">{{equipment.name}}</mat-option>
+        <mat-option *ngFor="let appointment of predefinedAppointments"
+            [value]="appointment">{{formatAppointment(appointment)}}</mat-option>
     </mat-select>
     <button mat-flat-button (click)="createNewAppointmentDate()" type="button">Create new appoinment</button>
 </div>

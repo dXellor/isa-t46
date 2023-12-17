@@ -38,6 +38,8 @@ import { CompanyInfoViewComponent } from './view/company-info-view/company-info-
 import { EquipmentSelectorComponent } from './component/equipment-selector/equipment-selector.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { UserAppointmentFormComponent } from './component/user-appointment-form/user-appointment-form.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,9 @@ import { UserAppointmentFormComponent } from './component/user-appointment-form/
     MatStepperModule,
     MessagesModule,
     MatSidenavModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
     {
