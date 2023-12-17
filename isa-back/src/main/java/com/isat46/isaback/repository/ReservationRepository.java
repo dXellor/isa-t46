@@ -26,4 +26,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r FROM Reservation r WHERE EXTRACT(year FROM r.dateTime) = :year")
     List<Reservation> findByYear(@Param("year") int year);
+
+    @Query("SELECT r FROM Reservation r WHERE r.companyAdmin.id = :companyAdminId AND (r.status = 0 OR r.status = 1)")
+    List<Reservation> findByCompanyAdminId(@Param("companyAdminId") int companyAdminId);
 }

@@ -3,6 +3,7 @@ package com.isat46.isaback.util;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.reservation.ReservationItemDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ReservationUtils {
@@ -68,5 +69,9 @@ public class ReservationUtils {
 
         sb.append(String.format("Total price: %.2f $", totalPrice));
         return sb.toString();
+    }
+
+    public static Boolean isDateTimeIntertwined(LocalDateTime start1, LocalDateTime end1, LocalDateTime start2, LocalDateTime end2){
+        return !(start1.isAfter(end2) || end1.isBefore(start2));
     }
 }

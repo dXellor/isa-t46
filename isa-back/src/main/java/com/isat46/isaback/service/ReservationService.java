@@ -1,14 +1,12 @@
 package com.isat46.isaback.service;
 
 import com.isat46.isaback.dto.company.CompanyDto;
-import com.isat46.isaback.dto.company.CompanyInfoDto;
 import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationCreationDto;
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.mappers.CompanyMapper;
 import com.isat46.isaback.mappers.ReservationMapper;
-import com.isat46.isaback.mappers.UserMapper;
 import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.isat46.isaback.mappers.ReservationMapper;
+import com.isat46.isaback.util.ReservationUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,6 +49,12 @@ public class ReservationService {
         CompanyDto company = companyService.findCompanyByAdminId(admin.getId());
         if(company == null)
             return null;
+
+        List<Reservation> adminReservations = reservationRepository.findByCompanyAdminId(appointmentCreationDto.getCompanyAdminId());
+        if(doesIntertwineWithReservations(appointmentCreationDto.getDateTime(), appointmentCreationDto.getDuration(), adminReservations)){
+            //Reservation intertwines with other reservation in system (change admin or time and date)
+            return null;
+        }
 
         ReservationDto reservationDto = ReservationMapper.AppointmentCreationDtoToReservationDto(appointmentCreationDto);
         reservationDto.setCompanyAdmin(admin);
@@ -98,5 +104,23 @@ public class ReservationService {
     public List<ReservationDto> findByYear(int year)
     {
         return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByYear(year));
+    }
+  
+    private Boolean doesIntertwineWithReservations(LocalDateTime dateTimeToCheck, long durationToCheck, List<Reservation> reservations){
+        Boolean intertwines = false;
+        LocalDateTime startToCheck = dateTimeToCheck;
+        LocalDateTime endToCheck = dateTimeToCheck.plusMinutes(durationToCheck);
+
+        for(Reservation reservation : reservations){
+            LocalDateTime start = reservation.getDateTime();
+            LocalDateTime end = start.plusMinutes(reservation.getDuration());
+
+            if(ReservationUtils.isDateTimeIntertwined(startToCheck, endToCheck, start, end)){
+                intertwines = true;
+                break;
+            }
+        }
+
+        return intertwines;
     }
 }
