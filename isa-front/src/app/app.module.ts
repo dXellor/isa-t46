@@ -32,6 +32,9 @@ import { MessageModule} from "primeng/message";
 import {MatStepperModule} from "@angular/material/stepper";
 import {MessagesModule} from "primeng/messages";
 import {MatSidenavModule} from '@angular/material/sidenav';
+import { CompanyCalendarViewComponent } from './view/company-calendar-view/company-calendar-view.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 @NgModule({
   declarations: [
@@ -48,6 +51,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     CompanyProfileViewComponent,
     EquipmentCollectionViewComponent,
     MapComponent,
+    CompanyCalendarViewComponent,
   ],
     imports: [
         BrowserModule,
@@ -68,7 +72,11 @@ import {MatSidenavModule} from '@angular/material/sidenav';
         MessageModule,
         MatStepperModule,
         MessagesModule,
-        MatSidenavModule
+        MatSidenavModule,
+        CalendarModule.forRoot({
+          provide: DateAdapter,
+          useFactory: adapterFactory,
+        }),
     ],
   providers: [
     {

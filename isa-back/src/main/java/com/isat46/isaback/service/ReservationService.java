@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.isat46.isaback.mappers.ReservationMapper;
 import com.isat46.isaback.util.ReservationUtils;
 
 import java.time.LocalDateTime;
@@ -85,6 +86,26 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
 
+    public List<ReservationDto> findByDay(int year, int month, int day)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByDay(year, month, day));
+    }
+
+    public List<ReservationDto> findByWeek(int year, int month, int day)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByWeek(year, month, day));
+    }
+
+    public List<ReservationDto> findByMonthAndYear(int year, int month)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByMonthAndYear(year, month));
+    }
+
+    public List<ReservationDto> findByYear(int year)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByYear(year));
+    }
+  
     private Boolean doesIntertwineWithReservations(LocalDateTime dateTimeToCheck, long durationToCheck, List<Reservation> reservations){
         Boolean intertwines = false;
         LocalDateTime startToCheck = dateTimeToCheck;
