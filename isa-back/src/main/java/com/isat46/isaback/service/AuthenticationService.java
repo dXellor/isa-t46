@@ -50,6 +50,15 @@ public class AuthenticationService {
         return UserMapper.UserToUserDto(userRepository.save(newAdmin));
     }
 
+    public UserDto registerNewSystemAdmin(AdminRegistrationDto adminRegistrationDto){
+        User newAdmin = UserMapper.AdminRegistrationDtoToUser(adminRegistrationDto);
+        newAdmin.setPassword(passwordEncoder.encode(ADMIN_DEFAULT_PASSWORD));
+        newAdmin.setEnabled(true);
+        List<Role> roles = roleRepository.findByName("ROLE_SYSADMIN");
+        newAdmin.setRoles(roles);
+        return UserMapper.UserToUserDto(userRepository.save(newAdmin));
+    }
+
     public UserDto verify(String verificationToken){
         String email = verificationTokenService.getEmailAndVerify(verificationToken);
         if(email.equals("")){

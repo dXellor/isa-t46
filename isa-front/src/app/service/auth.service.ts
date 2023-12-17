@@ -28,6 +28,10 @@ export class AuthService {
     return this.http.post<User>(`${this.url}/register/ca`, adminRegisterInfo);
   }
 
+  registerSystemAdmin(adminRegisterInfo: User): Observable<User>{
+    return this.http.post<User>(`${this.url}/register/sa`, adminRegisterInfo);
+  }
+
   verify(token: string): Observable<User>{
     return this.http.get<User>(`${this.url}/verify/${token}`);
   }

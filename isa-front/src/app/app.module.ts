@@ -35,6 +35,7 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import { CompanyCalendarViewComponent } from './view/company-calendar-view/company-calendar-view.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { SystemAdminFormComponent } from './component/system-admin-form/system-admin-form.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     EquipmentCollectionViewComponent,
     MapComponent,
     CompanyCalendarViewComponent,
+    SystemAdminFormComponent,
   ],
     imports: [
         BrowserModule,

@@ -75,6 +75,23 @@ public class AuthenticationController {
         }
     }
 
+    @Operation(summary = "creates new system admin", description = "creates new system admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "company admin created successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('SYSADMIN')")
+    @PostMapping(value = "/register/sa", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> registerNewSystemAdmin(@Parameter(required = true) @Valid @RequestBody AdminRegistrationDto adminRegistrationDto){
+        UserDto newUser = authenticationService.registerNewSystemAdmin(adminRegistrationDto);
+        if(newUser != null)
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Operation(summary = "verifies new user", description = "verifies new user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "user verified successfully",
