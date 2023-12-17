@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { AppointmentRequest } from 'src/app/model/appointment/appointment-request.model';
 import { Company } from 'src/app/model/company.model';
@@ -22,6 +22,8 @@ export class CompanyProfileViewComponent implements OnInit {
   public user: User;
   public appointmentForm: FormGroup;
   appointmentRequest: AppointmentRequest = {} as AppointmentRequest;
+  workingHours: string = '08:00-16:00';
+
   constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private appointmentService: AppointmentService, private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -50,7 +52,10 @@ export class CompanyProfileViewComponent implements OnInit {
     });
 
     this.appointmentForm = this.formBuilder.group({
+      admin: ['', Validators.required],
       dateTime: ['', Validators.required],
+      time: ['', [Validators.required, Validators.pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), this.timeWithinWorkingHours.bind(this)]],
+      duration: ['', Validators.required],
     })
   }
 
@@ -87,13 +92,27 @@ export class CompanyProfileViewComponent implements OnInit {
   }
 
   addAppointment(): void {
-    console.log(this.appointmentForm.value.dateTime);
-
-    this.appointmentRequest.duration = 5;
-    this.appointmentRequest.admin_id = this.user.id;
-    this.appointmentRequest.dateTime = new Date((this.appointmentForm.value.dateTime).setUTCHours(12, 30));
+    this.appointmentRequest.duration = this.appointmentForm.value.duration;
+    this.appointmentRequest.admin_id = this.appointmentForm.value.admin.id;
+    const [hours, minutes] = this.appointmentForm.value.time.split(':').map(Number);
+    this.appointmentRequest.dateTime = new Date((this.appointmentForm.value.dateTime).setUTCHours(hours, minutes));
     this.appointmentService.addPredefinedAppointment(this.appointmentRequest).subscribe(result => {
       this.messageService.add({ severity: "success", summary: "creating appointment succedded" });
     })
+  }
+
+  dateFilter = (date: Date | null): boolean => {
+    const day = (date || new Date()).getDay();
+    return day !== 0 && day !== 6 && date >= new Date();
+  }
+
+  timeWithinWorkingHours(control: AbstractControl): { [key: string]: any } | null {
+    const [startTime, endTime] = this.workingHours.split('-');
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+    const [hour, minute] = control.value.split(':').map(Number);
+    const isValid = (hour > startHour || (hour === startHour && minute >= startMinute)) &&
+      (hour < endHour || (hour === endHour && minute <= endMinute));
+    return isValid ? null : { 'timeOutsideWorkingHours': { value: control.value } };
   }
 }

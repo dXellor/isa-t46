@@ -67,13 +67,21 @@
         </div>
     </div>
 
-    <div>
+    <!-- Appointment section -->
+    <div *ngIf="company?.admins">
         <h2>Appointments section</h2>
-        <button mat-flat-button (click)="addAppointment()">Add appointment</button>
+        <button mat-flat-button (click)="addAppointment()" [disabled]="!appointmentForm.valid">Add appointment</button>
         <form [formGroup]="appointmentForm">
             <mat-form-field>
+                <mat-label>Administrator</mat-label>
+                <mat-select placeholder="select administrator" class="administrator-selector" formControlName="admin">
+                    <mat-option *ngFor="let administrator of company.admins"
+                        [value]="administrator">{{administrator.firstName}} {{administrator.lastName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
                 <mat-label>Date</mat-label>
-                <input matInput [matDatepicker]="start" formControlName="dateTime">
+                <input matInput [matDatepicker]="start" formControlName="dateTime" [matDatepickerFilter]="dateFilter">
                 <mat-datepicker-toggle matIconSuffix [for]="start"></mat-datepicker-toggle>
                 <mat-datepicker #start>
                     <mat-datepicker-actions>
@@ -83,6 +91,21 @@
                 </mat-datepicker>
                 <mat-hint>MM/DD/YYYY</mat-hint>
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Time</mat-label>
+                <input matInput type="time" formControlName="time">
+                <mat-hint *ngIf="appointmentForm.get('time').errors?.['timeOutsideWorkingHours']">
+                    Time must be within the company's working hours ({{workingHours}}).
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Duration (minutes)</mat-label>
+                <input matInput type="number" formControlName="duration">
+                <mat-error *ngIf="appointmentForm.get('duration').errors?.['required']">
+                    Duration is required.
+                </mat-error>
+            </mat-form-field>
         </form>
     </div>
 </div>
+<p-toast [position]="'bottom-center'"></p-toast>

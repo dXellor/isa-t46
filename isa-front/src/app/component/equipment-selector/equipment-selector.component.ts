@@ -6,10 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserAppointmentFormComponent } from '../user-appointment-form/user-appointment-form.component';
 import { ReservationService } from 'src/app/service/reservation/reservation.service';
 import { Reservation } from 'src/app/model/reservation/reservation.model';
-import { UserService } from 'src/app/service/user.service';
-import { User } from 'src/app/model/user.model';
-import { Observable } from 'rxjs/internal/Observable';
-import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -31,7 +27,7 @@ export class EquipmentSelectorComponent implements OnInit {
   selectedEquipment: Equipment[] = [];
   predefinedAppointments: Reservation[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public companyEquipment: Equipment[], private dialog: MatDialog, private reservationService: ReservationService, private userService: UserService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public companyEquipment: Equipment[], private dialog: MatDialog, private reservationService: ReservationService) { }
 
   ngOnInit(): void {
     this.reservationService.getAllPaged().subscribe(result => {
