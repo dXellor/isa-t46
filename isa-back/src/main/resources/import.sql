@@ -50,8 +50,8 @@ INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-17 12:00:00.0', 20, 1, 1, 3, 1, 'Call me 10min earlier pls');
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'Dgdgdgdgdg');
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2022-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'I am an old reservation');
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-11-18 12:00:00.0', 20, 1, 1, 3, 1, 'Last month reservation');
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-13 12:00:00.0', 20, 1, 1, 3, 1, 'Last week reservation');
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-11-18 18:00:00.0', 20, 1, 1, 3, 1, 'Last month reservation');
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-13 10:00:00.0', 40, 1, 1, 3, 1, 'Last week reservation');
 
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (1, 2, 3);
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (2, 4, 3);
