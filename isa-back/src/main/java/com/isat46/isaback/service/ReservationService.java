@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.isat46.isaback.mappers.ReservationMapper;
+
+import java.util.List;
 
 @Service
 public class ReservationService {
@@ -75,5 +78,20 @@ public class ReservationService {
         Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
         reservationItemService.addReservationItems(reservationCreationDto.getReservationItems(), reservation);
         return ReservationMapper.ReservationToReservationDto(reservation);
+    }
+
+    public List<ReservationDto> findByWeek(int year, int month, int day)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByWeek(year, month, day));
+    }
+
+    public List<ReservationDto> findByMonthAndYear(int year, int month)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByMonthAndYear(year, month));
+    }
+
+    public List<ReservationDto> findByYear(int year)
+    {
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByYear(year));
     }
 }

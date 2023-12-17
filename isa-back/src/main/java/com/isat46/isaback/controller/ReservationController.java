@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "api/reservation")
@@ -74,5 +75,44 @@ public class ReservationController {
         else{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @Operation(summary = "returns reservations by week", description = "returns reservations by week - passed date is the first day of the week")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentCreationDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/week/{year}/{month}/{day}")
+    public ResponseEntity<List<ReservationDto>> findByWeek(@PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day){
+        List<ReservationDto> reservations = reservationService.findByWeek(year, month, day);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "returns reservations by month and year", description = "returns reservations by month and year")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentCreationDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/month/{year}/{month}")
+    public ResponseEntity<List<ReservationDto>> findByMonthAndYear(@PathVariable Integer year, @PathVariable Integer month){
+        List<ReservationDto> reservations = reservationService.findByMonthAndYear(year, month);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "returns reservations by year", description = "returns reservations by year")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = AppointmentCreationDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/year/{year}")
+    public ResponseEntity<List<ReservationDto>> findByYear(@PathVariable Integer year){
+        List<ReservationDto> reservations = reservationService.findByYear(year);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }
