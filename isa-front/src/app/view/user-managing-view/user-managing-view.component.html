@@ -9,6 +9,7 @@
                 <th>LastName</th>
                 <th>PhoneNumber</th>
                 <th>Profession</th>
+                <th>Role</th>
             </thead>
             <tbody>
                 <tr *ngFor="let u of users">
@@ -18,13 +19,19 @@
                     <td>{{u.lastName}}</td>
                     <td>{{u.phoneNumber}}</td>
                     <td>{{u.profession}}</td>
+                    <td>{{u.roles[0].name}}</td>
                 </tr>
             </tbody>
         </table>
-        <button class="btn" mat-raised-button (click)="addNewCompanyAdmin()">Add new Company Admin</button>
+        <div class="btn-container">
+            <button class="btn" mat-raised-button (click)="addNewCompanyAdmin()">Add new Company Admin</button>
+            <button class="btn" mat-raised-button (click)="addNewSystemAdmin()">Add new System Admin</button>
+        </div>
     </div>
 
     <div class="form-container">
         <app-company-admin-form *ngIf="showCompanyAdminForm" (companyAdminAdded)="companyAdminAdded()"></app-company-admin-form>
+        <app-system-admin-form *ngIf="showSystemAdminForm" (systemAdminAdded)="systemAdminAdded()"></app-system-admin-form>
     </div>
+    
 </div>

@@ -13,6 +13,7 @@ export class NavbarComponent implements OnInit {
 
   public currentUser: User = null;
   isOverlayOpen: boolean = false;
+  public showPasswordChangeForm: boolean = false;
 
   constructor(private userService: UserService, private router: Router, private rendered: Renderer2) { }
 
@@ -27,6 +28,9 @@ export class NavbarComponent implements OnInit {
     this.userService.setLoggedInUser();
     this.userService.loggedInUserTrigger.subscribe(user => {
       this.currentUser = user;
+      if(user && user.pendingPasswordReset) {
+        this.showPasswordChangeForm = user.pendingPasswordReset;
+      }
     });
   }
 
@@ -50,5 +54,10 @@ export class NavbarComponent implements OnInit {
 
   closeOverlay() {
     this.isOverlayOpen = false;
+  }
+
+  onPasswordChange() {
+    this.showPasswordChangeForm = false;
+    this.logOut();
   }
 }

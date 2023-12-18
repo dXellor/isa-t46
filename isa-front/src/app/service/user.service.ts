@@ -56,4 +56,8 @@ export class UserService {
   getCurrentUser(): User{
     return this.loggedInUserSubject.getValue();
   }
+
+  passwordChanged(): void {
+    this.loggedInUserSubject.getValue().pendingPasswordReset = false;
+  }
 }
