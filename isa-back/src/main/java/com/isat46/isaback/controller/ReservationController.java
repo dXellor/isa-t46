@@ -85,8 +85,8 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('COMPADMIN')")
     @GetMapping(value = "/day/{year}/{month}/{day}")
-    public ResponseEntity<List<ReservationDto>> findByDay(@PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day){
-        List<ReservationDto> reservations = reservationService.findByDay(year, month, day);
+    public ResponseEntity<List<ReservationDto>> findByDay(Principal user, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day){
+        List<ReservationDto> reservations = reservationService.findByDay(user.getName(), year, month, day);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
@@ -98,8 +98,8 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('COMPADMIN')")
     @GetMapping(value = "/week/{year}/{month}/{day}")
-    public ResponseEntity<List<ReservationDto>> findByWeek(@PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day){
-        List<ReservationDto> reservations = reservationService.findByWeek(year, month, day);
+    public ResponseEntity<List<ReservationDto>> findByWeek(Principal user, @PathVariable Integer year, @PathVariable Integer month, @PathVariable Integer day){
+        List<ReservationDto> reservations = reservationService.findByWeek(user.getName(), year, month, day);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
@@ -111,8 +111,8 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('COMPADMIN')")
     @GetMapping(value = "/month/{year}/{month}")
-    public ResponseEntity<List<ReservationDto>> findByMonthAndYear(@PathVariable Integer year, @PathVariable Integer month){
-        List<ReservationDto> reservations = reservationService.findByMonthAndYear(year, month);
+    public ResponseEntity<List<ReservationDto>> findByMonthAndYear(Principal user, @PathVariable Integer year, @PathVariable Integer month){
+        List<ReservationDto> reservations = reservationService.findByMonthAndYear(user.getName(), year, month);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
@@ -124,8 +124,8 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('COMPADMIN')")
     @GetMapping(value = "/year/{year}")
-    public ResponseEntity<List<ReservationDto>> findByYear(@PathVariable Integer year){
-        List<ReservationDto> reservations = reservationService.findByYear(year);
+    public ResponseEntity<List<ReservationDto>> findByYear(Principal user, @PathVariable Integer year){
+        List<ReservationDto> reservations = reservationService.findByYear(user.getName(), year);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 }
