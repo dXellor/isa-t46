@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "api/auth")
@@ -126,5 +127,21 @@ public class AuthenticationController {
         long expiresIn = tokenUtils.getExpiredIn();
 
         return new ResponseEntity<>(new JwtDto(jwt, expiresIn), HttpStatus.OK);
+    }
+
+    @Operation(summary = "password change", description = "password change")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "password changed successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PostMapping("/changePassword")
+    public ResponseEntity<JwtDto> changePassword(Principal user, @RequestBody String newPassword) {
+        UserDto updatedUser = authenticationService.changePassword(user.getName(), newPassword);
+        if(updatedUser != null)
+            return new ResponseEntity<>(HttpStatus.OK);
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

@@ -57,6 +57,9 @@ public class User implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
+    @Column(name = "pending_password_reset")
+    private boolean pendingPasswordReset;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -133,5 +136,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean getPendingPasswordReset() {
+        return pendingPasswordReset;
+    }
+
+    public void setPendingPasswordReset(boolean pendingPasswordReset) {
+        this.pendingPasswordReset = pendingPasswordReset;
     }
 }

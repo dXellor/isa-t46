@@ -36,6 +36,7 @@ import { CompanyCalendarViewComponent } from './view/company-calendar-view/compa
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { SystemAdminFormComponent } from './component/system-admin-form/system-admin-form.component';
+import { PasswordChangeFormComponent } from './component/password-change-form/password-change-form.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { SystemAdminFormComponent } from './component/system-admin-form/system-a
     MapComponent,
     CompanyCalendarViewComponent,
     SystemAdminFormComponent,
+    PasswordChangeFormComponent,
   ],
     imports: [
         BrowserModule,
