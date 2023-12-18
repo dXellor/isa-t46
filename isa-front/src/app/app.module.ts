@@ -26,6 +26,15 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
 import { MapComponent } from './component/map/map.component';
+import {NgOptimizedImage} from "@angular/common";
+import { ToastModule} from "primeng/toast";
+import { MessageModule} from "primeng/message";
+import {MatStepperModule} from "@angular/material/stepper";
+import {MessagesModule} from "primeng/messages";
+import {MatSidenavModule} from '@angular/material/sidenav';
+import { CompanyCalendarViewComponent } from './view/company-calendar-view/company-calendar-view.component';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgOptimizedImage } from "@angular/common";
 import { ToastModule } from "primeng/toast";
 import { MessageModule } from "primeng/message";
@@ -56,12 +65,38 @@ import { MatNativeDateModule } from '@angular/material/core';
     CompanyProfileViewComponent,
     EquipmentCollectionViewComponent,
     MapComponent,
+    CompanyCalendarViewComponent,
     UserHomeViewComponent,
     CompanyCardComponent,
     CompanyInfoViewComponent,
     EquipmentSelectorComponent,
     UserAppointmentFormComponent,
   ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        MatButtonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatInputModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatCardModule,
+        FlexLayoutModule,
+        NgOptimizedImage,
+        ToastModule,
+        MessageModule,
+        MatStepperModule,
+        MessagesModule,
+        MatSidenavModule,
+        CalendarModule.forRoot({
+          provide: DateAdapter,
+          useFactory: adapterFactory,
+        }),
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,

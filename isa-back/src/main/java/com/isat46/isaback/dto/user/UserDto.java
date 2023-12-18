@@ -54,7 +54,7 @@ public class UserDto {
     private String companyInformation;
 
     @JsonProperty("roles")
-    private Role[] roles;
+    private List<RoleDto> roles;
 
     public UserDto(){}
     public UserDto(User user){
