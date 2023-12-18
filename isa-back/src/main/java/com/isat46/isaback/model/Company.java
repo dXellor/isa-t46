@@ -6,6 +6,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -44,4 +45,9 @@ public class Company {
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
     private List<User> admins;
+
+    @Column(name = "start_work", nullable = false)
+    private LocalTime startWork;
+    @Column(name = "end_work", nullable = false)
+    private LocalTime endWork;
 }
