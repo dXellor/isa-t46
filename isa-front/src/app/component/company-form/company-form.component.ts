@@ -36,6 +36,8 @@ export class CompanyFormComponent {
       name: this.companyForm.value.name || "",
       description: this.companyForm.value.description || "",
       address: companyAdress,
+      startWork: "8:00:00",
+      endWork: "16:00:00"
     };
 
     this.companyService.addCompany(company).subscribe({

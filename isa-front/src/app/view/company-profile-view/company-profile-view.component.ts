@@ -24,7 +24,6 @@ export class CompanyProfileViewComponent implements OnInit {
   public user: User;
   public appointmentForm: FormGroup;
   appointmentRequest: AppointmentRequest = {} as AppointmentRequest;
-  workingHours: string = '08:00-16:00';
   companyEquipment: InventoryItem[] = [];
 
   constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private appointmentService: AppointmentService, private messageService: MessageService, private inventoryService: InventoryService) { }
@@ -36,6 +35,7 @@ export class CompanyProfileViewComponent implements OnInit {
     });
     this.companyService.getCompanyByAdminId(this.user.id).subscribe(company => {
       this.company = company;
+      console.log(this.company);
       this.loadCompanyEquipment();
       this.companyForm = this.formBuilder.group({
         id: [this.company.id],
@@ -52,13 +52,12 @@ export class CompanyProfileViewComponent implements OnInit {
         admins: this.formBuilder.array(this.company.admins || [])
       });
       this.companyForm.disable();
-    });
-
-    this.appointmentForm = this.formBuilder.group({
-      admin: ['', Validators.required],
-      dateTime: ['', Validators.required],
-      time: ['', [Validators.required, Validators.pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), this.timeWithinWorkingHours.bind(this)]],
-      duration: ['', Validators.required],
+      this.appointmentForm = this.formBuilder.group({
+        admin: ['', Validators.required],
+        dateTime: ['', Validators.required],
+        time: ['', [Validators.required, Validators.pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), this.timeWithinWorkingHours.bind(this)]],
+        duration: ['', Validators.required],
+      });
     });
   }
 
@@ -115,9 +114,8 @@ export class CompanyProfileViewComponent implements OnInit {
   }
 
   timeWithinWorkingHours(control: AbstractControl): { [key: string]: any } | null {
-    const [startTime, endTime] = this.workingHours.split('-');
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
+    const [startHour, startMinute] = this.company.startWork.split(':').map(Number);
+    const [endHour, endMinute] = this.company.endWork.split(':').map(Number);
     const [hour, minute] = control.value.split(':').map(Number);
     const isValid = (hour > startHour || (hour === startHour && minute >= startMinute)) &&
       (hour < endHour || (hour === endHour && minute <= endMinute));
