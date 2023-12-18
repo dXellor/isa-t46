@@ -82,9 +82,7 @@ public class AuthenticationService {
         User user = userRepository.findByEmail(email);
         if(user == null) return null;
 
-        System.out.println(newPassword);
         user.setPassword(passwordEncoder.encode(newPassword));
-        System.out.println(user.getPassword());
         user.setPendingPasswordReset(false);
         userRepository.save(user);
         return UserMapper.UserToUserDto(userRepository.save(user));

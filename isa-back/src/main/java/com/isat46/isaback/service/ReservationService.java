@@ -86,24 +86,32 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
 
-    public List<ReservationDto> findByDay(int year, int month, int day)
+    public List<ReservationDto> findByDay(String companyAdminEmail, int year, int month, int day)
     {
-        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByDay(year, month, day));
+        UserDto companyAdmin = userService.findByEmail(companyAdminEmail);
+
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByDay(companyAdmin.getId(), year, month, day));
     }
 
-    public List<ReservationDto> findByWeek(int year, int month, int day)
+    public List<ReservationDto> findByWeek(String companyAdminEmail, int year, int month, int day)
     {
-        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByWeek(year, month, day));
+        UserDto companyAdmin = userService.findByEmail(companyAdminEmail);
+
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByWeek(companyAdmin.getId(), year, month, day));
     }
 
-    public List<ReservationDto> findByMonthAndYear(int year, int month)
+    public List<ReservationDto> findByMonthAndYear(String companyAdminEmail, int year, int month)
     {
-        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByMonthAndYear(year, month));
+        UserDto companyAdmin = userService.findByEmail(companyAdminEmail);
+
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByMonthAndYear(companyAdmin.getId(), year, month));
     }
 
-    public List<ReservationDto> findByYear(int year)
+    public List<ReservationDto> findByYear(String companyAdminEmail, int year)
     {
-        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByYear(year));
+        UserDto companyAdmin = userService.findByEmail(companyAdminEmail);
+
+        return ReservationMapper.ReservationsToReservationDtos(reservationRepository.findByYear(companyAdmin.getId(), year));
     }
   
     private Boolean doesIntertwineWithReservations(LocalDateTime dateTimeToCheck, long durationToCheck, List<Reservation> reservations){
