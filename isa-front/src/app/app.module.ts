@@ -41,11 +41,10 @@ import { UserHomeViewComponent } from './view/user-home-view/user-home-view.comp
 import { CompanyCardComponent } from './component/company-card/company-card.component';
 import { CompanyInfoViewComponent } from './view/company-info-view/company-info-view.component';
 import { EquipmentSelectorComponent } from './component/equipment-selector/equipment-selector.component';
-import { UserAppointmentFormComponent } from './component/user-appointment-form/user-appointment-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatNativeDateModule } from '@angular/material/core';
+import { UserAppointmentFormComponent } from './component/user-appointment-form/user-appointment-form.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -96,8 +95,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
       useFactory: adapterFactory,
     }),
     MatDialogModule,
-    MatNativeDateModule,
     MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
     {

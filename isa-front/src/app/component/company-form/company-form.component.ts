@@ -14,7 +14,7 @@ export class CompanyFormComponent {
   @Output() companyAdded = new EventEmitter<null>();
   public companyForm: FormGroup;
 
-  constructor(private companyService: CompanyService) { 
+  constructor(private companyService: CompanyService) {
     this.companyForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),

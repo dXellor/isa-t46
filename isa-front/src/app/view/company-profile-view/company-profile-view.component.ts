@@ -8,6 +8,8 @@ import { AppointmentService } from 'src/app/service/reservation/appointment.serv
 import { CompanyService } from 'src/app/service/company.service';
 import { UserService } from 'src/app/service/user.service';
 import { Reservation } from 'src/app/model/reservation/reservation.model';
+import { InventoryItem } from 'src/app/model/inventory.model';
+import { InventoryService } from 'src/app/service/inventory/inventory.service';
 
 @Component({
   selector: 'app-company-profile-view',
@@ -23,8 +25,9 @@ export class CompanyProfileViewComponent implements OnInit {
   public appointmentForm: FormGroup;
   appointmentRequest: AppointmentRequest = {} as AppointmentRequest;
   workingHours: string = '08:00-16:00';
+  companyEquipment: InventoryItem[] = [];
 
-  constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private appointmentService: AppointmentService, private messageService: MessageService) { }
+  constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private appointmentService: AppointmentService, private messageService: MessageService, private inventoryService: InventoryService) { }
 
   ngOnInit(): void {
     this.userService.setLoggedInUser();
@@ -33,6 +36,7 @@ export class CompanyProfileViewComponent implements OnInit {
     });
     this.companyService.getCompanyByAdminId(this.user.id).subscribe(company => {
       this.company = company;
+      this.loadCompanyEquipment();
       this.companyForm = this.formBuilder.group({
         id: [this.company.id],
         name: [this.company.name, Validators.required],
@@ -45,7 +49,6 @@ export class CompanyProfileViewComponent implements OnInit {
           country: [this.company.address.country, Validators.required],
           zipCode: [this.company.address.zipCode, [Validators.required, Validators.pattern('^[0-9]{5}$')]]
         }),
-        equipment: this.formBuilder.array(this.company.equipment || []),
         admins: this.formBuilder.array(this.company.admins || [])
       });
       this.companyForm.disable();
@@ -56,6 +59,12 @@ export class CompanyProfileViewComponent implements OnInit {
       dateTime: ['', Validators.required],
       time: ['', [Validators.required, Validators.pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), this.timeWithinWorkingHours.bind(this)]],
       duration: ['', Validators.required],
+    });
+  }
+
+  loadCompanyEquipment(): void {
+    this.inventoryService.getInventoryForCompany(this.company.id).subscribe(result => {
+      this.companyEquipment = result.content;
     })
   }
 
@@ -68,7 +77,6 @@ export class CompanyProfileViewComponent implements OnInit {
       this.companyForm.reset(this.company);
     }
   }
-
   onSubmit(): void {
     if (this.companyForm.valid) {
       this.company = this.companyForm.value;
@@ -84,7 +92,7 @@ export class CompanyProfileViewComponent implements OnInit {
   removeEquipment(index: number): void {
     const equipment = this.companyForm.get('equipment') as FormArray;
     equipment.removeAt(index);
-    this.company.equipment.splice(index, 1);
+    this.companyEquipment.splice(index, 1);
   }
 
   isRatingField(controlName: string): boolean {

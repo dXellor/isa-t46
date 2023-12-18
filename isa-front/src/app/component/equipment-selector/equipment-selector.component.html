@@ -1,8 +1,10 @@
 <div class="container">
-    <p *ngFor="let equipment of companyEquipment">{{equipment.name}}</p>
-    <mat-select placeholder="select date" class="predefined-dates">
+    <p *ngFor="let equipment of chosenEquipment">{{equipment.inventoryItem.equipment.name}}</p>
+    <mat-select placeholder="select date" class="predefined-dates" [(value)]="selectedAppointment">
         <mat-option *ngFor="let appointment of predefinedAppointments"
             [value]="appointment">{{formatAppointment(appointment)}}</mat-option>
     </mat-select>
+    <button mat-flat-button (click)="createReservation()" type="button">Confirm reservation for selected
+        equipment</button>
     <button mat-flat-button (click)="createNewAppointmentDate()" type="button">Create new appoinment</button>
 </div>

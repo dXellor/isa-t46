@@ -10,18 +10,6 @@
                             [readonly]="!editMode || isRatingField(controlName)" placeholder="rating">
                     </mat-form-field>
                 </div>
-                <div formArrayName="equipment">
-                    <div *ngFor="let equipment of companyForm.get('equipment').value; let i = index">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Equipment {{ i + 1 }}</mat-label>
-                            <input matInput [value]="equipment.name" readonly="" placeholder="equipment">
-                        </mat-form-field>
-                        <button mat-icon-button color="warn" (click)="removeEquipment(i)" *ngIf="editMode"
-                            type="button">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-                </div>
                 <button mat-raised-button color="primary" type="submit" [disabled]="companyForm.invalid"
                     *ngIf="editMode">Save</button>
                 <button mat-raised-button color="warn" type="button" (click)="toggleEditMode()"
@@ -107,5 +95,9 @@
             </mat-form-field>
         </form>
     </div>
+</div>
+
+<div class="equipment" *ngIf="companyEquipment">
+    <p *ngFor="let equipment of companyEquipment">{{equipment.equipment.name}} - {{equipment.count}}</p>
 </div>
 <p-toast [position]="'bottom-center'"></p-toast>

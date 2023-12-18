@@ -1,5 +1,5 @@
 INSERT INTO isadb."user" (city, company_information, country, email, enabled, first_name, last_name, last_password_reset_date, password, phone_number, profession, pending_password_reset) VALUES ('Novi Sad', 'Gaming INC', 'Serbia', 'slobodanmilosevic@gmail.com', true, 'Slobodan', 'Milosevic', '2023-10-01 21:58:58.508-07', '$2a$10$81IYoYJ.5JaYyImNOZMz0OSx9h1SH9BUz4HEURVx5dM7Us9yEmOde', '+381 123 312123', 'Gamer', false);
-INSERT INTO isadb."user" (city, company_information, country, email, enabled, first_name, last_name, last_password_reset_date, password, phone_number, profession, pending_password_reset) VALUES ('Novi Sad', 'Gaming INC', 'Serbia', 'petarpetrovic@gmail.com', true, 'Petar', 'Petrovic', '2023-10-01 21:58:58.508-07', '$2a$10$81IYoYJ.5JaYyImNOZMz0OSx9h1SH9BUz4HEURVx5dM7Us9yEmOde', '+381 123 312123', 'Gamer', true);
+INSERT INTO isadb."user" (city, company_information, country, email, enabled, first_name, last_name, last_password_reset_date, password, phone_number, profession, pending_password_reset) VALUES ('Novi Sad', 'Gaming INC', 'Serbia', 'petarpetrovic@gmail.com', true, 'Petar', 'Petrovic', '2023-10-01 21:58:58.508-07', '$2a$10$81IYoYJ.5JaYyImNOZMz0OSx9h1SH9BUz4HEURVx5dM7Us9yEmOde', '+381 123 312123', 'Gamer', false);
 INSERT INTO isadb."user" (city, company_information, country, email, enabled, first_name, last_name, last_password_reset_date, password, phone_number, profession, pending_password_reset) VALUES ('Novi Sad', 'Gaming INC', 'Serbia', 'jovanajovanovic@gmail.com', true, 'Jovana', 'Jovanovic', '2023-10-01 21:58:58.508-07', '$2a$10$81IYoYJ.5JaYyImNOZMz0OSx9h1SH9BUz4HEURVx5dM7Us9yEmOde', '+381 123 312123', 'Gamer', false);
 INSERT INTO isadb."user" (city, company_information, country, email, enabled, first_name, last_name, last_password_reset_date, password, phone_number, profession, pending_password_reset) VALUES ('Novi Sad', 'Gaming INC', 'Serbia', 'nikola7simic@gmail.com', true, 'Nikola', 'Simic', '2023-10-01 21:58:58.508-07', '$2a$10$81IYoYJ.5JaYyImNOZMz0OSx9h1SH9BUz4HEURVx5dM7Us9yEmOde', '+381 123 312123', 'Gamer', false);
 
@@ -37,8 +37,8 @@ INSERT INTO isadb."company" (name, description, average_rating, address_id) VALU
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('Fashionista Clothing', 'Network of stores providing a variety of clothing items', 4.3, 1);
 INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('TravelWorld Agencies', 'Specializes in travel and tourism', 4.7, 2);
 
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('FitLife Gyms', 'Provides comprehensive fitness services', 4.5, 2);
-INSERT INTO isadb."company" (name, description, average_rating, address_id) VALUES ('HomeDecor Interiors', 'Specializes in interior design and decoration', 4.6, 1);
+INSERT INTO isadb."company" (name, description, average_rating, address_id, working_hours) VALUES ('FitLife Gyms', 'Provides comprehensive fitness services', 4.5, 2, '09:00-17:00');
+INSERT INTO isadb."company" (name, description, average_rating, address_id, working_hours) VALUES ('HomeDecor Interiors', 'Specializes in interior design and decoration', 4.6, 1, '09:00-17:00');
 
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Playstation 5', 'Console', 'Playstation 5', 500);
 INSERT INTO isadb."equipment" (name, type, description, price) VALUES ('Xbox Series X', 'Console', 'Xbox Series X', 500);
@@ -73,11 +73,6 @@ INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2022-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'I am an old reservation');
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-11-18 18:00:00.0', 20, 1, 1, 3, 1, 'Last month reservation');
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-13 10:00:00.0', 40, 1, 1, 3, 1, 'Last week reservation');
-
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (1, 2, 3);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (2, 4, 3);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 4, 3);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (4, 4, 4);
 
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 5);
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 6);

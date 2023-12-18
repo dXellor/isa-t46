@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserAppointmentFormComponent } from '../user-appointment-form/user-appointment-form.component';
 import { ReservationService } from 'src/app/service/reservation/reservation.service';
 import { Reservation } from 'src/app/model/reservation/reservation.model';
+import { ReservationRequest } from 'src/app/model/reservation/reservation-request.model';
+import { ReservationItem } from 'src/app/model/reservation/reservation-item.model';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -24,15 +26,18 @@ import { Reservation } from 'src/app/model/reservation/reservation.model';
   ]
 })
 export class EquipmentSelectorComponent implements OnInit {
-  selectedEquipment: Equipment[] = [];
   predefinedAppointments: Reservation[] = [];
+  reservationRequest: ReservationRequest = {} as ReservationRequest;
+  selectedAppointment: Reservation = {} as Reservation;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public companyEquipment: Equipment[], private dialog: MatDialog, private reservationService: ReservationService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService) { }
 
   ngOnInit(): void {
     this.reservationService.getAllPaged().subscribe(result => {
       this.predefinedAppointments = result.content;
     })
+    console.log(this.chosenEquipment);
+
   }
 
   createNewAppointmentDate(): void {
@@ -48,5 +53,19 @@ export class EquipmentSelectorComponent implements OnInit {
     const lastName = appointment.companyAdmin.lastName;
 
     return `${date} - ${time} - ${duration} - ${firstName} - ${lastName}`;
+  }
+
+  createReservation(): void {
+    for (let reservationItem of this.chosenEquipment) {
+      reservationItem.id = this.selectedAppointment.id
+    }
+    this.reservationRequest.reservation_id = this.selectedAppointment.id;
+    this.reservationRequest.reservation_items = this.chosenEquipment;
+    this.reservationRequest.note = "End yourself";
+    this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
+
+    });
+    console.log(this.reservationRequest);
+
   }
 }

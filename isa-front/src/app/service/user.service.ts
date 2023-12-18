@@ -23,24 +23,24 @@ export class UserService {
 
 
   //API
-  getAll(): Observable<PagedResult<User>>{
+  getAll(): Observable<PagedResult<User>> {
     return this.http.get<PagedResult<User>>(`${this.url}/all`);
   }
 
-  getAllCompanyAdmins(): Observable<PagedResult<User>>{
+  getAllCompanyAdmins(): Observable<PagedResult<User>> {
     return this.http.get<PagedResult<User>>(`${this.url}/all/ca`);
   }
 
-  getUser(): Observable<User>{
+  getUser(): Observable<User> {
     return this.http.get<User>(this.url);
   }
 
-  updateUser(editUserInfo: EditUserRequest): Observable<User>{
-    return this.http.post<User>(`${this.url}` , editUserInfo);
+  updateUser(editUserInfo: EditUserRequest): Observable<User> {
+    return this.http.post<User>(`${this.url}`, editUserInfo);
   }
 
   //OTHER
-  setLoggedInUser(): void{
+  setLoggedInUser(): void {
     this.getUser().subscribe({
       next: (user) => {
         this.loggedInUserSubject.next(user);
@@ -53,7 +53,7 @@ export class UserService {
     });
   }
 
-  getCurrentUser(): User{
+  getCurrentUser(): User {
     return this.loggedInUserSubject.getValue();
   }
 

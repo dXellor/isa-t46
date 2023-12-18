@@ -25,7 +25,7 @@ const routes: Routes = [
   { path: 'equipment-collection', component: EquipmentCollectionViewComponent, },
   { path: 'company-calendar', component: CompanyCalendarViewComponent, },
   { path: 'user-home', component: UserHomeViewComponent },
-  { path: 'company-info', component: CompanyInfoViewComponent }
+  { path: 'company-info', component: CompanyInfoViewComponent },
 ];
 
 @NgModule({
