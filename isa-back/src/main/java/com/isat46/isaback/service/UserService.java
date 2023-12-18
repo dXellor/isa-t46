@@ -34,6 +34,6 @@ public class UserService {
     }
 
     public UserDto findOne(int id) {
-        return UserMapper.UserToUserDto(userRepository.findById(id).orElseGet(null));
+        return UserMapper.UserToUserDto(userRepository.findById(id).orElse(null));
     }
 }

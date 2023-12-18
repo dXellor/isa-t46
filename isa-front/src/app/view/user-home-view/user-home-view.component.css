@@ -1,0 +1,12 @@
+.card-div{
+  flex: 0 0 30%;
+  max-width: 30%;
+  margin: 1em;
+}
+
+.companies{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  background-color: #B44B9C;
+}

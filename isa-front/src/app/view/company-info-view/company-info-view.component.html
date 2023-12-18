@@ -1,0 +1,28 @@
+<div class="company-info">
+  <h1>{{company.name}}</h1>
+  <h3>{{company.description}}</h3>
+  <div class="rating">
+    <p><strong>Rating:</strong>
+
+    </p>
+    <mat-icon *ngFor="let i of [].constructor(Math.floor(company.averageRating))">star</mat-icon>
+    <mat-icon *ngIf="company.averageRating % 1 != 0">star_half</mat-icon>
+    <mat-icon *ngFor="let i of [].constructor(5 - Math.ceil(company.averageRating))">star_border</mat-icon>
+  </div>
+  <div class="company-equipment">
+    <h3>Company equipment</h3>
+    <div class="equipment" *ngFor="let equipment of companyEquipment">
+      <mat-card (click)="addEquipmentToSelection(equipment)">{{equipment.equipment.name}} -
+        {{equipment.equipment.description}} - {{equipment.count}}</mat-card>
+      <button mat-flat-button (click)="addEquipmentToSelection(equipment)">Add</button>
+      <button mat-flat-button (click)="removeEquipmentFromSelection(equipment)">Remove</button>
+    </div>
+    <button mat-flat-button class="btn" (click)="openEquipmentSelection()">Choose date</button>
+  </div>
+  <div class="address">
+    <h3>Find us at:</h3>
+    <p>{{company.address.street}}, {{company.address.city}}, {{company.address.country}}</p>
+    <app-map [address]="company.address"></app-map>
+  </div>
+  <p-toast></p-toast>
+</div>

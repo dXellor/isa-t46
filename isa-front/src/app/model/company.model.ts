@@ -10,4 +10,6 @@ export interface Company {
     averageRating?: number,
     admins?: User[],
     equipment?: Equipment[]
+    startWork: string,
+    endWork: string
 }

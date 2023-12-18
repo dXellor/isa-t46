@@ -25,6 +25,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/reservation")
 public class ReservationController {
 

@@ -1,9 +1,9 @@
-import {Component, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {RegisterRequest} from 'src/app/model/auth/register-request.model';
-import {AuthService} from 'src/app/service/auth.service';
-import {MessageService} from "primeng/api";
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RegisterRequest } from 'src/app/model/auth/register-request.model';
+import { AuthService } from 'src/app/service/auth.service';
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: 'app-register-view',
@@ -15,7 +15,7 @@ export class RegisterViewComponent {
   public registerForm: FormGroup;
   currentStep: number = 0;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private messageService: MessageService){
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private messageService: MessageService) {
     this.registerForm = this.fb.group({
       personalInfo: this.fb.group({
         firstName: ['', Validators.required],
@@ -27,7 +27,8 @@ export class RegisterViewComponent {
       userInfo: this.fb.group({
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
-        repeatedPassword: ['', Validators.required],},{validator: this.passwordMatchValidator}),
+        repeatedPassword: ['', Validators.required],
+      }, { validator: this.passwordMatchValidator }),
       companyInfo: this.fb.group({
         profession: [''],
         companyInformation: [''],
@@ -116,25 +117,24 @@ export class RegisterViewComponent {
     this.currentStep--;
   }
 
-  register(): void{
+  register(): void {
     let registerRequest: RegisterRequest = this.registerForm.value;
-    console.log('Request Payload:', registerRequest);
     this.authService.register(registerRequest).subscribe({
       next: (user) => {
-        this.messageService.add({severity:'error', summary:'Registered successfully'});
-        setTimeout(() =>{
+        this.messageService.add({ severity: 'error', summary: 'Registered successfully' });
+        setTimeout(() => {
           this.router.navigate(['/login']);
-            },1000)
+        }, 1000)
       },
 
       error: (err) => {
-        this.messageService.add({severity:'error', summary:'Invalid registration data'});
+        this.messageService.add({ severity: 'error', summary: 'Invalid registration data' });
       }
     });
   }
 
   passwordMatchValidator(g: FormGroup) {
     return g.get('password').value === g.get('repeatedPassword').value
-        ? null : {'mismatch': true};
+      ? null : { 'mismatch': true };
   }
 }

@@ -7,8 +7,8 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import * as L from 'leaflet';
-import {MapService} from '../../service/map/map.service';
-import {Address} from "../../model/address.model";
+import { MapService } from '../../service/map/map.service';
+import { Address } from "../../model/address.model";
 
 @Component({
   selector: 'app-map',
@@ -16,14 +16,14 @@ import {Address} from "../../model/address.model";
   styleUrls: ['./map.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class MapComponent implements  OnChanges, OnDestroy, AfterViewInit {
+export class MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   private map: any;
   private markerLayer: L.LayerGroup;
 
   @Input() address: Address;
 
-  constructor(private mapService: MapService) {}
+  constructor(private mapService: MapService) { }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -50,7 +50,6 @@ export class MapComponent implements  OnChanges, OnDestroy, AfterViewInit {
     if (this.address) {
       this.setMarker(this.address);
     }
-    console.log('initialized');
   }
 
 

@@ -26,17 +26,25 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { EquipmentCollectionViewComponent } from './view/equipment-collection-view/equipment-collection-view.component';
 import { MapComponent } from './component/map/map.component';
-import {NgOptimizedImage} from "@angular/common";
-import { ToastModule} from "primeng/toast";
-import { MessageModule} from "primeng/message";
-import {MatStepperModule} from "@angular/material/stepper";
-import {MessagesModule} from "primeng/messages";
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { NgOptimizedImage } from "@angular/common";
+import { ToastModule } from "primeng/toast";
+import { MessageModule } from "primeng/message";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MessagesModule } from "primeng/messages";
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { CompanyCalendarViewComponent } from './view/company-calendar-view/company-calendar-view.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { SystemAdminFormComponent } from './component/system-admin-form/system-admin-form.component';
 import { PasswordChangeFormComponent } from './component/password-change-form/password-change-form.component';
+import { UserHomeViewComponent } from './view/user-home-view/user-home-view.component';
+import { CompanyCardComponent } from './component/company-card/company-card.component';
+import { CompanyInfoViewComponent } from './view/company-info-view/company-info-view.component';
+import { EquipmentSelectorComponent } from './component/equipment-selector/equipment-selector.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { UserAppointmentFormComponent } from './component/user-appointment-form/user-appointment-form.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -56,32 +64,40 @@ import { PasswordChangeFormComponent } from './component/password-change-form/pa
     CompanyCalendarViewComponent,
     SystemAdminFormComponent,
     PasswordChangeFormComponent,
+    UserHomeViewComponent,
+    CompanyCardComponent,
+    CompanyInfoViewComponent,
+    EquipmentSelectorComponent,
+    UserAppointmentFormComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        MatButtonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatInputModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        MatCardModule,
-        FlexLayoutModule,
-        NgOptimizedImage,
-        ToastModule,
-        MessageModule,
-        MatStepperModule,
-        MessagesModule,
-        MatSidenavModule,
-        CalendarModule.forRoot({
-          provide: DateAdapter,
-          useFactory: adapterFactory,
-        }),
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatCardModule,
+    FlexLayoutModule,
+    NgOptimizedImage,
+    ToastModule,
+    MessageModule,
+    MatStepperModule,
+    MessagesModule,
+    MatSidenavModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
