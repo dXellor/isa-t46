@@ -15,17 +15,17 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     Page<Reservation> findAll(Pageable pageable);
 
-    @Query("SELECT r FROM Reservation r WHERE EXTRACT(year FROM r.dateTime) = :year AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(day FROM r.dateTime) = :day")
-    List<Reservation> findByDay(@Param("year") int year, @Param("month") int month, @Param("day") int day);
+    @Query("SELECT r FROM Reservation r WHERE :companyAdminId IN (SELECT admins.id FROM r.company.admins admins) AND EXTRACT(year FROM r.dateTime) = :year AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(day FROM r.dateTime) = :day")
+    List<Reservation> findByDay(@Param("companyAdminId") int companyAdminId, @Param("year") int year, @Param("month") int month, @Param("day") int day);
 
-    @Query("SELECT r FROM Reservation r WHERE EXTRACT(year FROM r.dateTime) = :year AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(day FROM r.dateTime) BETWEEN :day AND :day + 6")
-    List<Reservation> findByWeek(@Param("year") int year, @Param("month") int month, @Param("day") int day);
+    @Query("SELECT r FROM Reservation r WHERE :companyAdminId IN (SELECT admins.id FROM r.company.admins admins) AND EXTRACT(year FROM r.dateTime) = :year AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(day FROM r.dateTime) BETWEEN :day AND :day + 6")
+    List<Reservation> findByWeek(@Param("companyAdminId") int companyAdminId, @Param("year") int year, @Param("month") int month, @Param("day") int day);
 
-    @Query("SELECT r FROM Reservation r WHERE EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(year FROM r.dateTime) = :year")
-    List<Reservation> findByMonthAndYear(@Param("year") int year, @Param("month") int month);
+    @Query("SELECT r FROM Reservation r WHERE :companyAdminId IN (SELECT admins.id FROM r.company.admins admins) AND EXTRACT(month FROM r.dateTime) = :month AND EXTRACT(year FROM r.dateTime) = :year")
+    List<Reservation> findByMonthAndYear(@Param("companyAdminId") int companyAdminId, @Param("year") int year, @Param("month") int month);
 
-    @Query("SELECT r FROM Reservation r WHERE EXTRACT(year FROM r.dateTime) = :year")
-    List<Reservation> findByYear(@Param("year") int year);
+    @Query("SELECT r FROM Reservation r WHERE :companyAdminId IN (SELECT admins.id FROM r.company.admins admins) AND EXTRACT(year FROM r.dateTime) = :year")
+    List<Reservation> findByYear(@Param("companyAdminId") int companyAdminId, @Param("year") int year);
 
     @Query("SELECT r FROM Reservation r WHERE r.companyAdmin.id = :companyAdminId AND (r.status = 0 OR r.status = 1)")
     List<Reservation> findByCompanyAdminId(@Param("companyAdminId") int companyAdminId);
