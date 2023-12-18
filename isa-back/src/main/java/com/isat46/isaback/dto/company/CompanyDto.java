@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -40,4 +41,10 @@ public class CompanyDto {
 
     @JsonProperty("admins")
     private List<UserDto> admins;
+
+    @JsonProperty("startWork")
+    private LocalTime startWork;
+
+    @JsonProperty("endWork")
+    private LocalTime endWork;
 }
