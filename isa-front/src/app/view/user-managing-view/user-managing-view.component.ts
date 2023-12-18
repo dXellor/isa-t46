@@ -12,6 +12,7 @@ import { PagedResult } from '../../model/paged-result.model';
 export class UserManagingViewComponent implements OnInit {
   public users: User[];
   public showCompanyAdminForm: boolean;
+  public showSystemAdminForm: boolean;
 
   constructor(private userService: UserService) { }
 
@@ -28,11 +29,22 @@ export class UserManagingViewComponent implements OnInit {
   }
 
   addNewCompanyAdmin(): void {
+    this.showSystemAdminForm = false;
     this.showCompanyAdminForm = true;
+  }
+
+  addNewSystemAdmin(): void {
+    this.showCompanyAdminForm = false;
+    this.showSystemAdminForm = true;
   }
 
   companyAdminAdded(): void {
     this.getAllUsers();
     this.showCompanyAdminForm = false;
+  }
+
+  systemAdminAdded(): void {
+    this.getAllUsers();
+    this.showSystemAdminForm = false;
   }
 }

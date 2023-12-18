@@ -14,5 +14,6 @@ export interface User{
     phoneNumber: string,
     profession: string,
     companyInformation: string,
-    roles?: UserRole[]
+    roles?: UserRole[],
+    pendingPasswordReset?: boolean,
 }

@@ -1,0 +1,16 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.form-fields > div {
+    display: flex;
+    flex-direction: column;
+}

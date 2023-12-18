@@ -1,0 +1,50 @@
+<h3>Add new company admin</h3>
+<form [formGroup]="systemAdminForm">
+    <div class="form-fields">
+        <div>
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email"/>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" type="text"/>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" type="text"/>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phoneNumber" type="phone"/>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" type="text"/>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Country</mat-label>
+                <input matInput formControlName="country" type="text"/>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Profession</mat-label>
+                <input matInput formControlName="profession" type="phone"/>
+            </mat-form-field>
+    
+            <mat-form-field>
+                <mat-label>Company Information</mat-label>
+                <input matInput formControlName="companyInformation" type="phone"/>
+            </mat-form-field>
+        </div>
+    </div>
+    <button color="primary" type="submit" (click)="saveAdmin()" mat-raised-button>
+        Confirm
+    </button>
+</form>
