@@ -12,10 +12,16 @@
   <div class="company-equipment">
     <h3>Company equipment</h3>
     <div class="equipment" *ngFor="let equipment of companyEquipment">
-      <mat-card (click)="addEquipmentToSelection(equipment)">{{equipment.equipment.name}} -
-        {{equipment.equipment.description}} - {{equipment.count}}</mat-card>
-      <button mat-flat-button (click)="addEquipmentToSelection(equipment)">Add</button>
-      <button mat-flat-button (click)="removeEquipmentFromSelection(equipment)">Remove</button>
+      <mat-card>{{equipment.equipment.name}} -
+        {{equipment.equipment.description}} - {{equipment.count}} - {{selectedCounts[equipment.id]}}</mat-card>
+      <button mat-flat-button (click)="addEquipmentToSelection(equipment)"
+        [disabled]="isAlreadySelected(equipment)">Add</button>
+      <button mat-flat-button (click)="removeEquipmentFromSelection(equipment)"
+        [disabled]="!isAlreadySelected(equipment)">Remove</button>
+      <button mat-flat-button (click)="increaseEquipmentCount(equipment)"
+        [disabled]="equipment.count === 0 || !isAlreadySelected(equipment)">+</button>
+      <button mat-flat-button (click)="decraseEquipmentCount(equipment)"
+        [disabled]="selectedCounts[equipment.id] === 0 || !isAlreadySelected(equipment)">-</button>
     </div>
     <button mat-flat-button class="btn" (click)="openEquipmentSelection()">Choose date</button>
   </div>

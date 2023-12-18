@@ -131,4 +131,12 @@ public class ReservationService {
 
         return intertwines;
     }
+
+    public Page<ReservationDto> findByEmployee(Pageable page, String email){
+        return reservationRepository.findByEmployeeEmailAndEmployeeNotNull(page, email).map(ReservationMapper::ReservationToReservationDto);
+    }
+
+    public Page<ReservationDto> findByCompanyAdmin(Pageable page){
+        return reservationRepository.findByEmployeeIsNull(page).map(ReservationMapper::ReservationToReservationDto);
+    }
 }

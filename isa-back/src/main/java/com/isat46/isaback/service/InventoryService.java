@@ -50,4 +50,9 @@ public class InventoryService {
 
         return false;
     }
+
+    public InventoryItemDto addInventoryItem(InventoryItemDto inventoryItemDto){
+        InventoryItem inventoryItem = InventoryItemMapper.InventoryItemDtoToInventoryItem(inventoryItemDto);
+        return InventoryItemMapper.InventoryItemToInventoryItemDto(inventoryRepository.save(inventoryItem));
+    }
 }

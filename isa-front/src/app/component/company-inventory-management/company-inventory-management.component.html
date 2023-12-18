@@ -1,0 +1,12 @@
+<div class="container">
+    <div class="company-equipment">
+        <mat-card *ngFor="let equipment of companyEquipment; let i = index">{{equipment.equipment.name}}
+            {{equipment.count}} <button mat-flat-button
+                (click)="removeEquipment(i)"><mat-icon>remove</mat-icon></button><button mat-flat-button
+                (click)="removeEquipment(i)"><mat-icon>edit</mat-icon></button></mat-card>
+    </div>
+    <div class="avaliable-equipment">
+        <mat-card *ngFor="let equipment of avaliableEquipment; let i = index">{{equipment.name}}<button mat-flat-button
+                (click)="addEquipmentToCompany(equipment)"><mat-icon>add</mat-icon></button></mat-card>
+    </div>
+</div>

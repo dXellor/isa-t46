@@ -18,4 +18,13 @@ export class InventoryService {
     return this.http.get<PagedResult<InventoryItem>>(`${this.url}/company/` + companyId);
   }
 
+  addInventory(inventoryItem: InventoryItem): Observable<InventoryItem> {
+    return this.http.post<InventoryItem>(`${this.url}`, inventoryItem);
+  }
+
+  updateInventoryItem(inventoryItem: InventoryItem): Observable<InventoryItem> {
+    return this.http.put<InventoryItem>(`${this.url}`, inventoryItem);
+  }
+
+
 }

@@ -36,8 +36,6 @@ export class EquipmentSelectorComponent implements OnInit {
     this.reservationService.getAllPaged().subscribe(result => {
       this.predefinedAppointments = result.content;
     })
-    console.log(this.chosenEquipment);
-
   }
 
   createNewAppointmentDate(): void {
@@ -65,7 +63,5 @@ export class EquipmentSelectorComponent implements OnInit {
     this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
 
     });
-    console.log(this.reservationRequest);
-
   }
 }

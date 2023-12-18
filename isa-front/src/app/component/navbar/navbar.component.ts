@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { User, UserRole } from 'src/app/model/user.model';
+import { User, UserRole, roleRoutes } from 'src/app/model/user.model';
 import { UserService } from 'src/app/service/user.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class NavbarComponent implements OnInit {
     this.userService.setLoggedInUser();
     this.userService.loggedInUserTrigger.subscribe(user => {
       this.currentUser = user;
-      if(user && user.pendingPasswordReset) {
+      if (user && user.pendingPasswordReset) {
         this.showPasswordChangeForm = user.pendingPasswordReset;
       }
     });
@@ -59,5 +59,10 @@ export class NavbarComponent implements OnInit {
   onPasswordChange() {
     this.showPasswordChangeForm = false;
     this.logOut();
+  }
+
+  goHome() {
+    const userRole = this.userService.getCurrentUser().roles[0].name;
+    this.router.navigate([roleRoutes[userRole]]);
   }
 }

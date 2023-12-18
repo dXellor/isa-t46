@@ -12,6 +12,7 @@ import { EquipmentCollectionViewComponent } from './view/equipment-collection-vi
 import { CompanyCalendarViewComponent } from './view/company-calendar-view/company-calendar-view.component';
 import { UserHomeViewComponent } from "./view/user-home-view/user-home-view.component";
 import { CompanyInfoViewComponent } from "./view/company-info-view/company-info-view.component";
+import { EmployeeReservationsViewComponent } from './view/employee-reservations-view/employee-reservations-view.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'company-calendar', component: CompanyCalendarViewComponent, },
   { path: 'user-home', component: UserHomeViewComponent },
   { path: 'company-info', component: CompanyInfoViewComponent },
+  { path: 'employee-reservations', component: EmployeeReservationsViewComponent }
 ];
 
 @NgModule({

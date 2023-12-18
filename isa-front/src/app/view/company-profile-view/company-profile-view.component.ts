@@ -1,71 +1,59 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, FormArray, AbstractControl } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-import { AppointmentRequest } from 'src/app/model/appointment/appointment-request.model';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Company } from 'src/app/model/company.model';
 import { User } from 'src/app/model/user.model';
-import { AppointmentService } from 'src/app/service/reservation/appointment.service';
 import { CompanyService } from 'src/app/service/company.service';
 import { UserService } from 'src/app/service/user.service';
-import { Reservation } from 'src/app/model/reservation/reservation.model';
 import { InventoryItem } from 'src/app/model/inventory.model';
 import { InventoryService } from 'src/app/service/inventory/inventory.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CompanyAdminAppointmentsComponent } from 'src/app/component/company-admin-appointments/company-admin-appointments.component';
+import { CompanyInventoryManagementComponent } from 'src/app/component/company-inventory-management/company-inventory-management.component';
 
 @Component({
   selector: 'app-company-profile-view',
   templateUrl: './company-profile-view.component.html',
   styleUrls: ['./company-profile-view.component.css'],
-  providers: [MessageService]
 })
+
 export class CompanyProfileViewComponent implements OnInit {
   public company: Company;
   public companyForm: FormGroup;
   public editMode = false;
   public user: User;
-  public appointmentForm: FormGroup;
-  appointmentRequest: AppointmentRequest = {} as AppointmentRequest;
-  companyEquipment: InventoryItem[] = [];
 
-  constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private appointmentService: AppointmentService, private messageService: MessageService, private inventoryService: InventoryService) { }
+
+  constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private inventoryService: InventoryService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.userService.setLoggedInUser();
-    this.userService.loggedInUserTrigger.subscribe(user => {
-      this.user = user;
-    });
+    this.user = this.userService.getCurrentUser();
+
     this.companyService.getCompanyByAdminId(this.user.id).subscribe(company => {
       this.company = company;
-      console.log(this.company);
-      this.loadCompanyEquipment();
-      this.companyForm = this.formBuilder.group({
-        id: [this.company.id],
-        name: [this.company.name, Validators.required],
-        description: [this.company.description, Validators.required],
-        averageRating: [this.company.averageRating, [Validators.required, Validators.min(1), Validators.max(5)]],
-        address: this.formBuilder.group({
-          id: [this.company.address.id],
-          street: [this.company.address.street, Validators.required],
-          city: [this.company.address.city, Validators.required],
-          country: [this.company.address.country, Validators.required],
-          zipCode: [this.company.address.zipCode, [Validators.required, Validators.pattern('^[0-9]{5}$')]]
-        }),
-        admins: this.formBuilder.array(this.company.admins || [])
-      });
-      this.companyForm.disable();
-      this.appointmentForm = this.formBuilder.group({
-        admin: ['', Validators.required],
-        dateTime: ['', Validators.required],
-        time: ['', [Validators.required, Validators.pattern(/^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/), this.timeWithinWorkingHours.bind(this)]],
-        duration: ['', Validators.required],
-      });
+      this.intitCompanyProfileForm()
+
     });
   }
 
-  loadCompanyEquipment(): void {
-    this.inventoryService.getInventoryForCompany(this.company.id).subscribe(result => {
-      this.companyEquipment = result.content;
-    })
+  private intitCompanyProfileForm(): void {
+    this.companyForm = this.formBuilder.group({
+      id: [this.company.id],
+      name: [this.company.name, Validators.required],
+      description: [this.company.description, Validators.required],
+      averageRating: [this.company.averageRating, [Validators.required, Validators.min(1), Validators.max(5)]],
+      address: this.formBuilder.group({
+        id: [this.company.address.id],
+        street: [this.company.address.street, Validators.required],
+        city: [this.company.address.city, Validators.required],
+        country: [this.company.address.country, Validators.required],
+        zipCode: [this.company.address.zipCode, [Validators.required, Validators.pattern('^[0-9]{5}$')]]
+      }),
+      admins: this.formBuilder.array(this.company.admins || [])
+    });
+    this.companyForm.disable();
   }
+
+
 
   toggleEditMode(): void {
     this.editMode = !this.companyForm.enabled;
@@ -76,6 +64,7 @@ export class CompanyProfileViewComponent implements OnInit {
       this.companyForm.reset(this.company);
     }
   }
+
   onSubmit(): void {
     if (this.companyForm.valid) {
       this.company = this.companyForm.value;
@@ -83,42 +72,19 @@ export class CompanyProfileViewComponent implements OnInit {
       this.companyService.updateCompany(this.company).subscribe(company => {
         this.company = company;
         this.companyForm.patchValue(company);
-
       });
     }
-  }
-
-  removeEquipment(index: number): void {
-    const equipment = this.companyForm.get('equipment') as FormArray;
-    equipment.removeAt(index);
-    this.companyEquipment.splice(index, 1);
   }
 
   isRatingField(controlName: string): boolean {
     return controlName === 'averageRating';
   }
 
-  addAppointment(): void {
-    this.appointmentRequest.duration = this.appointmentForm.value.duration;
-    this.appointmentRequest.admin_id = this.appointmentForm.value.admin.id;
-    const [hours, minutes] = this.appointmentForm.value.time.split(':').map(Number);
-    this.appointmentRequest.dateTime = new Date((this.appointmentForm.value.dateTime).setUTCHours(hours, minutes));
-    this.appointmentService.addPredefinedAppointment(this.appointmentRequest).subscribe(result => {
-      this.messageService.add({ severity: "success", summary: "creating appointment succedded" });
-    })
+  openAppointmentsSection(): void {
+    this.dialog.open(CompanyAdminAppointmentsComponent);
   }
 
-  dateFilter = (date: Date | null): boolean => {
-    const day = (date || new Date()).getDay();
-    return day !== 0 && day !== 6 && date >= new Date();
-  }
-
-  timeWithinWorkingHours(control: AbstractControl): { [key: string]: any } | null {
-    const [startHour, startMinute] = this.company.startWork.split(':').map(Number);
-    const [endHour, endMinute] = this.company.endWork.split(':').map(Number);
-    const [hour, minute] = control.value.split(':').map(Number);
-    const isValid = (hour > startHour || (hour === startHour && minute >= startMinute)) &&
-      (hour < endHour || (hour === endHour && minute <= endMinute));
-    return isValid ? null : { 'timeOutsideWorkingHours': { value: control.value } };
+  openEquipmentSection(): void {
+    this.dialog.open(CompanyInventoryManagementComponent, { data: this.company });
   }
 }

@@ -23,4 +23,28 @@ export class ReservationService {
     return this.http.put<Reservation>(`${this.url}`, reservationRequest);
   }
 
+  getReservationsForEmployee(): Observable<PagedResult<Reservation>> {
+    return this.http.get<PagedResult<Reservation>>(`${this.url}/employee`);
+  }
+
+  getReservationsForCompanyAdmin(): Observable<PagedResult<Reservation>> {
+    return this.http.get<PagedResult<Reservation>>(`${this.url}/company`);
+  }
+
+  getByDay(year: number, month: number, day: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}/day/${year}/${month}/${day}`);
+  }
+
+  getByWeek(year: number, month: number, day: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}/week/${year}/${month}/${day}`);
+  }
+
+  getByMonth(year: number, month: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}/month/${year}/${month}`);
+  }
+
+  getByYear(year: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}/year/${year}`);
+  }
+
 }
