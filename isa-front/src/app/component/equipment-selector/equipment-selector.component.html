@@ -1,10 +1,25 @@
 <div class="container">
-    <p *ngFor="let equipment of chosenEquipment">{{equipment.inventoryItem.equipment.name}}</p>
+    <h2>Item list</h2>
+    <p *ngFor="let equipment of chosenEquipment">
+        {{equipment.inventoryItem.equipment.name}} | count: {{equipment.count}}<br>
+    </p>
+    <hr>
+    <br>
+    <form [formGroup]="noteForm" style="width: 50%;">
+        <div style="width: 100%;">
+            <mat-form-field style="width: 100%;">
+                <input formControlName="note" matInput required placeholder="Insert note for your reservation">
+            </mat-form-field>
+        </div>
+    </form>
+    <br>
     <mat-select placeholder="select date" class="predefined-dates" [(value)]="selectedAppointment">
         <mat-option *ngFor="let appointment of predefinedAppointments"
             [value]="appointment">{{formatAppointment(appointment)}}</mat-option>
     </mat-select>
-    <button mat-flat-button (click)="createReservation()" type="button">Confirm reservation for selected
-        equipment</button>
+    <br>
+    <hr>
+    <button mat-flat-button mat-dialog-close (click)="createReservation()" type="button">Confirm reservation for selected equipment</button>
     <button mat-flat-button (click)="createNewAppointmentDate()" type="button">Create new appoinment</button>
+    <p-toast></p-toast>
 </div>

@@ -8,6 +8,8 @@ import { ReservationService } from 'src/app/service/reservation/reservation.serv
 import { Reservation } from 'src/app/model/reservation/reservation.model';
 import { ReservationRequest } from 'src/app/model/reservation/reservation-request.model';
 import { ReservationItem } from 'src/app/model/reservation/reservation-item.model';
+import { MessageService } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -23,14 +25,21 @@ import { ReservationItem } from 'src/app/model/reservation/reservation-item.mode
         animate('200ms ease-out', style({ transform: 'translateX(100%)' }))
       ])
     ])
-  ]
+  ],
+  providers: [MessageService],
 })
 export class EquipmentSelectorComponent implements OnInit {
   predefinedAppointments: Reservation[] = [];
   reservationRequest: ReservationRequest = {} as ReservationRequest;
   selectedAppointment: Reservation = {} as Reservation;
+  reservationNote: string = "";
+  noteForm : FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService, private messageService: MessageService, private fb: FormBuilder) { 
+    this.noteForm = fb.group({
+      note: ["", []],
+    });
+  }
 
   ngOnInit(): void {
     this.reservationService.getAllPaged().subscribe(result => {
@@ -59,9 +68,12 @@ export class EquipmentSelectorComponent implements OnInit {
     }
     this.reservationRequest.reservation_id = this.selectedAppointment.id;
     this.reservationRequest.reservation_items = this.chosenEquipment;
-    this.reservationRequest.note = "End yourself";
-    this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
+    this.reservationRequest.note = this.noteForm.value["note"];
 
+    console.log(this.reservationRequest);
+
+    this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
+        this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
     });
   }
 }
