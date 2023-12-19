@@ -62,7 +62,12 @@ export class NavbarComponent implements OnInit {
   }
 
   goHome() {
-    const userRole = this.userService.getCurrentUser().roles[0].name;
-    this.router.navigate([roleRoutes[userRole]]);
+    if(this.userService.getCurrentUser()){
+      const userRole = this.userService.getCurrentUser().roles[0].name;
+      this.router.navigate([roleRoutes[userRole]]);
+    }
+    else {
+      this.router.navigate([roleRoutes['NO_ROLE']]);
+    }
   }
 }

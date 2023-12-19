@@ -49,6 +49,8 @@ import { EmployeeReservationsViewComponent } from './view/employee-reservations-
 import { MatTableModule } from '@angular/material/table';
 import { CompanyAdminAppointmentsComponent } from './component/company-admin-appointments/company-admin-appointments.component';
 import { CompanyInventoryManagementComponent } from './component/company-inventory-management/company-inventory-management.component';
+import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
+import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { CompanyInventoryManagementComponent } from './component/company-invento
     EmployeeReservationsViewComponent,
     CompanyAdminAppointmentsComponent,
     CompanyInventoryManagementComponent,
+    VisitorHomeViewComponent,
+    EquipmentCardComponent,
   ],
   imports: [
     BrowserModule,
