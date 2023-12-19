@@ -8,6 +8,7 @@ import { ReservationService } from 'src/app/service/reservation/reservation.serv
 import { Reservation } from 'src/app/model/reservation/reservation.model';
 import { ReservationRequest } from 'src/app/model/reservation/reservation-request.model';
 import { ReservationItem } from 'src/app/model/reservation/reservation-item.model';
+import { Company } from 'src/app/model/company.model';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -41,12 +42,13 @@ export class EquipmentSelectorComponent implements OnInit {
   }
 
   createNewAppointmentDate(): void {
-    const firstAppointment = this.predefinedAppointments[0];
+
     this.dialog.open(UserAppointmentFormComponent, {
+      
       data: {
         predefinedAppointments: this.predefinedAppointments,
-        companyId: firstAppointment.company.id,
-        chosenEquipment: this.chosenEquipment
+        chosenEquipment: this.chosenEquipment,
+        companyInfo : this.predefinedAppointments[0].company
       }
     });
   }

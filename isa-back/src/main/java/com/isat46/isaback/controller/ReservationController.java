@@ -1,9 +1,8 @@
 package com.isat46.isaback.controller;
 
 import com.isat46.isaback.dto.company.CompanyDto;
-import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationDto;
+import com.isat46.isaback.dto.equipment.EquipmentDto;
+import com.isat46.isaback.dto.reservation.*;
 import com.isat46.isaback.model.Equipment;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -151,5 +150,25 @@ public class ReservationController {
         return new ResponseEntity<>(timeSlots, HttpStatus.OK);
     }
 
-    
+    @Operation(
+            summary = "creates reservation with items (out of order appointments)", description = "creates reservation with items (out of order appointments)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservation added successfully", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = OutOfOrderReservationDto.class))}),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    //@PreAuthorize("hasRole('USER')")
+    @PutMapping(value = "/outOfOrderCreate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ReservationDto> createReservationWithOutOfOrderAppointment(
+            @RequestBody(required = false) OutOfOrderReservationDto outOfOrderReservationDto,
+            Principal user) {
+
+        ReservationDto newReservation = reservationService.createReservationWithOutOfOrderAppointment(outOfOrderReservationDto, user.getName());
+        if (newReservation != null) {
+            return new ResponseEntity<>(newReservation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

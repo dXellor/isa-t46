@@ -1,13 +1,16 @@
 package com.isat46.isaback.service;
 
 import com.isat46.isaback.dto.company.CompanyDto;
-import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationDto;
+import com.isat46.isaback.dto.company.CompanyInfoDto;
+import com.isat46.isaback.dto.equipment.EquipmentDto;
+import com.isat46.isaback.dto.reservation.*;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.mappers.CompanyMapper;
 import com.isat46.isaback.mappers.ReservationMapper;
+import com.isat46.isaback.model.Equipment;
 import com.isat46.isaback.model.Reservation;
+import com.isat46.isaback.model.ReservationItem;
+import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import com.isat46.isaback.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.isat46.isaback.mappers.ReservationMapper;
 import com.isat46.isaback.util.ReservationUtils;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -183,6 +187,31 @@ public class ReservationService {
         }
 
         return timeSlots;
+    }
+
+    public ReservationDto createReservationWithOutOfOrderAppointment(OutOfOrderReservationDto outOfOrderReservationDto, String userEmail){
+        ReservationDto reservationDto = outOfOrderReservationDto.getReservation();
+        List<ReservationItemDto> selectedEquipment = outOfOrderReservationDto.getReservationItems();
+
+        UserDto loggedUser = userService.findByEmail(userEmail);
+        CompanyDto company = companyService.findById(reservationDto.getCompany().getId());
+        UserDto companyAdmin = company.getAdmins().getFirst();
+
+        if(companyAdmin==null)
+            throw new NotFoundException("No company admin avaliable!");
+
+        if(!inventoryService.areReservationItemsInStock(selectedEquipment))
+            throw new NotFoundException("Not enough Equipment in stock!");
+
+        reservationDto.setEmployee(loggedUser);
+        reservationDto.setNote("out of order appointment");
+        reservationDto.setStatus("APPOINTMENT");
+        reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
+        reservationDto.setCompanyAdmin(companyAdmin);
+
+        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+        reservationItemService.addReservationItems(selectedEquipment, reservation);
+        return ReservationMapper.ReservationToReservationDto(reservation);
     }
 
 }
