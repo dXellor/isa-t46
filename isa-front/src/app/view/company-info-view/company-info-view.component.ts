@@ -9,6 +9,8 @@ import { InventoryItem } from 'src/app/model/inventory.model';
 import { ReservationItem } from 'src/app/model/reservation/reservation-item.model';
 import { Reservation } from 'src/app/model/reservation.model';
 import { ReservationService } from 'src/app/service/reservation/reservation.service';
+import { UserService } from 'src/app/service/user.service';
+import { User } from 'src/app/model/user.model';
 @Component({
   selector: 'app-company-info-view',
   templateUrl: './company-info-view.component.html',
@@ -22,20 +24,25 @@ export class CompanyInfoViewComponent implements OnInit {
   companyEquipment: InventoryItem[] = [];
   selectedCounts: { [id: number]: number } = {};
   userReservations: Reservation[] = [];
+  currentUser: User;
 
-  constructor(private router: Router, private dialog: MatDialog, private messageService: MessageService, private inventoryService: InventoryService, private reservationSerice: ReservationService) {
+  constructor(private router: Router, private dialog: MatDialog, private messageService: MessageService, private inventoryService: InventoryService, private reservationSerice: ReservationService, private userService: UserService) {
     const navigation = this.router.getCurrentNavigation();
     this.company = navigation?.extras.state?.['company'];
   }
 
   ngOnInit(): void {
-    this.inventoryService.getInventoryForCompany(this.company.id).subscribe(result => {
-      this.companyEquipment = result.content;
+    this.userService.getUser().subscribe((response) => { // making request again, because sometimes userService.getCurrentUser returns a null (happens when page refreshes)
+      this.currentUser = response;
+      if(this.currentUser){
+        this.inventoryService.getInventoryForCompany(this.company.id).subscribe(result => {
+          this.companyEquipment = result.content;
+        });
+        this.reservationSerice.getReservationsForEmployee().subscribe(result => {
+          this.userReservations = result.content;
+        })
+      }
     });
-    this.reservationSerice.getReservationsForEmployee().subscribe(result => {
-      this.userReservations = result.content;
-
-    })
   }
 
   addEquipmentToSelection(equipment: InventoryItem): void {
