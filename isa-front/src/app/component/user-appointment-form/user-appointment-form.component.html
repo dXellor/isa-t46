@@ -1,1 +1,15 @@
-<p>user-appointment-form works!</p>
+<div>
+  <p>Choose date: </p>
+  <input matInput type="date"  matInput required
+         [(ngModel)]="selectedDate" (change)="loadTimeSlots()" />
+</div>
+
+<div>
+  <p>Available Time Slots:</p>
+  <table>
+    <tr *ngFor="let r of reservations">
+      <td>{{ r.dateTime | date:'HH:mm' }}</td>
+      <td><button >Select</button></td>  
+    </tr>
+  </table>
+</div>

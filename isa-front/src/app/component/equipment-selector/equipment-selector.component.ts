@@ -41,7 +41,14 @@ export class EquipmentSelectorComponent implements OnInit {
   }
 
   createNewAppointmentDate(): void {
-    this.dialog.open(UserAppointmentFormComponent, { data: this.predefinedAppointments })
+    const firstAppointment = this.predefinedAppointments[0];
+    this.dialog.open(UserAppointmentFormComponent, {
+      data: {
+        predefinedAppointments: this.predefinedAppointments,
+        companyId: firstAppointment.company.id,
+        chosenEquipment: this.chosenEquipment
+      }
+    });
   }
 
   formatAppointment(appointment: Reservation): string {

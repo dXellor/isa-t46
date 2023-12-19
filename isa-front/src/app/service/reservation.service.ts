@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Reservation } from '../model/reservation.model';
 import { Observable } from 'rxjs';
+import { PagedResult } from '../model/paged-result.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,15 @@ export class ReservationService {
 
   getByYear(year: number): Observable<Reservation[]>{
     return this.http.get<Reservation[]>(`${this.url}/year/${year}`);
+  }
+
+  getAvailableTimeSlots(companyId: number, date: Date): Observable<Reservation[]> {
+    const formattedDate = new Date(date).toISOString().split('T')[0];
+    const params = {
+      companyId: companyId.toString(),
+      date: formattedDate,
+    };
+    
+    return this.http.get<Reservation[]>(`${this.url}/availableTimeSlots`, { params });
   }
 }
