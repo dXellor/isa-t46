@@ -139,4 +139,9 @@ public class ReservationService {
     public Page<ReservationDto> findByCompanyAdmin(Pageable page){
         return reservationRepository.findByEmployeeIsNull(page).map(ReservationMapper::ReservationToReservationDto);
     }
+
+    public List<ReservationDto> findAvailableAppointmentsByCompany(int companyId){
+        List<Reservation> appointments = reservationRepository.findAvailableAppointmentsByCompany(companyId);
+        return ReservationMapper.ReservationsToReservationDtos(appointments);
+    }
 }

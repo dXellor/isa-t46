@@ -42,8 +42,8 @@ export class EquipmentSelectorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.reservationService.getAllPaged().subscribe(result => {
-      this.predefinedAppointments = result.content;
+    this.reservationService.getAvailableAppointments(this.chosenEquipment[0].inventoryItem.company.id).subscribe(result => {
+      this.predefinedAppointments = result;
     })
   }
 
@@ -67,13 +67,16 @@ export class EquipmentSelectorComponent implements OnInit {
       reservationItem.id = this.selectedAppointment.id
     }
     this.reservationRequest.reservation_id = this.selectedAppointment.id;
-    this.reservationRequest.reservation_items = this.chosenEquipment;
-    this.reservationRequest.note = this.noteForm.value["note"];
-
-    console.log(this.reservationRequest);
-
-    this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
-        this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
-    });
+    if(this.reservationRequest.reservation_id){
+      this.reservationRequest.reservation_items = this.chosenEquipment;
+      this.reservationRequest.note = this.noteForm.value["note"];
+  
+      this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
+          // this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
+          window.alert("The reservation has been made successfully. Check your email for reservation information");
+      });
+    }else{
+      window.alert("Select appointment before you confirm reservation");
+    }
   }
 }
