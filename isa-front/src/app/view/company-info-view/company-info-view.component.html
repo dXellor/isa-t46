@@ -27,14 +27,11 @@
             In stock count: {{equipment.count}}<br><br>
             Count you selected: {{selectedCounts[equipment.id] ? selectedCounts[equipment.id] : 0}}
           </mat-card>
-          <button style="margin-left: 1rem;" mat-flat-button (click)="addEquipmentToSelection(equipment)"
-            [disabled]="isAlreadySelected(equipment)">Add</button>
-          <button mat-flat-button (click)="removeEquipmentFromSelection(equipment)"
-            [disabled]="!isAlreadySelected(equipment)">Remove</button>
+
           <button mat-flat-button (click)="increaseEquipmentCount(equipment)"
-            [disabled]="equipment.count === 0 || !isAlreadySelected(equipment)">+</button>
+            [disabled]="equipment.count === 0">+</button>
           <button mat-flat-button (click)="decraseEquipmentCount(equipment)"
-            [disabled]="selectedCounts[equipment.id] === 0 || !isAlreadySelected(equipment)">-</button>
+            [disabled]="selectedCounts[equipment.id] === 0 || selectedCounts[equipment.id] === undefined">-</button>
         </div>
         <br>
         <button mat-flat-button class="btn" style="background-color: forestgreen; color: white;" (click)="openEquipmentSelection()">Choose reservation date</button>
