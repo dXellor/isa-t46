@@ -156,7 +156,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "200", description = "reservation added successfully", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = OutOfOrderReservationDto.class))}),
             @ApiResponse(responseCode = "400", description = "bad request")
     })
-    //@PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PutMapping(value = "/outOfOrderCreate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ReservationDto> createReservationWithOutOfOrderAppointment(

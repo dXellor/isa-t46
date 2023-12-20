@@ -195,7 +195,13 @@ public class ReservationService {
 
         UserDto loggedUser = userService.findByEmail(userEmail);
         CompanyDto company = companyService.findById(reservationDto.getCompany().getId());
-        UserDto companyAdmin = company.getAdmins().getFirst();
+        List<UserDto> admins = company.getAdmins();
+        UserDto companyAdmin = null;
+        if (admins != null && !admins.isEmpty()) {
+            companyAdmin = admins.getFirst();
+        } else {
+            throw new NotFoundException("No company admin avaliable!");
+        }
 
         if(companyAdmin==null)
             throw new NotFoundException("No company admin avaliable!");
