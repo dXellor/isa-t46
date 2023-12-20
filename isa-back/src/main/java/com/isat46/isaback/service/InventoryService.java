@@ -37,7 +37,7 @@ public class InventoryService {
 
     private Boolean isInStock(ReservationItemDto reservationItemDto){
         InventoryItem inventoryItem = inventoryRepository.findById(reservationItemDto.getInventoryItem().getId()).orElseGet(null);
-        return inventoryItem != null && inventoryItem.getCount() > reservationItemDto.getCount();
+        return inventoryItem != null && inventoryItem.getCount() >= reservationItemDto.getCount();
     }
 
     public Boolean reduceStock(ReservationItemDto reservationItemDto){
