@@ -37,16 +37,16 @@ public class InventoryController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @Operation(summary = "get inventory page by company id", description = "get inventory page by company id")
+    @Operation(summary = "add inventory item", description = "add inventory item")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "inventory page returned successfully"),
+            @ApiResponse(responseCode = "201", description = "inventory item created successfully"),
             @ApiResponse(responseCode = "400", description = "bad request")
     })
     @PreAuthorize("hasAnyRole('COMPADMIN')")
     @PostMapping(value = "")
     public ResponseEntity<InventoryItemDto> addInventoryItem(@Parameter(required = true) @Valid @RequestBody InventoryItemDto inventoryItemDto){
         InventoryItemDto item = inventoryService.addInventoryItem(inventoryItemDto);
-        return new ResponseEntity<>(item, HttpStatus.OK);
+        return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
 

@@ -158,7 +158,7 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/available/{companyId}")
-    public ResponseEntity<List<ReservationDto>> getAvailableCompanyApointments(@PathVariable int companyId){
+    public ResponseEntity<List<ReservationDto>> getAvailableCompanyAppointments(@PathVariable int companyId){
         List<ReservationDto> reservations = reservationService.findAvailableAppointmentsByCompany(companyId);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
