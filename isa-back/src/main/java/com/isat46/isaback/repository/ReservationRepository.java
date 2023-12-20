@@ -30,6 +30,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r WHERE r.companyAdmin.id = :companyAdminId AND (r.status = 0 OR r.status = 1)")
     List<Reservation> findByCompanyAdminId(@Param("companyAdminId") int companyAdminId);
 
+    @Query("SELECT r FROM Reservation r WHERE r.company.id = :companyId AND r.status = 0")
+    List<Reservation> findAvailableAppointmentsByCompany(@Param("companyId") int companyId);
+
     Page<Reservation> findByEmployeeEmailAndEmployeeNotNull(Pageable page, String email);
     Page<Reservation> findByEmployeeIsNull(Pageable page);
 }

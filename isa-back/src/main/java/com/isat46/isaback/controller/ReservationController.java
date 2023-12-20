@@ -151,4 +151,15 @@ public class ReservationController {
         Page<ReservationDto> reservations = reservationService.findByCompanyAdmin(page);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @Operation(summary = "get available reservations for company", description = "get available reservations for company admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/available/{companyId}")
+    public ResponseEntity<List<ReservationDto>> getAvailableCompanyAppointments(@PathVariable int companyId){
+        List<ReservationDto> reservations = reservationService.findAvailableAppointmentsByCompany(companyId);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }

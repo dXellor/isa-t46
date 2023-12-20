@@ -19,6 +19,10 @@ export class ReservationService {
     return this.http.get<PagedResult<Reservation>>(`${this.url}/all`);
   }
 
+  getAvailableAppointments(companyId: number): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(`${this.url}/available/${companyId}`);
+  }
+
   addReservation(reservationRequest: ReservationRequest): Observable<Reservation> {
     return this.http.put<Reservation>(`${this.url}`, reservationRequest);
   }

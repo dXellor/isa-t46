@@ -66,7 +66,7 @@ export class CompanyInfoViewComponent implements OnInit {
 
   openEquipmentSelection(): void {
     if (this.selectedEquipment.length !== 0)
-      this.dialog.open(EquipmentSelectorComponent, { data: this.selectedEquipment, width: '50%', height: '50%' });
+      this.dialog.open(EquipmentSelectorComponent, { data: this.selectedEquipment, width: '50%', height: '70%' });
     else
       this.messageService.add({ severity: "warn", summary: "Select items before proceeding" })
   }
@@ -76,11 +76,19 @@ export class CompanyInfoViewComponent implements OnInit {
   }
 
   increaseEquipmentCount(equipment: InventoryItem): void {
-    if (this.selectedCounts[equipment.id] === undefined) {
+    let addToSelection = false;
+    
+    if (this.selectedCounts[equipment.id] === undefined || this.selectedCounts[equipment.id] === 0) {
       this.selectedCounts[equipment.id] = 0;
+      addToSelection = true;
     }
     this.selectedCounts[equipment.id]++;
     equipment.count--;
+
+    if(addToSelection){
+      this.addEquipmentToSelection(equipment);
+    }
+
     this.selectedEquipment.filter(e => e.inventoryItem === equipment)[0].count = this.selectedCounts[equipment.id];
   }
 
@@ -93,6 +101,11 @@ export class CompanyInfoViewComponent implements OnInit {
       this.selectedCounts[equipment.id] = 0;
     }
     equipment.count++;
+
+    if(this.selectedCounts[equipment.id] === 0){
+      this.removeEquipmentFromSelection(equipment);
+    }
+
     this.selectedEquipment.filter(e => e.inventoryItem === equipment)[0].count = this.selectedCounts[equipment.id];
   }
 }

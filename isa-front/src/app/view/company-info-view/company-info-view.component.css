@@ -1,6 +1,16 @@
-.company-info {
+.main-container {
+  display: flex;
+  padding: 0.5rem;
+}
+
+.sub-container {
   display: flex;
   flex-direction: column;
+}
+
+.company-equipment {
+  width: 2000px;
+  margin-left: 0.5rem;
 }
 
 .company-info h1 {
@@ -9,7 +19,6 @@
 
 .equipment {
   display: flex;
-  flex-direction: column;
   max-width: 30%;
   text-align: center;
   padding: 10px;
@@ -26,9 +35,7 @@ mat-icon {
 }
 
 .equipment mat-card {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  text-align: left;
 }
 
 app-map {

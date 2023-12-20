@@ -63,6 +63,8 @@ INSERT INTO isadb."inventory" (equipment_id, count, company_id) VALUES (6, 10, 2
 -- predefined appointments
 INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-15 11:29:20.376', 15, 0, 3, 1);
 INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-10 12:00:00.0', 20, 0, 3, 1);
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-24 12:00:00.0', 20, 0, 3, 2);
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-30 12:00:00.0', 20, 0, 3, 2);
 
 -- made reservations
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-17 12:00:00.0', 20, 1, 1, 3, 1, 'Call me 10min earlier pls');
@@ -71,12 +73,12 @@ INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-11-18 18:00:00.0', 20, 1, 1, 3, 1, 'Last month reservation');
 INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-13 10:00:00.0', 40, 1, 1, 3, 1, 'Last week reservation');
 
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (1, 2, 3);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (2, 4, 3);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 4, 3);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (4, 4, 4);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (1, 2, 5);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (2, 4, 5);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 4, 5);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (4, 4, 6);
 
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 5);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 6);
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 7);
-INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 7);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 8);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 9);
+INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (3, 1, 9);
