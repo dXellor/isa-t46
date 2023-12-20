@@ -22,7 +22,6 @@ export class CompanyProfileViewComponent implements OnInit {
   public editMode = false;
   public user: User;
 
-
   constructor(private userService: UserService, private companyService: CompanyService, private formBuilder: FormBuilder, private inventoryService: InventoryService, private dialog: MatDialog) { }
 
   ngOnInit(): void {

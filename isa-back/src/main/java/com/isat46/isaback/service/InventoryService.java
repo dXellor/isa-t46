@@ -55,4 +55,12 @@ public class InventoryService {
         InventoryItem inventoryItem = InventoryItemMapper.InventoryItemDtoToInventoryItem(inventoryItemDto);
         return InventoryItemMapper.InventoryItemToInventoryItemDto(inventoryRepository.save(inventoryItem));
     }
+
+    public void removeInventoryItem(int id){
+        inventoryRepository.deleteById(id);
+    }
+
+    public InventoryItemDto updateInventoryItem(InventoryItemDto inventoryItemDto){
+        return InventoryItemMapper.InventoryItemToInventoryItemDto(inventoryRepository.save(InventoryItemMapper.InventoryItemDtoToInventoryItem(inventoryItemDto)));
+    }
 }

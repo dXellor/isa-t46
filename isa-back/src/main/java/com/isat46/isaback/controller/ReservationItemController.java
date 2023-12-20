@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,6 +36,18 @@ public class ReservationItemController {
     @GetMapping(value = "/reservation/{reservationId}")
     public ResponseEntity<List<ReservationItemDto>> getReservationItemsByReservationId(@PathVariable Integer reservationId){
         List<ReservationItemDto> items = reservationItemService.findReservationItemsByReservationId(reservationId);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get reservation items for specific reservation", description = "get reservation items for specific reservation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "items returned successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasAnyRole('USER', 'COMPADMIN', 'SYSADMIN')")
+    @GetMapping(value = "")
+    public ResponseEntity<Page<ReservationItemDto>> getReservationItemsByReservationId(Pageable page){
+        Page<ReservationItemDto> items = reservationItemService.getPaged(page);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 }

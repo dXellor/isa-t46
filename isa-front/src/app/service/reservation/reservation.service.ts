@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { InventoryItem } from 'src/app/model/inventory.model';
 import { PagedResult } from 'src/app/model/paged-result.model';
 import { ReservationRequest } from 'src/app/model/reservation/reservation-request.model';
 import { Reservation } from 'src/app/model/reservation/reservation.model';
 import { environment } from 'src/environments/environment';
+import { ReservationItem } from './reservation-item.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import { environment } from 'src/environments/environment';
 export class ReservationService {
 
   private url = `${environment.apiUrl}/reservation`;
+  private items = `${environment.apiUrl}/reservation-item`;
 
   constructor(private http: HttpClient) { }
 
@@ -49,6 +52,10 @@ export class ReservationService {
 
   getByYear(year: number): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.url}/year/${year}`);
+  }
+
+  getReservationItems(): Observable<PagedResult<ReservationItem>> {
+    return this.http.get<PagedResult<ReservationItem>>(`${this.items}`);
   }
 
 }

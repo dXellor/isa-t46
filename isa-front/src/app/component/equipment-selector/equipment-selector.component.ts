@@ -33,9 +33,9 @@ export class EquipmentSelectorComponent implements OnInit {
   reservationRequest: ReservationRequest = {} as ReservationRequest;
   selectedAppointment: Reservation = {} as Reservation;
   reservationNote: string = "";
-  noteForm : FormGroup;
+  noteForm: FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService, private messageService: MessageService, private fb: FormBuilder) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService, private messageService: MessageService, private fb: FormBuilder) {
     this.noteForm = fb.group({
       note: ["", []],
     });
@@ -67,15 +67,15 @@ export class EquipmentSelectorComponent implements OnInit {
       reservationItem.id = this.selectedAppointment.id
     }
     this.reservationRequest.reservation_id = this.selectedAppointment.id;
-    if(this.reservationRequest.reservation_id){
+    if (this.reservationRequest.reservation_id) {
       this.reservationRequest.reservation_items = this.chosenEquipment;
       this.reservationRequest.note = this.noteForm.value["note"];
-  
+
       this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
-          // this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
-          window.alert("The reservation has been made successfully. Check your email for reservation information");
+        // this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
+        window.alert("The reservation has been made successfully. Check your email for reservation information");
       });
-    }else{
+    } else {
       window.alert("Select appointment before you confirm reservation");
     }
   }

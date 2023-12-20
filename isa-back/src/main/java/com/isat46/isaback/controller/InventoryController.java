@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/inventory")
 public class InventoryController {
 
@@ -49,5 +51,28 @@ public class InventoryController {
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "get inventory page by company id", description = "get inventory page by company id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "inventory page returned successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasAnyRole('COMPADMIN')")
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> removeInventoryItem(@PathVariable Integer id){
+        inventoryService.removeInventoryItem(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "update inventory item", description = "update inventory item")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "inventory item updated successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasAnyRole('COMPADMIN')")
+    @PutMapping(value = "")
+    public ResponseEntity<InventoryItemDto> updateInventoryItem(@Valid @RequestBody InventoryItemDto inventoryItemDto){
+        InventoryItemDto updatedInventoryItem = inventoryService.updateInventoryItem(inventoryItemDto);
+        return new ResponseEntity<>(updatedInventoryItem, HttpStatus.OK);
+    }
 
 }

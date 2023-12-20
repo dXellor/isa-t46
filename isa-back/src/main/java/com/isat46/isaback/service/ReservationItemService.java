@@ -1,11 +1,14 @@
 package com.isat46.isaback.service;
 
 import com.isat46.isaback.dto.reservation.ReservationItemDto;
+import com.isat46.isaback.mappers.InventoryItemMapper;
 import com.isat46.isaback.mappers.ReservationItemMapper;
 import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.model.ReservationItem;
 import com.isat46.isaback.repository.ReservationItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +36,10 @@ public class ReservationItemService {
         }
 
         return true;
+    }
+
+    public Page<ReservationItemDto>  getPaged(Pageable page){
+        return reservationItemRepository.findAll(page).map(ReservationItemMapper::ReservationItemToReservationItemDto);
     }
 
 }

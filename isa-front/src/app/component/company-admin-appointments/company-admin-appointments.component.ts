@@ -58,6 +58,8 @@ export class CompanyAdminAppointmentsComponent implements OnInit {
     const [hours, minutes] = this.appointmentForm.value.time.split(':').map(Number);
     this.appointmentRequest.dateTime = new Date((this.appointmentForm.value.dateTime).setUTCHours(hours, minutes));
     this.appointmentService.addPredefinedAppointment(this.appointmentRequest).subscribe(result => {
+      this.dataSource.push(result);
+      this.dataSource = [... this.dataSource];
       this.messageService.add({ severity: "success", summary: "creating appointment succedded" });
     })
   }
