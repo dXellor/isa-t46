@@ -220,4 +220,17 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
 
+    public Page<ReservationDto> findByEmployee(Pageable page, String email){
+        return reservationRepository.findByEmployeeEmailAndEmployeeNotNull(page, email).map(ReservationMapper::ReservationToReservationDto);
+    }
+
+    public Page<ReservationDto> findByCompanyAdmin(Pageable page){
+        return reservationRepository.findByEmployeeIsNull(page).map(ReservationMapper::ReservationToReservationDto);
+    }
+
+    public List<ReservationDto> findAvailableAppointmentsByCompany(int companyId){
+        List<Reservation> appointments = reservationRepository.findAvailableAppointmentsByCompany(companyId);
+        return ReservationMapper.ReservationsToReservationDtos(appointments);
+    }
+
 }

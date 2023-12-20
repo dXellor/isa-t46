@@ -1,0 +1,84 @@
+<div class="container">
+    <div class="visitor-menu">
+        <div (click)="changeView('company')" [ngClass]="view == 'company' ? 'selected' : ''">Companies</div>
+        <div (click)="changeView('equipment')" [ngClass]="view == 'equipment' ? 'selected' : ''">Equipment</div>
+    </div>
+    <div class="company-list-container" *ngIf="view == 'company'">
+       <div class="filter-container">
+        <form [formGroup]="companyFilterForm">
+            <div class="search-div">
+                <div>
+                <label class="labels-search" for="name">Name:</label>
+                <input class="input-search" type="text" id="name" formControlName="name" placeholder="Enter name">
+                </div>
+    
+                <div>
+                <label class="labels-search" for="city">City:</label>
+                <input class="input-search" type="text" id="city" formControlName="city" placeholder="Enter city" >
+                </div>
+    
+                <div>
+                <label class="labels-search" for="country">Country:</label>
+                <input class="input-search" type="text" id="country" formControlName="country" placeholder="Enter country">
+                </div>
+    
+                <button class="btn_search" mat-raised-button (click)="searchCompanies()">Search</button>
+            </div>
+    
+            <div class="filter-div">
+                <p class="text-filter">Average Rating Range</p>
+                <label class="labels-search" for="minAverageRating">Min:</label>
+                <input id="minAverageRating" class="input-filter" placeholder="Min rate" type="number" formControlName="avgRatingMin" />
+    
+                <label class="labels-search" for="maxAverageRating">Max:</label>
+                <input id="maxAverageRating" class="input-filter" placeholder="Max rate" type="number" formControlName="avgRatingMax" />
+    
+                <button class="btn_search" mat-raised-button (click)="filterCompanies()">Filter</button>
+            </div>
+        </form>
+       </div>
+        <div class="company-list">
+            <div class="card-div" *ngFor="let company of companies">
+                <app-company-card [company]="company" (click)="showCompanyProfile(company)"></app-company-card>
+            </div>
+        </div>
+    </div>
+    <div class="equipment-list-container" *ngIf="view == 'equipment'">
+        <div class="filter-container">
+            <form [formGroup]="equipmentFilterForm">
+                <div class="form-fields">
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" type="text"/>
+                    </mat-form-field>
+    
+                    <mat-form-field>
+                        <mat-label>Min Price</mat-label>
+                        <input matInput formControlName="priceMin" type="number" min="0"/>
+                    </mat-form-field>
+            
+                    <mat-form-field>
+                        <mat-label>Max Price</mat-label>
+                        <input matInput formControlName="priceMax" type="number" min="0"/>
+                    </mat-form-field>
+    
+                    <mat-form-field>
+                        <mat-label>Type</mat-label>
+                        <mat-select formControlName="type" matInput>
+                            <mat-option *ngFor="let t of equipmentPossibleTypes" [value]="t">{{t}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <button class="btn" type="submit" (click)="filterEquipment()" mat-raised-button>
+                    Search
+                </button>
+            </form>
+        </div>
+        <div class="equipment-list">
+            <div class="card-div" *ngFor="let e of equipment">
+              <app-equipment-card [equipment]="e"></app-equipment-card>
+            </div>
+        </div>
+    </div>
+</div>
+  

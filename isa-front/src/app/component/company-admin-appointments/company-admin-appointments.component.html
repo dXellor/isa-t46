@@ -1,0 +1,81 @@
+<div class="container">
+    <div class="form">
+        <div *ngIf="company?.admins && company?.startWork">
+            <h2>Appointments section</h2>
+            <form [formGroup]="appointmentForm">
+                <mat-form-field>
+                    <mat-label>Administrator</mat-label>
+                    <mat-select placeholder="select administrator" class="administrator-selector"
+                        formControlName="admin">
+                        <mat-option *ngFor="let administrator of company.admins"
+                            [value]="administrator">{{administrator.firstName}} {{administrator.lastName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Date</mat-label>
+                    <input matInput [matDatepicker]="start" formControlName="dateTime"
+                        [matDatepickerFilter]="dateFilter">
+                    <mat-datepicker-toggle matIconSuffix [for]="start"></mat-datepicker-toggle>
+                    <mat-datepicker #start>
+                        <mat-datepicker-actions>
+                            <button mat-button matDatepickerCancel>Cancel</button>
+                            <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                        </mat-datepicker-actions>
+                    </mat-datepicker>
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Time</mat-label>
+                    <input matInput type="time" formControlName="time">
+                    <mat-hint *ngIf="appointmentForm.get('time').errors?.['timeOutsideWorkingHours']">
+                        Time must be within the company's working hours ({{company.startWork}} - {{company.endWork}}).
+                    </mat-hint>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Duration (minutes)</mat-label>
+                    <input matInput type="number" formControlName="duration">
+                    <mat-error *ngIf="appointmentForm.get('duration').errors?.['required']">
+                        Duration is required.
+                    </mat-error>
+                </mat-form-field>
+                <button mat-flat-button (click)="addAppointment()" [disabled]="!appointmentForm.valid">Add
+                    appointment</button>
+            </form>
+        </div>
+    </div>
+    <div class="appointments">
+        <h2>My appointments</h2>
+        <div class="table">
+            <h3 *ngIf="dataSource.length === 0">No pending reservations</h3>
+            <table mat-table [dataSource]="dataSource" *ngIf="dataSource.length !== 0" class="mat-elevation-z8">
+
+                <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+                <!-- Position Column -->
+                <ng-container matColumnDef="dateTime">
+                    <th mat-header-cell *matHeaderCellDef> Date and time</th>
+                    <td mat-cell *matCellDef="let element"> {{formatDate(element.dateTime)}} </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="duration">
+                    <th mat-header-cell *matHeaderCellDef> Duration </th>
+                    <td mat-cell *matCellDef="let element"> {{element.duration}} min </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="companyAdmin">
+                    <th mat-header-cell *matHeaderCellDef> Company Admin </th>
+                    <td mat-cell *matCellDef="let element"> {{element.companyAdmin.firstName}}
+                        {{element.companyAdmin.lastName}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
+<p-toast [position]="'bottom-center'"></p-toast>

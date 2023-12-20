@@ -45,4 +45,3 @@ export class ReservationService {
     return this.http.put<Reservation>(`${this.url}/outOfOrderCreate`, outOfOrderReservation);
   }
 }
-

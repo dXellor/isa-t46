@@ -45,6 +45,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { UserAppointmentFormComponent } from './component/user-appointment-form/user-appointment-form.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { EmployeeReservationsViewComponent } from './view/employee-reservations-view/employee-reservations-view.component';
+import { MatTableModule } from '@angular/material/table';
+import { CompanyAdminAppointmentsComponent } from './component/company-admin-appointments/company-admin-appointments.component';
+import { CompanyInventoryManagementComponent } from './component/company-inventory-management/company-inventory-management.component';
+import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
+import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +75,11 @@ import { MatNativeDateModule } from '@angular/material/core';
     CompanyInfoViewComponent,
     EquipmentSelectorComponent,
     UserAppointmentFormComponent,
+    EmployeeReservationsViewComponent,
+    CompanyAdminAppointmentsComponent,
+    CompanyInventoryManagementComponent,
+    VisitorHomeViewComponent,
+    EquipmentCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -97,6 +108,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTableModule
   ],
   providers: [
     {

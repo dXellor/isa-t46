@@ -82,7 +82,7 @@ public class EmailAspect {
         LOGGER.info("Sending reservation confirmation email to " + emailTo);
 
         try {
-            QRCodeUtils.generateReservationQRCodeImage(ReservationUtils.getReservationInformation(reservationDto, reservationItemService.findReservationItemsByReservationId(3)), 500, 500, "qrcodeid.png");
+            QRCodeUtils.generateReservationQRCodeImage(ReservationUtils.getReservationInformation(reservationDto, reservationItemService.findReservationItemsByReservationId(reservationDto.getId())), 500, 500, "qrcodeid.png");
         }catch (Exception e){
             LOGGER.error("QR code error: " + e.toString());
         }

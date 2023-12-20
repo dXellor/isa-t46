@@ -171,4 +171,36 @@ public class ReservationController {
         }
     }
 
+    @Operation(summary = "get reservations for employee", description = "get reservations for employee")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/employee")
+    public ResponseEntity<Page<ReservationDto>> getReservationsForEmployee(Pageable page, Principal user){
+        Page<ReservationDto> reservations = reservationService.findByEmployee(page, user.getName());
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get reservations for company", description = "get reservations for company admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/company")
+    public ResponseEntity<Page<ReservationDto>> getReservationForAdmin(Pageable page){
+        Page<ReservationDto> reservations = reservationService.findByCompanyAdmin(page);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get available reservations for company", description = "get available reservations for company admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/available/{companyId}")
+    public ResponseEntity<List<ReservationDto>> getAvailableCompanyAppointments(@PathVariable int companyId){
+        List<ReservationDto> reservations = reservationService.findAvailableAppointmentsByCompany(companyId);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }

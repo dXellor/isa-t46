@@ -13,7 +13,7 @@ import {
 } from 'date-fns';
 import { Subject } from 'rxjs';
 import { Reservation } from 'src/app/model/reservation.model';
-import { ReservationService } from 'src/app/service/reservation.service';
+import { ReservationService } from 'src/app/service/reservation/reservation.service';
 
 @Component({
   selector: 'app-company-calendar-view',
@@ -29,7 +29,7 @@ export class CompanyCalendarViewComponent {
   refresh = new Subject<void>();
   yearView: boolean;
 
-  constructor(private reservationService: ReservationService) { 
+  constructor(private reservationService: ReservationService) {
     this.yearView = false;
     this.currentDate = new Date();
     this.events = [];
@@ -40,7 +40,7 @@ export class CompanyCalendarViewComponent {
     this.events = [];
     this.reservationService.getByDay(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, this.currentDate.getDate()).subscribe({
       next: (response: Reservation[]) => {
-        if(!response) return;
+        if (!response) return;
 
         this.loadEvents(response);
       }
@@ -51,7 +51,7 @@ export class CompanyCalendarViewComponent {
     this.events = [];
     this.reservationService.getByWeek(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, this.currentDate.getDate()).subscribe({
       next: (response: Reservation[]) => {
-        if(!response) return;
+        if (!response) return;
 
         this.loadEvents(response);
       }
@@ -62,7 +62,7 @@ export class CompanyCalendarViewComponent {
     this.events = [];
     this.reservationService.getByMonth(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1).subscribe({
       next: (response: Reservation[]) => {
-        if(!response) return;
+        if (!response) return;
 
         this.loadEvents(response);
       }
@@ -73,7 +73,7 @@ export class CompanyCalendarViewComponent {
     this.events = [];
     this.reservationService.getByYear(this.currentDate.getFullYear()).subscribe({
       next: (response: Reservation[]) => {
-        if(!response) return;
+        if (!response) return;
 
         this.loadEvents(response);
       }
@@ -82,7 +82,7 @@ export class CompanyCalendarViewComponent {
 
   loadEvents(reservations: Reservation[]) {
     reservations.forEach((reservation) => {
-      let newEvent = 
+      let newEvent =
       {
         start: new Date(reservation.dateTime),
         end: addMinutes(new Date(reservation.dateTime), reservation.duration),
@@ -109,8 +109,7 @@ export class CompanyCalendarViewComponent {
   }
 
   getDependingOnView(view: string) {
-    switch(view)
-    {
+    switch (view) {
       case 'year': this.getByYear(); break;
       case 'month': this.getByMonth(); break;
       case 'week': this.getByWeek(); break;

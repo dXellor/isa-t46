@@ -8,6 +8,8 @@ import { ReservationService } from 'src/app/service/reservation/reservation.serv
 import { Reservation } from 'src/app/model/reservation/reservation.model';
 import { ReservationRequest } from 'src/app/model/reservation/reservation-request.model';
 import { ReservationItem } from 'src/app/model/reservation/reservation-item.model';
+import { MessageService } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Company } from 'src/app/model/company.model';
 
 @Component({
@@ -24,21 +26,26 @@ import { Company } from 'src/app/model/company.model';
         animate('200ms ease-out', style({ transform: 'translateX(100%)' }))
       ])
     ])
-  ]
+  ],
+  providers: [MessageService],
 })
 export class EquipmentSelectorComponent implements OnInit {
   predefinedAppointments: Reservation[] = [];
   reservationRequest: ReservationRequest = {} as ReservationRequest;
   selectedAppointment: Reservation = {} as Reservation;
+  reservationNote: string = "";
+  noteForm : FormGroup;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService, private messageService: MessageService, private fb: FormBuilder) { 
+    this.noteForm = fb.group({
+      note: ["", []],
+    });
+  }
 
   ngOnInit(): void {
-    this.reservationService.getAllPaged().subscribe(result => {
-      this.predefinedAppointments = result.content;
+    this.reservationService.getAvailableAppointments(this.chosenEquipment[0].inventoryItem.company.id).subscribe(result => {
+      this.predefinedAppointments = result;
     })
-    console.log(this.chosenEquipment);
-
   }
 
   createNewAppointmentDate(): void {
@@ -69,12 +76,16 @@ export class EquipmentSelectorComponent implements OnInit {
       reservationItem.id = this.selectedAppointment.id
     }
     this.reservationRequest.reservation_id = this.selectedAppointment.id;
-    this.reservationRequest.reservation_items = this.chosenEquipment;
-    this.reservationRequest.note = "End yourself";
-    this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
-
-    });
-    console.log(this.reservationRequest);
-
+    if(this.reservationRequest.reservation_id){
+      this.reservationRequest.reservation_items = this.chosenEquipment;
+      this.reservationRequest.note = this.noteForm.value["note"];
+  
+      this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
+          // this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
+          window.alert("The reservation has been made successfully. Check your email for reservation information");
+      });
+    }else{
+      window.alert("Select appointment before you confirm reservation");
+    }
   }
 }

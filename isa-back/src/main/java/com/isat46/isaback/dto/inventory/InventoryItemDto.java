@@ -2,6 +2,7 @@ package com.isat46.isaback.dto.inventory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.isat46.isaback.dto.equipment.EquipmentDto;
+import com.isat46.isaback.model.Company;
 import com.isat46.isaback.model.Equipment;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,12 +18,14 @@ public class InventoryItemDto
     private int id;
 
     @NotNull
-    @NotBlank
+    @JsonProperty("company")
+    private Company company;
+
+    @NotNull
     @JsonProperty("equipment")
     private EquipmentDto equipment;
 
     @NotNull
-    @NotBlank
     @JsonProperty("count")
     private int count;
 }

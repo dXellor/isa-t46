@@ -1,7 +1,8 @@
 export const roleRoutes: { [role: string]: string } = {
   'ROLE_USER': '/user-home',
   'ROLE_COMPADMIN': '/company-profile',
-  'ROLE_SYSADMIN': '/manage-companies'
+  'ROLE_SYSADMIN': '/manage-companies',
+  'NO_ROLE': '/' 
 };
 
 export interface UserRole {

@@ -34,4 +34,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     List<Reservation> findByCompanyAdminId(@Param("companyAdminId") int companyAdminId);
 
     List<Reservation> findByCompanyIdAndDateTimeBetweenAndStatusIn(int companyId, LocalDateTime start, LocalDateTime end, Collection<ReservationStatus> statuses);
+    @Query("SELECT r FROM Reservation r WHERE r.company.id = :companyId AND r.status = 0")
+    List<Reservation> findAvailableAppointmentsByCompany(@Param("companyId") int companyId);
+    Page<Reservation> findByEmployeeEmailAndEmployeeNotNull(Pageable page, String email);
+    Page<Reservation> findByEmployeeIsNull(Pageable page);
+
 }

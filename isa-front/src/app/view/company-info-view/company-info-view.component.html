@@ -1,28 +1,45 @@
 <div class="company-info">
   <h1>{{company.name}}</h1>
-  <h3>{{company.description}}</h3>
-  <div class="rating">
-    <p><strong>Rating:</strong>
 
-    </p>
-    <mat-icon *ngFor="let i of [].constructor(Math.floor(company.averageRating))">star</mat-icon>
-    <mat-icon *ngIf="company.averageRating % 1 != 0">star_half</mat-icon>
-    <mat-icon *ngFor="let i of [].constructor(5 - Math.ceil(company.averageRating))">star_border</mat-icon>
-  </div>
-  <div class="company-equipment">
-    <h3>Company equipment</h3>
-    <div class="equipment" *ngFor="let equipment of companyEquipment">
-      <mat-card (click)="addEquipmentToSelection(equipment)">{{equipment.equipment.name}} -
-        {{equipment.equipment.description}} - {{equipment.count}}</mat-card>
-      <button mat-flat-button (click)="addEquipmentToSelection(equipment)">Add</button>
-      <button mat-flat-button (click)="removeEquipmentFromSelection(equipment)">Remove</button>
+  <div class="main-container">
+    <div class="sub-container">
+      <h3>{{company.description}}</h3>
+      <div class="rating">
+        <p><strong>Rating:</strong></p>
+        <mat-icon *ngFor="let i of [].constructor(Math.floor(company.averageRating))">star</mat-icon>
+        <mat-icon *ngIf="company.averageRating % 1 != 0">star_half</mat-icon>
+        <mat-icon *ngFor="let i of [].constructor(5 - Math.ceil(company.averageRating))">star_border</mat-icon>
+      </div>
+
+      <div class="address">
+        <h3>Find us at:</h3>
+        <p>{{company.address.street}}, {{company.address.city}}, {{company.address.country}}</p>
+        <app-map [address]="company.address"></app-map>
+      </div>
     </div>
-    <button mat-flat-button class="btn" (click)="openEquipmentSelection()">Choose date</button>
+
+    <div class="sub-container.company-equipment">
+      <div class="company-equipment" *ngIf="currentUser">
+        <h3>Company equipment</h3>
+        <div class="equipment" *ngFor="let equipment of companyEquipment">
+          <mat-card>
+            {{equipment.equipment.name}} -{{equipment.equipment.description}}<br><br>
+            In stock count: {{equipment.count}}<br><br>
+            Count you selected: {{selectedCounts[equipment.id] ? selectedCounts[equipment.id] : 0}}
+          </mat-card>
+
+          <button mat-flat-button (click)="increaseEquipmentCount(equipment)"
+            [disabled]="equipment.count === 0">+</button>
+          <button mat-flat-button (click)="decraseEquipmentCount(equipment)"
+            [disabled]="selectedCounts[equipment.id] === 0 || selectedCounts[equipment.id] === undefined">-</button>
+        </div>
+        <br>
+        <button mat-flat-button class="btn" style="background-color: forestgreen; color: white;" (click)="openEquipmentSelection()">Choose reservation date</button>
+      </div>
+    </div>
   </div>
-  <div class="address">
-    <h3>Find us at:</h3>
-    <p>{{company.address.street}}, {{company.address.city}}, {{company.address.country}}</p>
-    <app-map [address]="company.address"></app-map>
-  </div>
+  
+  
+  
   <p-toast></p-toast>
 </div>
