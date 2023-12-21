@@ -1,8 +1,9 @@
 package com.isat46.isaback.controller;
 
-import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationDto;
+import com.isat46.isaback.dto.company.CompanyDto;
+import com.isat46.isaback.dto.equipment.EquipmentDto;
+import com.isat46.isaback.dto.reservation.*;
+import com.isat46.isaback.model.Equipment;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -128,6 +133,42 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDto>> findByYear(Principal user, @PathVariable Integer year){
         List<ReservationDto> reservations = reservationService.findByYear(user.getName(), year);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "find available time slots", description = "find available time slots (out of order appointments)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "found successfully"),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/availableTimeSlots")
+    public ResponseEntity<List<ReservationDto>> offerOutOfOrderTimes(
+            @RequestParam(required = false) int companyId,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
+            ) {
+        List<ReservationDto> timeSlots = reservationService.offerOutOfOrderReservations(companyId, date);
+        return new ResponseEntity<>(timeSlots, HttpStatus.OK);
+    }
+
+    @Operation(
+            summary = "creates reservation with items (out of order appointments)", description = "creates reservation with items (out of order appointments)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservation added successfully", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = OutOfOrderReservationDto.class))}),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @PutMapping(value = "/outOfOrderCreate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ReservationDto> createReservationWithOutOfOrderAppointment(
+            @RequestBody(required = false) OutOfOrderReservationDto outOfOrderReservationDto,
+            Principal user) {
+
+        ReservationDto newReservation = reservationService.createReservationWithOutOfOrderAppointment(outOfOrderReservationDto, user.getName());
+        if (newReservation != null) {
+            return new ResponseEntity<>(newReservation, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Operation(summary = "get reservations for employee", description = "get reservations for employee")

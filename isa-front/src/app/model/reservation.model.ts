@@ -5,7 +5,7 @@ export interface Reservation {
     id?: number,
     employee?: User,
     companyAdmin?: User,
-    CompanyInfo?: Company,
+    company?: Company,
     note?: string,
     status?: string,
     dateTime: Date,

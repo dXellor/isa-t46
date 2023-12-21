@@ -10,6 +10,7 @@ import { ReservationRequest } from 'src/app/model/reservation/reservation-reques
 import { ReservationItem } from 'src/app/model/reservation/reservation-item.model';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Company } from 'src/app/model/company.model';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -48,7 +49,15 @@ export class EquipmentSelectorComponent implements OnInit {
   }
 
   createNewAppointmentDate(): void {
-    this.dialog.open(UserAppointmentFormComponent, { data: this.predefinedAppointments })
+
+    this.dialog.open(UserAppointmentFormComponent, {
+      
+      data: {
+        predefinedAppointments: this.predefinedAppointments,
+        chosenEquipment: this.chosenEquipment,
+        companyInfo : this.predefinedAppointments[0].company
+      }
+    });
   }
 
   formatAppointment(appointment: Reservation): string {

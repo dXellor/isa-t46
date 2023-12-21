@@ -2,6 +2,8 @@ package com.isat46.isaback.aspect;
 
 import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.dto.user.UserDto;
+import com.isat46.isaback.mappers.ReservationMapper;
+import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.model.VerificationToken;
 import com.isat46.isaback.repository.VerificationTokenRepository;
 import com.isat46.isaback.service.ReservationItemService;
@@ -110,4 +112,51 @@ public class EmailAspect {
             throw new RuntimeException(e);
         }
     }
+
+    @Async
+    @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.ReservationService.createReservationWithOutOfOrderAppointment(..))", returning = "result")
+    public void sendReservationConfirmationEmailForOutOfOrderReservation(JoinPoint joinPoint, Object result){
+        ReservationDto reservationDto = ((ReservationDto) result);
+        Reservation reservation = ReservationMapper.ReservationDtoToReservation(reservationDto);
+        UserDto employee = reservationDto.getEmployee();
+        /*
+         *  SET EMAIL TO YOUR EMAIL WHEN DEBUGING
+         */
+        String emailTo = employee.getEmail();
+
+        LOGGER.info("Sending reservation confirmation email to " + emailTo);
+
+        try {
+            QRCodeUtils.generateReservationQRCodeImage(ReservationUtils.getReservationInformation(reservationDto, reservationItemService.findReservationItemsByReservationId(reservation.getId())), 500, 500, "qrcodeid.png");
+        }catch (Exception e){
+            LOGGER.error("QR code error: " + e.toString());
+        }
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMultipart multipart = new MimeMultipart();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, "utf-8");
+        try {
+            MimeBodyPart messageBodyContent = new MimeBodyPart();
+            messageBodyContent.setContent(String.format(ReservationUtils.emailTemplate, employee.getFirstName(), employee.getLastName()),"text/html");
+            multipart.addBodyPart(messageBodyContent);
+
+            MimeBodyPart messageAttachment = new MimeBodyPart();
+            DataSource source = new FileDataSource(QRCodeUtils.QR_CODE_IMAGE_PATH + "qrcodeid.png");
+            messageAttachment.setDataHandler(new DataHandler(source));
+            messageAttachment.setFileName("qrcodeid.png");
+            multipart.addBodyPart(messageAttachment);
+
+            message.setContent(multipart);
+            messageHelper.setTo(emailTo);
+            messageHelper.setFrom("${spring.mail.username}");
+            messageHelper.setSubject("Reservation confirmation");
+            javaMailSender.send(message);
+
+            FileSystemUtils.deleteFile(QRCodeUtils.QR_CODE_IMAGE_PATH + "qrcodeid.png");
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

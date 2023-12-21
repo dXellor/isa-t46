@@ -2,6 +2,7 @@ package com.isat46.isaback.repository;
 
 import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.model.User;
+import com.isat46.isaback.model.enums.ReservationStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
@@ -30,9 +33,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r WHERE r.companyAdmin.id = :companyAdminId AND (r.status = 0 OR r.status = 1)")
     List<Reservation> findByCompanyAdminId(@Param("companyAdminId") int companyAdminId);
 
+    List<Reservation> findByCompanyIdAndDateTimeBetweenAndStatusIn(int companyId, LocalDateTime start, LocalDateTime end, Collection<ReservationStatus> statuses);
     @Query("SELECT r FROM Reservation r WHERE r.company.id = :companyId AND r.status = 0")
     List<Reservation> findAvailableAppointmentsByCompany(@Param("companyId") int companyId);
-
     Page<Reservation> findByEmployeeEmailAndEmployeeNotNull(Pageable page, String email);
     Page<Reservation> findByEmployeeIsNull(Pageable page);
+
 }

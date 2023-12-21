@@ -1,22 +1,32 @@
 package com.isat46.isaback.service;
 
 import com.isat46.isaback.dto.company.CompanyDto;
-import com.isat46.isaback.dto.reservation.AppointmentCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationCreationDto;
-import com.isat46.isaback.dto.reservation.ReservationDto;
+import com.isat46.isaback.dto.company.CompanyInfoDto;
+import com.isat46.isaback.dto.equipment.EquipmentDto;
+import com.isat46.isaback.dto.reservation.*;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.mappers.CompanyMapper;
 import com.isat46.isaback.mappers.ReservationMapper;
+import com.isat46.isaback.model.Equipment;
 import com.isat46.isaback.model.Reservation;
+import com.isat46.isaback.model.ReservationItem;
+import com.isat46.isaback.model.User;
+import com.isat46.isaback.model.enums.ReservationStatus;
 import com.isat46.isaback.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.isat46.isaback.mappers.ReservationMapper;
 import com.isat46.isaback.util.ReservationUtils;
+import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -132,6 +142,84 @@ public class ReservationService {
         return intertwines;
     }
 
+    public List<ReservationDto> offerOutOfOrderReservations(int companyId, LocalDate wantedDate){
+        List<LocalDateTime> offeredTimes = new ArrayList<>();
+        LocalDateTime start = LocalDateTime.of(wantedDate, LocalTime.MIN);
+        LocalDateTime end = LocalDateTime.of(wantedDate, LocalTime.MAX);
+
+        List<Reservation> scheduledReservations = reservationRepository.findByCompanyIdAndDateTimeBetweenAndStatusIn(
+                companyId,
+                start,
+                end,
+                Arrays.asList(ReservationStatus.APPOINTMENT, ReservationStatus.PENDING)
+        );
+
+        var companyDto = companyService.findById(companyId);
+        LocalTime startWork = companyDto.getStartWork();
+        LocalTime endWork = companyDto.getEndWork();
+        List<LocalDateTime> allPossibleTimes = generateTimeSlots(startWork, endWork, 30, wantedDate);
+
+        for (LocalDateTime possibleDateTime : allPossibleTimes) {
+            if (!doesIntertwineWithReservations(possibleDateTime, 30, scheduledReservations)) {
+                offeredTimes.add(possibleDateTime);
+            }
+        }
+
+        List<ReservationDto> reservationDtos = new ArrayList<>();
+        for (LocalDateTime offeredTime : offeredTimes) {
+            ReservationDto reservationDto = new ReservationDto();
+            reservationDto.setDateTime(offeredTime);
+            reservationDto.setDuration(30);
+            reservationDtos.add(reservationDto);
+        }
+
+        return reservationDtos;
+
+    }
+
+    private List<LocalDateTime> generateTimeSlots(LocalTime startTime, LocalTime endTime, int slotDurationMinutes, LocalDate wantedDate) {
+        List<LocalDateTime> timeSlots = new ArrayList<>();
+        LocalDateTime wantedDateTime = LocalDateTime.of(wantedDate, startTime);
+
+        while (!wantedDateTime.toLocalTime().isAfter(endTime.minusMinutes(slotDurationMinutes))) {
+            timeSlots.add(wantedDateTime);
+            wantedDateTime = wantedDateTime.plusMinutes(slotDurationMinutes);
+        }
+
+        return timeSlots;
+    }
+
+    public ReservationDto createReservationWithOutOfOrderAppointment(OutOfOrderReservationDto outOfOrderReservationDto, String userEmail){
+        ReservationDto reservationDto = outOfOrderReservationDto.getReservation();
+        List<ReservationItemDto> selectedEquipment = outOfOrderReservationDto.getReservationItems();
+
+        UserDto loggedUser = userService.findByEmail(userEmail);
+        CompanyDto company = companyService.findById(reservationDto.getCompany().getId());
+        List<UserDto> admins = company.getAdmins();
+        UserDto companyAdmin = null;
+        if (admins != null && !admins.isEmpty()) {
+            companyAdmin = admins.getFirst();
+        } else {
+            throw new NotFoundException("No company admin avaliable!");
+        }
+
+        if(companyAdmin==null)
+            throw new NotFoundException("No company admin avaliable!");
+
+        if(!inventoryService.areReservationItemsInStock(selectedEquipment))
+            throw new NotFoundException("Not enough Equipment in stock!");
+
+        reservationDto.setEmployee(loggedUser);
+        reservationDto.setNote("out of order appointment");
+        reservationDto.setStatus("APPOINTMENT");
+        reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
+        reservationDto.setCompanyAdmin(companyAdmin);
+
+        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+        reservationItemService.addReservationItems(selectedEquipment, reservation);
+        return ReservationMapper.ReservationToReservationDto(reservation);
+    }
+
     public Page<ReservationDto> findByEmployee(Pageable page, String email){
         return reservationRepository.findByEmployeeEmailAndEmployeeNotNull(page, email).map(ReservationMapper::ReservationToReservationDto);
     }
@@ -144,4 +232,5 @@ public class ReservationService {
         List<Reservation> appointments = reservationRepository.findAvailableAppointmentsByCompany(companyId);
         return ReservationMapper.ReservationsToReservationDtos(appointments);
     }
+
 }
