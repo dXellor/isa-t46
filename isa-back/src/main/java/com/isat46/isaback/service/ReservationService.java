@@ -286,5 +286,14 @@ public class ReservationService {
         PositionSimulatorCommand command = new PositionSimulatorCommand("BEGIN", reservationId, 1.2f, 1.2f, 1.2f, 1.2f, mqttService.delay);
         mqttService.publish(mqttService.MQTT_COMMAND_TOPIC, command.toString());
     }
+    public List<ReservationDto> getCompletedReservationsForUser(String userEmail){
+        List<Reservation> reservations = reservationRepository.findCompletedByUser(userEmail);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+
+    public List<ReservationDto> sortReservationsByDurationAndDate(String userEmail, String orderByDuration, String orderByDateTime) {
+        List<Reservation> reservations = reservationRepository.orderByDurationAndDateTime(userEmail, orderByDuration, orderByDateTime);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
 
 }

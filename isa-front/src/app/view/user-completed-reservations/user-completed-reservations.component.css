@@ -1,0 +1,37 @@
+.table {
+    width: 50%;
+}
+
+.sort{
+    padding: 10px;
+}
+
+.reservations-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.btn {
+    margin-left: 10px;
+    color: white;
+    background-color: darkred;
+    cursor: pointer; 
+    border: 1px solid darkred;
+    width: 125px;
+    height: 25px;
+    font-size: 14px;
+}
+
+.btn:hover{
+    background-color: rgb(231, 124, 124);
+    color:black;
+    border: 1px solid rgb(231, 124, 124);
+}
+
+.combobox{
+    font-size: 14px;
+}
+

@@ -231,4 +231,26 @@ public class ReservationController {
         reservationService.startTracking(reservationId, user.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "get completed reservations for user", description = "get completed reservations for logged user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/completedReservations")
+    public ResponseEntity<List<ReservationDto>> getCompletedReservationsForUser(Principal user){
+        List<ReservationDto> reservations = reservationService.getCompletedReservationsForUser(user.getName());
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get completed reservations for user sorted", description = "get completed reservations for logged user sorted")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/completedReservationsSort")
+    public ResponseEntity<List<ReservationDto>> sortReservationsByDurationAndDate(Principal user, @RequestParam(required = false) String duration, @RequestParam(required = false) String date){
+        List<ReservationDto> reservations = reservationService.sortReservationsByDurationAndDate(user.getName(), duration, date);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
 }

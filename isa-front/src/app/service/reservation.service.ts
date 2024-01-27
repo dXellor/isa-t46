@@ -44,4 +44,23 @@ export class ReservationService {
   createReservationWithOutOfOrderAppointment(outOfOrderReservation: OutOfOrderReservation): Observable<Reservation> {
     return this.http.put<Reservation>(`${this.url}/outOfOrderCreate`, outOfOrderReservation);
   }
+
+  getCompletedReservationsForUser(): Observable<Reservation[]> {
+    const url = `${this.url}/completedReservations`;
+    return this.http.get<Reservation[]>(url);
+  }
+
+  sortReservationsByDurationAndDate(
+    sortByDuration: boolean,
+    sortByDateTime: boolean,
+    sortOrder: string
+  ): Observable<Reservation[]> {
+    const url = `${this.url}/completedReservationsSort`;
+
+    let params = new HttpParams()
+      .set('duration', sortByDuration ? sortOrder : null)
+      .set('date', sortByDateTime ? sortOrder : null);
+
+    return this.http.get<Reservation[]>(url, { params });
+  }
 }
