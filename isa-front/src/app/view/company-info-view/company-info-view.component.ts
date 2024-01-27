@@ -32,16 +32,10 @@ export class CompanyInfoViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUser().subscribe((response) => { // making request again, because sometimes userService.getCurrentUser returns a null (happens when page refreshes)
-      this.currentUser = response;
-      if(this.currentUser){
-        this.inventoryService.getInventoryForCompany(this.company.id).subscribe(result => {
-          this.companyEquipment = result.content;
-        });
-        this.reservationSerice.getReservationsForEmployee().subscribe(result => {
-          this.userReservations = result.content;
-        })
-      }
+    this.initPage();
+
+    this.dialog.afterAllClosed.subscribe(() => {
+      this.initPage();
     });
   }
 
@@ -107,5 +101,21 @@ export class CompanyInfoViewComponent implements OnInit {
     }
 
     this.selectedEquipment.filter(e => e.inventoryItem === equipment)[0].count = this.selectedCounts[equipment.id];
+  }
+
+  private initPage(): void {
+    this.userService.getUser().subscribe((response) => { // making request again, because sometimes userService.getCurrentUser returns a null (happens when page refreshes)
+      this.currentUser = response;
+      if(this.currentUser){
+        this.inventoryService.getInventoryForCompany(this.company.id).subscribe(result => {
+          this.companyEquipment = result.content;
+        });
+        this.reservationSerice.getReservationsForEmployee().subscribe(result => {
+          this.userReservations = result.content;
+        })
+      }
+    });
+
+    this.selectedCounts = {}
   }
 }
