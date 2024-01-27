@@ -54,23 +54,23 @@ INSERT INTO isadb."company_equipment" (company_id, equipment_id) VALUES (2, 5);
 INSERT INTO isadb."company_admin"(company_id, admin_id) VALUES (2, 3);
 INSERT INTO isadb."company_admin"(company_id, admin_id) VALUES (2, 2);
 
-INSERT INTO isadb."inventory" (equipment_id, count, company_id) VALUES (1, 10, 2);
-INSERT INTO isadb."inventory" (equipment_id, count, company_id) VALUES (2, 10, 2);
-INSERT INTO isadb."inventory" (equipment_id, count, company_id) VALUES (5, 40, 2);
-INSERT INTO isadb."inventory" (equipment_id, count, company_id) VALUES (6, 10, 2);
+INSERT INTO isadb."inventory" (equipment_id, count, company_id, version) VALUES (1, 10, 2, 0);
+INSERT INTO isadb."inventory" (equipment_id, count, company_id, version) VALUES (2, 10, 2, 0);
+INSERT INTO isadb."inventory" (equipment_id, count, company_id, version) VALUES (5, 40, 2, 0);
+INSERT INTO isadb."inventory" (equipment_id, count, company_id, version) VALUES (6, 10, 2, 0);
 
 -- predefined appointments
-INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-15 11:29:20.376', 15, 0, 3, 1);
-INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-10 12:00:00.0', 20, 0, 3, 1);
-INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-24 12:00:00.0', 20, 0, 3, 2);
-INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id) VALUES ('2023-12-30 12:00:00.0', 20, 0, 3, 2);
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id, version) VALUES ('2023-12-15 11:29:20.376', 15, 0, 3, 1, 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id, version) VALUES ('2023-12-10 12:00:00.0', 20, 0, 3, 1, 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id, version) VALUES ('2023-12-24 12:00:00.0', 20, 0, 3, 2, 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, admin_id, company_id, version) VALUES ('2023-12-30 12:00:00.0', 20, 0, 3, 2, 0);
 
 -- made reservations
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-17 12:00:00.0', 20, 1, 1, 3, 1, 'Call me 10min earlier pls');
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'Dgdgdgdgdg');
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2022-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'I am an old reservation');
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-11-18 18:00:00.0', 20, 1, 1, 3, 1, 'Last month reservation');
-INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note) VALUES ('2023-12-13 10:00:00.0', 40, 1, 1, 3, 1, 'Last week reservation');
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note, version) VALUES ('2023-12-17 12:00:00.0', 20, 1, 1, 3, 1, 'Call me 10min earlier pls', 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note, version) VALUES ('2023-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'Dgdgdgdgdg', 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note, version) VALUES ('2022-12-18 12:00:00.0', 20, 1, 1, 3, 1, 'I am an old reservation', 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note, version) VALUES ('2023-11-18 18:00:00.0', 20, 1, 1, 3, 1, 'Last month reservation', 0);
+INSERT INTO isadb."reservation" (date_time, duration, status, employee_id, admin_id, company_id, note, version) VALUES ('2023-12-13 10:00:00.0', 40, 1, 1, 3, 1, 'Last week reservation', 0);
 
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (1, 2, 5);
 INSERT INTO isadb."reservation_item" (inventory_item_id, count, reservation_id) VALUES (2, 4, 5);

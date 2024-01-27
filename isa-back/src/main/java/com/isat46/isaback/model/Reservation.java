@@ -41,4 +41,7 @@ public class Reservation {
     //Duration in minutes
     @Column(name = "duration")
     private long duration;
+
+    @Version
+    private int version;
 }
