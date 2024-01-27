@@ -271,4 +271,14 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservationToCancel);
     }
 
+    public List<ReservationDto> getCompletedReservationsForUser(String userEmail){
+        List<Reservation> reservations = reservationRepository.findCompletedByUser(userEmail);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+
+    public List<ReservationDto> sortReservationsByDurationAndDate(String userEmail, String orderByDuration, String orderByDateTime) {
+        List<Reservation> reservations = reservationRepository.orderByDurationAndDateTime(userEmail, orderByDuration, orderByDateTime);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+
 }

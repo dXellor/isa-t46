@@ -51,6 +51,7 @@ import { CompanyAdminAppointmentsComponent } from './component/company-admin-app
 import { CompanyInventoryManagementComponent } from './component/company-inventory-management/company-inventory-management.component';
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
+import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { EquipmentCardComponent } from './component/equipment-card/equipment-car
     CompanyInventoryManagementComponent,
     VisitorHomeViewComponent,
     EquipmentCardComponent,
+    UserCompletedReservationsComponent,
   ],
   imports: [
     BrowserModule,
