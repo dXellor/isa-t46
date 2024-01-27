@@ -220,4 +220,15 @@ public class ReservationController {
         List<ReservationDto> reservations = reservationService.findAvailableAppointmentsByCompany(companyId);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
+
+    @Operation(summary = "start location tracking", description = "start location tracking")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "starting location tracking")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/tracking/{reservationId}")
+    public ResponseEntity<List<ReservationDto>> startTracking(@PathVariable Integer reservationId, Principal user){
+        reservationService.startTracking(reservationId, user.getName());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

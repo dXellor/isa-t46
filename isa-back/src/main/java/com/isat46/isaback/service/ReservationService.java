@@ -13,9 +13,11 @@ import com.isat46.isaback.model.ReservationItem;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import com.isat46.isaback.repository.ReservationRepository;
+import com.isat46.isaback.util.PositionSimulatorCommand;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,6 +53,9 @@ public class ReservationService {
 
     @Autowired
     ReservationItemService reservationItemService;
+
+    @Autowired
+    MqttService mqttService;
 
     protected final Log LOGGER = LogFactory.getLog(getClass());
 
@@ -269,6 +274,17 @@ public class ReservationService {
         reservationRepository.save(reservationToCancel);
 
         return ReservationMapper.ReservationToReservationDto(reservationToCancel);
+    }
+
+    @Transactional
+    public void startTracking(Integer reservationId, String employeeEmail){
+        Reservation reservation = reservationRepository.findById(reservationId).orElseGet(null);
+        if(reservation == null || !reservation.getEmployee().getEmail().equals(employeeEmail)){
+            return;
+        }
+
+        PositionSimulatorCommand command = new PositionSimulatorCommand("BEGIN", reservationId, 1.2f, 1.2f, 1.2f, 1.2f, mqttService.delay);
+        mqttService.publish(mqttService.MQTT_COMMAND_TOPIC, command.toString());
     }
 
 }
