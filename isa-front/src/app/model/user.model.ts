@@ -23,4 +23,5 @@ export interface User{
     companyInformation: string,
     roles?: UserRole[],
     pendingPasswordReset?: boolean,
+    penalPoints?: number
 }

@@ -9,3 +9,9 @@
     align-items: center;
     text-align: center;
 }
+
+.btn {
+    padding: 5%;
+    color: white;
+    background-color: darkred;
+}

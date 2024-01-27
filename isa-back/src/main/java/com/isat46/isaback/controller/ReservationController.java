@@ -83,6 +83,23 @@ public class ReservationController {
         }
     }
 
+    @Operation(summary = "cancels reservation", description = "cancels reservation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservation canceled successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = ReservationDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/cancel/{reservationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ReservationDto> cancelReservation(@PathVariable Integer reservationId, Principal user){
+        ReservationDto canceledReservation = reservationService.cancelReservation(reservationId, user.getName());
+        if(canceledReservation != null)
+            return new ResponseEntity<>(canceledReservation, HttpStatus.OK);
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Operation(summary = "returns reservations by day", description = "returns reservations by day")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "reservations returned successfully",

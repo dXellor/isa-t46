@@ -59,6 +59,9 @@ public class UserDto {
     @JsonProperty("pendingPasswordReset")
     private boolean pendingPasswordReset;
 
+    @JsonProperty("penalPoints")
+    private int penalPoints;
+
     public UserDto(){}
     public UserDto(User user){
         this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getCity(), user.getCountry(),

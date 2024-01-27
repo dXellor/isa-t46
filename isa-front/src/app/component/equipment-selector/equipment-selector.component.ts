@@ -81,8 +81,11 @@ export class EquipmentSelectorComponent implements OnInit {
       this.reservationRequest.note = this.noteForm.value["note"];
 
       this.reservationService.addReservation(this.reservationRequest).subscribe(result => {
-        // this.messageService.add({ severity: "success", summary: "You have succesfully made a reservation"});
-        window.alert("The reservation has been made successfully. Check your email for reservation information");
+        window.alert("You have succesfully made a reservation. Check your email for details");
+        this.dialog.closeAll();
+      }, error => {
+        window.alert("There was an error while receiving you request, please try again");
+        window.location.reload();
       });
     } else {
       window.alert("Select appointment before you confirm reservation");

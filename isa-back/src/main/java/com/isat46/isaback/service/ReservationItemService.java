@@ -38,6 +38,15 @@ public class ReservationItemService {
         return true;
     }
 
+    public Boolean removeReservationItems(Reservation reservation){
+        List<ReservationItem> items = reservationItemRepository.findReservationItemsByReservationId(reservation.getId());
+        for(ReservationItem item : items){
+            inventoryService.returnToStock(item);
+            reservationItemRepository.delete(item);
+        }
+        return true;
+    }
+
     public Page<ReservationItemDto>  getPaged(Pageable page){
         return reservationItemRepository.findAll(page).map(ReservationItemMapper::ReservationItemToReservationItemDto);
     }

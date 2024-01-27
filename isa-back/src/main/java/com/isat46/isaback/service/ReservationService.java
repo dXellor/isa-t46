@@ -13,6 +13,8 @@ import com.isat46.isaback.model.ReservationItem;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import com.isat46.isaback.repository.ReservationRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,8 +22,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.isat46.isaback.mappers.ReservationMapper;
 import com.isat46.isaback.util.ReservationUtils;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
+import javax.persistence.OptimisticLockException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -46,6 +51,8 @@ public class ReservationService {
 
     @Autowired
     ReservationItemService reservationItemService;
+
+    protected final Log LOGGER = LogFactory.getLog(getClass());
 
     public Page<ReservationDto> findAllPaged(Pageable page){
         return reservationRepository.findAll(page).map(ReservationMapper::ReservationToReservationDto);
@@ -88,12 +95,22 @@ public class ReservationService {
             //Items are not in stock
             return null;
 
+        try {
+            Reservation reservation = updateReservationToPending(reservationDto, employee, reservationCreationDto);
+            reservationItemService.addReservationItems(reservationCreationDto.getReservationItems(), reservation);
+            return ReservationMapper.ReservationToReservationDto(reservation);
+        } catch (OptimisticLockException ex){
+            LOGGER.error("Optimistic lock exception updating reservation: " + ex);
+            return null;
+        }
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public Reservation updateReservationToPending(ReservationDto reservationDto, UserDto employee, ReservationCreationDto reservationCreationDto){
         reservationDto.setEmployee(employee);
         reservationDto.setStatus("PENDING");
         reservationDto.setNote(reservationCreationDto.getNote());
-        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
-        reservationItemService.addReservationItems(reservationCreationDto.getReservationItems(), reservation);
-        return ReservationMapper.ReservationToReservationDto(reservation);
+        return reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
     }
 
     public List<ReservationDto> findByDay(String companyAdminEmail, int year, int month, int day)
@@ -231,6 +248,27 @@ public class ReservationService {
     public List<ReservationDto> findAvailableAppointmentsByCompany(int companyId){
         List<Reservation> appointments = reservationRepository.findAvailableAppointmentsByCompany(companyId);
         return ReservationMapper.ReservationsToReservationDtos(appointments);
+    }
+
+    public ReservationDto cancelReservation(int reservationId, String employeeEmail){
+        Reservation reservationToCancel = reservationRepository.findReservationToCancel(reservationId, employeeEmail);
+        if(reservationToCancel == null){
+            //There is no reservation to cancel
+            return null;
+        }
+
+        if(reservationToCancel.getDateTime().isBefore(LocalDateTime.now())){
+            reservationToCancel.setStatus(ReservationStatus.CANCELED);
+        }else{
+            reservationToCancel.setStatus(ReservationStatus.APPOINTMENT);
+        }
+
+        reservationItemService.removeReservationItems(reservationToCancel);
+        userService.punishUserForCancelation(reservationToCancel);
+        reservationToCancel.setEmployee(null);
+        reservationRepository.save(reservationToCancel);
+
+        return ReservationMapper.ReservationToReservationDto(reservationToCancel);
     }
 
 }

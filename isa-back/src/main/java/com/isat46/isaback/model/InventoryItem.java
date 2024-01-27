@@ -25,4 +25,7 @@ public class InventoryItem {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @Version
+    private int version;
 }

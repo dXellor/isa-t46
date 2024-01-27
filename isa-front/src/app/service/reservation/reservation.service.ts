@@ -58,4 +58,8 @@ export class ReservationService {
     return this.http.get<PagedResult<ReservationItem>>(`${this.items}`);
   }
 
+  cancelReservation(reservationId: number): Observable<Reservation>{
+    return this.http.get<Reservation>(`${this.url}/cancel/${reservationId}`);
+  }
+
 }
