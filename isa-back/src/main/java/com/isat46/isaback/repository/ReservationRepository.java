@@ -39,4 +39,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     Page<Reservation> findByEmployeeEmailAndEmployeeNotNull(Pageable page, String email);
     Page<Reservation> findByEmployeeIsNull(Pageable page);
 
+    @Query("SELECT r FROM Reservation r WHERE r.id = :reservationId AND r.employee.email = :employeeEmail AND r.status = 1")
+    Reservation findReservationToCancel(@Param("reservationId") int reservationId, @Param("employeeEmail") String employeeEmail);
 }

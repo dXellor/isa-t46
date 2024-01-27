@@ -4,6 +4,7 @@ import com.isat46.isaback.dto.inventory.InventoryItemDto;
 import com.isat46.isaback.dto.reservation.ReservationItemDto;
 import com.isat46.isaback.mappers.InventoryItemMapper;
 import com.isat46.isaback.model.InventoryItem;
+import com.isat46.isaback.model.ReservationItem;
 import com.isat46.isaback.repository.InventoryRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -62,6 +63,19 @@ public class InventoryService {
         }
 
         return false;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public Boolean returnToStock(ReservationItem reservationItem){
+        try {
+            InventoryItem inventoryItem = inventoryRepository.findById(reservationItem.getInventoryItem().getId()).orElseGet(null);
+            inventoryItem.setCount(inventoryItem.getCount() + reservationItem.getCount());
+            inventoryRepository.save(inventoryItem);
+            return true;
+        } catch (OptimisticLockException ex){
+            LOGGER.error("Optimistic lock exception when reducing stock: " + ex);
+            return false;
+        }
     }
 
     public InventoryItemDto addInventoryItem(InventoryItemDto inventoryItemDto){

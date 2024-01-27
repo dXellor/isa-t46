@@ -66,16 +66,19 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    @Column(name = "penal_points")
+    private int penalPoints;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(city, user.city) && Objects.equals(country, user.country) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(profession, user.profession) && Objects.equals(companyInformation, user.companyInformation);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(city, user.city) && Objects.equals(country, user.country) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(profession, user.profession) && Objects.equals(companyInformation, user.companyInformation) && Objects.equals(penalPoints, user.penalPoints);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, city, country, phoneNumber, profession, companyInformation);
+        return Objects.hash(id, email, firstName, lastName, city, country, phoneNumber, profession, companyInformation, penalPoints);
     }
 
     @Override
@@ -90,6 +93,7 @@ public class User implements UserDetails {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", profession='" + profession + '\'' +
                 ", companyInformation='" + companyInformation + '\'' +
+                ", penalPoints='" + penalPoints + '\'' +
                 '}';
     }
 

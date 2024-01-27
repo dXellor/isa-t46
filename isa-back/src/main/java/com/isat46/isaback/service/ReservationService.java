@@ -250,17 +250,25 @@ public class ReservationService {
         return ReservationMapper.ReservationsToReservationDtos(appointments);
     }
 
-    public ReservationDto cancelReservation(int reservationId){
-        Reservation reservationToCancel = reservationRepository.findById(reservationId).orElseGet(null);
-        if(reservationToCancel != null){
+    public ReservationDto cancelReservation(int reservationId, String employeeEmail){
+        Reservation reservationToCancel = reservationRepository.findReservationToCancel(reservationId, employeeEmail);
+        if(reservationToCancel == null){
+            //There is no reservation to cancel
             return null;
         }
 
+        if(reservationToCancel.getDateTime().isBefore(LocalDateTime.now())){
+            reservationToCancel.setStatus(ReservationStatus.CANCELED);
+        }else{
+            reservationToCancel.setStatus(ReservationStatus.APPOINTMENT);
+        }
 
+        reservationItemService.removeReservationItems(reservationToCancel);
+        userService.punishUserForCancelation(reservationToCancel);
+        reservationToCancel.setEmployee(null);
+        reservationRepository.save(reservationToCancel);
 
-
-
-        return null;
+        return ReservationMapper.ReservationToReservationDto(reservationToCancel);
     }
 
 }
