@@ -62,4 +62,7 @@ export class ReservationService {
     return this.http.get<Reservation>(`${this.url}/cancel/${reservationId}`);
   }
 
+  startPositionSimulator(reservationId: number): Observable<void> {
+    return this.http.get<void>(`${this.url}/tracking/${reservationId}`);
+  }
 }

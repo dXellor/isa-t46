@@ -16,7 +16,7 @@ public class MqttService {
     private IMqttClient mqttClient;
 
     @Value("${pos.sim.command.delay}")
-    public Integer delay;
+    public float delay;
 
     @Value("${pos.sim.command.topic}")
     public String MQTT_COMMAND_TOPIC;

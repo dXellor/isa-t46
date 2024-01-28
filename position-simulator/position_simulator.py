@@ -19,7 +19,7 @@ def start_simulation(payload: bytes):
                 target=simulation,
                 args=(
                     reservation_id,
-                    int(delay),
+                    float(delay),
                 )
             )
             simulation_thread.start()
@@ -35,6 +35,7 @@ def simulation(reservation_id: str, delay: int):
         for row in reader_obj:
             publish.single(f'{MQTT_LOCATION_TOPIC}/{reservation_id}', f'{row['lat;long']}', qos=2)
             time.sleep(delay)
+    publish.single(f'{MQTT_LOCATION_TOPIC}/{reservation_id}', 'END', qos=2)
     CURRENT_SIMULATIONS.remove(reservation_id)
 
 #MQTT

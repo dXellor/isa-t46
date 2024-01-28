@@ -13,9 +13,9 @@ public class PositionSimulatorCommand {
     private float startLongitude;
     private float endLatitude;
     private float endLongitude;
-    private int delay;
+    private float delay;
 
-    public PositionSimulatorCommand(String command, int reservationId, float startLatitude, float startLongitude, float endLatitude, float endLongitude, int delay) {
+    public PositionSimulatorCommand(String command, int reservationId, float startLatitude, float startLongitude, float endLatitude, float endLongitude, float delay) {
         this.command = command;
         this.reservationId = reservationId;
         this.startLatitude = startLatitude;

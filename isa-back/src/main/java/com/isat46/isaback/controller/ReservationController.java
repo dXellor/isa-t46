@@ -227,7 +227,7 @@ public class ReservationController {
     })
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/tracking/{reservationId}")
-    public ResponseEntity<List<ReservationDto>> startTracking(@PathVariable Integer reservationId, Principal user){
+    public ResponseEntity startTracking(@PathVariable Integer reservationId, Principal user){
         reservationService.startTracking(reservationId, user.getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
