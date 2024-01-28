@@ -221,6 +221,17 @@ public class ReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @Operation(summary = "start location tracking", description = "start location tracking")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "starting location tracking")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/tracking/{reservationId}")
+    public ResponseEntity startTracking(@PathVariable Integer reservationId, Principal user){
+        reservationService.startTracking(reservationId, user.getName());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @Operation(summary = "get completed reservations for user", description = "get completed reservations for logged user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")

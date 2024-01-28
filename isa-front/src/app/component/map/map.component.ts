@@ -20,18 +20,31 @@ export class MapComponent implements OnChanges, OnDestroy, AfterViewInit {
 
   private map: any;
   private markerLayer: L.LayerGroup;
+  private car_icon: L.Icon;
+  private readonly customIconSize: L.PointExpression = [48, 48];
+  private readonly customIconAnchor: L.PointExpression = [24, 46];
 
   @Input() address: Address;
+  @Input() center: number[] = [45.2396, 19.8227];
+  @Input() zoom: number = 15;
+  @Input() car_position: number[] = [];
 
-  constructor(private mapService: MapService) { }
+  constructor(private mapService: MapService) { 
+    this.car_icon = L.icon({
+      iconUrl: 'assets/icons/car.png',
+      iconSize: this.customIconSize,
+      iconAnchor: this.customIconAnchor
+    });
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
   }
+
   private initMap(): void {
     this.map = L.map('map', {
-      center: [45.2396, 19.8227],
-      zoom: 15,
+      center: this.center as L.LatLngExpression,
+      zoom: this.zoom,
     });
 
     const tiles = L.tileLayer(
@@ -58,6 +71,11 @@ export class MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       this.clearMarkers();
       this.setMarker(this.address);
     }
+
+    if(this.map && this.car_position){
+      this.clearMarkers();
+      this.setCarMarker();
+    }
   }
 
   setMarker(address: Address): void {
@@ -75,6 +93,10 @@ export class MapComponent implements OnChanges, OnDestroy, AfterViewInit {
       },
       error: () => { },
     });
+  }
+
+  private setCarMarker(): void{
+    const marker = L.marker(this.car_position as L.LatLngExpression, {icon: this.car_icon}).addTo(this.markerLayer);
   }
 
 
