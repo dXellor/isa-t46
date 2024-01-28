@@ -43,6 +43,20 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r WHERE r.id = :reservationId AND r.employee.email = :employeeEmail AND r.status = 1")
     Reservation findReservationToCancel(@Param("reservationId") int reservationId, @Param("employeeEmail") String employeeEmail);
 
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2")
+    List<Reservation> findCompletedByUser(@Param("employeeEmail") String employeeEmail);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2"
+            + "ORDER BY "
+            + "CASE WHEN :orderByDuration IS NOT NULL AND :orderByDuration = 'asc' THEN r.duration END ASC, "
+            + "CASE WHEN :orderByDuration IS NOT NULL AND :orderByDuration = 'desc' THEN r.duration END DESC, "
+            + "CASE WHEN :orderByDateTime IS NOT NULL AND :orderByDateTime = 'asc' THEN r.dateTime END ASC, "
+            + "CASE WHEN :orderByDateTime IS NOT NULL AND :orderByDateTime = 'desc' THEN r.dateTime END DESC")
+    List<Reservation> orderByDurationAndDateTime(
+            @Param("employeeEmail") String employeeEmail,
+            @Param("orderByDuration") String orderByDuration,
+            @Param("orderByDateTime") String orderByDateTime);
+
     @Modifying
     @Query("UPDATE Reservation r SET r.status = 5 WHERE r.status = 1 AND r.dateTime < CURRENT_TIMESTAMP")
     int invalidateOutdatedReservations();

@@ -51,6 +51,19 @@ import { CompanyAdminAppointmentsComponent } from './component/company-admin-app
 import { CompanyInventoryManagementComponent } from './component/company-inventory-management/company-inventory-management.component';
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
+import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
+import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+
+const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: 'localhost',
+  port: 9001,
+  clean: true,
+  connectTimeout: 4000,
+  reconnectPeriod: 4000,
+  clientId: 'CONSUMER46',
+  protocol: 'ws'
+}
 
 @NgModule({
   declarations: [
@@ -80,6 +93,8 @@ import { EquipmentCardComponent } from './component/equipment-card/equipment-car
     CompanyInventoryManagementComponent,
     VisitorHomeViewComponent,
     EquipmentCardComponent,
+    UserCompletedReservationsComponent,
+    PositionSimulatorViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,7 +123,8 @@ import { EquipmentCardComponent } from './component/equipment-card/equipment-car
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTableModule
+    MatTableModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
   providers: [
     {
