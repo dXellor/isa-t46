@@ -29,3 +29,5 @@ mqtt.clientId=redacted
 mqtt.hostname=redacted
 mqtt.port=redacted
 
+pos.sim.command.topic=redacted
+pos.sim.command.delay=5
