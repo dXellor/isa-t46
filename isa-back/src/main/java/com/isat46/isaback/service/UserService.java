@@ -45,6 +45,10 @@ public class UserService {
         int timeDifference = reservation.getDateTime().getHour() - LocalDateTime.now().getHour();
         int penalPointsToGive = timeDifference < 24 ? 2 : 1;
 
+        return punishUser(userToPunish, penalPointsToGive);
+    }
+
+    public UserDto punishUser(User userToPunish, int penalPointsToGive){
         userToPunish.setPenalPoints(userToPunish.getPenalPoints() + penalPointsToGive);
         userRepository.save(userToPunish);
         return UserMapper.UserToUserDto(userToPunish);

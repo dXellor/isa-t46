@@ -6,6 +6,7 @@ import com.isat46.isaback.model.enums.ReservationStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -41,4 +42,11 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("SELECT r FROM Reservation r WHERE r.id = :reservationId AND r.employee.email = :employeeEmail AND r.status = 1")
     Reservation findReservationToCancel(@Param("reservationId") int reservationId, @Param("employeeEmail") String employeeEmail);
+
+    @Modifying
+    @Query("UPDATE Reservation r SET r.status = 5 WHERE r.status = 1 AND r.dateTime < CURRENT_TIMESTAMP")
+    int invalidateOutdatedReservations();
+
+    @Query("SELECT r FROM Reservation r WHERE r.status = 5 AND r.dateTime < CURRENT_TIMESTAMP")
+    List<Reservation> findExpiredReservations();
 }

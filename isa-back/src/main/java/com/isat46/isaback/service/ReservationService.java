@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import com.isat46.isaback.mappers.ReservationMapper;
 import com.isat46.isaback.util.ReservationUtils;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import javax.persistence.OptimisticLockException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -270,5 +272,19 @@ public class ReservationService {
 
         return ReservationMapper.ReservationToReservationDto(reservationToCancel);
     }
+    
+    @Transactional
+    @Scheduled(fixedDelay = 3600000)
+    public void invalidateOutdatedReservations() {
+        int updatedRows = reservationRepository.invalidateOutdatedReservations();
+        LOGGER.info("Invalidated " + updatedRows + " outdated reservations");
 
+        List<Reservation> expiredReservations = reservationRepository.findExpiredReservations();
+        for (Reservation reservation : expiredReservations) {
+            reservationItemService.removeReservationItems(reservation);
+            userService.punishUser(reservation.getEmployee(), 2);
+            reservation.setEmployee(null);
+            reservationRepository.save(reservation);
+        }
+    }
 }
