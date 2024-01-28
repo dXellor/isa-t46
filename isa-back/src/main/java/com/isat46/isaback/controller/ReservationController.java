@@ -4,6 +4,7 @@ import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.equipment.EquipmentDto;
 import com.isat46.isaback.dto.reservation.*;
 import com.isat46.isaback.model.Equipment;
+import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -252,5 +253,33 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDto>> sortReservationsByDurationAndDate(Principal user, @RequestParam(required = false) String duration, @RequestParam(required = false) String date){
         List<ReservationDto> reservations = reservationService.sortReservationsByDurationAndDate(user.getName(), duration, date);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+    
+    @Operation(summary = "confirm reservation as a employee", description = "confirm reservation as a employee")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "reservation confirmed successfully")})
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/confirm/{reservationId}")
+    public ResponseEntity<ReservationDto> confirmReservation(@PathVariable Integer reservationId, Principal user){
+        ReservationDto reservation = reservationService.confirmReservation(reservationId, user.getName());
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "deliver reservation equipment as a company admin", description = "deliver reservation equipment as a company admin")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "reservation delivered successfully")})
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/deliver/{reservationId}")
+    public ResponseEntity<ReservationDto> deliverEquipment(@PathVariable Integer reservationId){
+        ReservationDto reservation = reservationService.deliverEquipment(reservationId);
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

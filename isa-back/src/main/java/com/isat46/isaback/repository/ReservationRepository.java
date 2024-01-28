@@ -58,9 +58,16 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             @Param("orderByDateTime") String orderByDateTime);
 
     @Modifying
-    @Query("UPDATE Reservation r SET r.status = 5 WHERE r.status = 1 AND r.dateTime < CURRENT_TIMESTAMP")
+    @Query("UPDATE Reservation r SET r.status = 6 WHERE r.status = 1 AND r.dateTime < CURRENT_TIMESTAMP")
     int invalidateOutdatedReservations();
 
-    @Query("SELECT r FROM Reservation r WHERE r.status = 5 AND r.dateTime < CURRENT_TIMESTAMP")
+    @Query("SELECT r FROM Reservation r WHERE r.status = 6 AND r.dateTime < CURRENT_TIMESTAMP")
     List<Reservation> findExpiredReservations();
+    
+    
+    @Query("select r from Reservation r where r.id = :reservationId and r.status = 2")
+    Reservation findReservationToDeliver(@Param("reservationId") int reservationId);
+    
+    @Query("select r from Reservation r where r.status = 3 and r.companyAdmin.id =: adminId")
+    Reservation findInProgressDeliveryByAdmin(@Param("adminId") int adminId);
 }

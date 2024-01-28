@@ -19,6 +19,7 @@ import com.isat46.isaback.model.User;
 
 
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/user")
 public class UserController {
 

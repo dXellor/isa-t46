@@ -311,5 +311,42 @@ public class ReservationService {
         List<Reservation> reservations = reservationRepository.orderByDurationAndDateTime(userEmail, orderByDuration, orderByDateTime);
         return ReservationMapper.ReservationsToReservationDtos(reservations);
     }
+    
+    public ReservationDto confirmReservation(int reservationId, String employeeEmail){
+        Reservation reservation = reservationRepository.findReservationToCancel(reservationId, employeeEmail);
+        if(reservation == null) {
+            return null;
+        }
+        reservation.setStatus(ReservationStatus.CONFIRMED);
+        reservationRepository.save(reservation);
+        return ReservationMapper.ReservationToReservationDto(reservation);
+    }
+    
+    private boolean isAdminDelivering(int adminId){
+        return reservationRepository.findInProgressDeliveryByAdmin(adminId) != null;
+    }
+
+    public ReservationDto deliverEquipment(int reservationId){
+        Reservation reservation = reservationRepository.findReservationToDeliver(reservationId);
+        if(reservation == null) {
+            return null;
+        }
+        try {
+            int adminId = reservation.getCompanyAdmin().getId();
+            if (isAdminDelivering(adminId)) {
+                throw new OptimisticLockException();
+            }
+
+            reservation.setStatus(ReservationStatus.COMPLETED);
+            reservationRepository.save(reservation);
+
+            return ReservationMapper.ReservationToReservationDto(reservation);
+        }
+        catch (OptimisticLockException ex) {
+            LOGGER.error("Company admin " + reservation.getCompanyAdmin().getFirstName() + " cannot be present at multiple deliveries at once!");
+            return null;
+        }
+    }
+
 
 }
