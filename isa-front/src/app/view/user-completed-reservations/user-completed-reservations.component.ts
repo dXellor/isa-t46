@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { forkJoin } from 'rxjs';
 import { Reservation } from 'src/app/model/reservation.model';
 import { ReservationService } from 'src/app/service/reservation.service';
 
@@ -9,13 +10,15 @@ import { ReservationService } from 'src/app/service/reservation.service';
 })
 export class UserCompletedReservationsComponent {
   reservations: Reservation[] = [];
-  displayedColumns: string[] = ['dateTime', 'duration', 'companyAdmin'];
+  displayedColumns: string[] = ['dateTime', 'duration', 'companyAdmin', 'totalPrice'];
   dataSource: Reservation[] = [];
   sortByDuration: boolean = false;
   sortByDateTime: boolean = false;
+  sortByPrice: boolean = false;
   selectedSortOrder: string = 'asc';
+  pricesMap: Map<number, number> = new Map<number, number>();
 
-  constructor(private reservationService: ReservationService) { }
+  constructor(private reservationService: ReservationService, private cdr: ChangeDetectorRef) { }
   
   ngOnInit(): void {
     this.loadReservations();
@@ -41,7 +44,7 @@ export class UserCompletedReservationsComponent {
 
   private loadReservations(): void{
     this.reservationService.getCompletedReservationsForUser().subscribe(result => {
-      this.dataSource = result;
+      this.calculateTotalPriceForReservations(result);
     })
   }
 
@@ -50,9 +53,52 @@ export class UserCompletedReservationsComponent {
       this.sortByDuration,
       this.sortByDateTime,
       this.selectedSortOrder
-    ).subscribe(sortedReservations => this.dataSource = sortedReservations);
+    ).subscribe(sortedReservations => this.calculateTotalPriceForReservations(sortedReservations));
   }
 
+  calculateTotalPriceForReservations(reservations: Reservation[]): void {
+    const observables = reservations.map(reservation =>
+      this.reservationService.getReservationItemsByReservationId(reservation.id!)
+    );
+  
+    forkJoin(observables).subscribe((reservationItemsArray: any[]) => {
+      this.dataSource = reservations.map((reservation, index) => {
+        const totalPrice = reservationItemsArray[index].reduce((sum: number, item: any) => {
+          const itemPrice = item.inventoryItem?.equipment?.price || 0;
+          const itemCount = item.count || 0; 
+  
+          return sum + (isNaN(itemPrice) || isNaN(itemCount) ? 0 : itemPrice * itemCount);
+        }, 0);
+  
+        this.pricesMap.set(reservation.id!, totalPrice);
+  
+        return { ...reservation, totalPrice };
+      });
+      if(this.sortByPrice){
+        this.sortReservationsByPrice();
+      }
+    });
+
+  }
+  
+  private sortReservationsByPrice(): void {
+    console.log('Sorting by price');
+    
+    const sortedData = [...this.dataSource].sort((a, b) => {
+      const priceA = this.pricesMap.get(a.id!) || 0;
+      const priceB = this.pricesMap.get(b.id!) || 0;
+
+      //console.log('priceA:', priceA);
+      //console.log('priceB:', priceB);
+  
+      if (this.selectedSortOrder === 'asc') {
+        return priceA - priceB;
+      } else {
+        return priceB - priceA;
+      }
+    });
+    //console.log('Sorted data:', sortedData);
+    this.dataSource = sortedData;
+    this.cdr.detectChanges();
+  }
 }
-
-

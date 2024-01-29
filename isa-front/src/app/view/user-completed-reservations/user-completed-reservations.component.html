@@ -7,6 +7,7 @@
             <label>
               <input type="checkbox" [(ngModel)]="sortByDuration"> Sort by Duration
               <input type="checkbox" [(ngModel)]="sortByDateTime"> Sort by Date
+              <input type="checkbox" [(ngModel)]="sortByPrice"> Sort by Price
               <select class="combobox" id="sortOrder" [(ngModel)]="selectedSortOrder">
                 <option value="asc">Ascending</option>
                 <option value="desc">Descending</option>
@@ -37,6 +38,12 @@
                 <th mat-header-cell *matHeaderCellDef> Company Admin </th>
                 <td mat-cell *matCellDef="let element"> {{element.companyAdmin.firstName}}
                     {{element.companyAdmin.lastName}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="totalPrice">
+                <th mat-header-cell *matHeaderCellDef> Price </th>
+                <td mat-cell *matCellDef="let element"> {{element.totalPrice}}
                 </td>
             </ng-container>
 

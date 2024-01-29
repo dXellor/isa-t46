@@ -88,4 +88,9 @@ export class ReservationService {
     const url = `${this.url}/cancelledReservations`;
     return this.http.get<Reservation[]>(url);
   }
+
+  getReservationItemsByReservationId(reservationId: number): Observable<any[]> {
+    const url = `${environment.apiUrl}/reservation-item/reservation/${reservationId}`;
+    return this.http.get<any[]>(url);
+  }
 }
