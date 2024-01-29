@@ -55,4 +55,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             @Param("employeeEmail") String employeeEmail,
             @Param("orderByDuration") String orderByDuration,
             @Param("orderByDateTime") String orderByDateTime);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 1")
+    List<Reservation> findPendingByUser(@Param("employeeEmail") String employeeEmail);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 3")
+    List<Reservation> findCancelledByUser(@Param("employeeEmail") String employeeEmail);
 }

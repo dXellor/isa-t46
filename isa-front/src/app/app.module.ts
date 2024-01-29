@@ -52,6 +52,7 @@ import { CompanyInventoryManagementComponent } from './component/company-invento
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
+import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-codes/user-appointments-qr-codes.component';
 import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 
@@ -64,7 +65,6 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   clientId: 'CONSUMER46',
   protocol: 'ws'
 }
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,8 +94,10 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     VisitorHomeViewComponent,
     EquipmentCardComponent,
     UserCompletedReservationsComponent,
-    PositionSimulatorViewComponent,
+    UserAppointmentsQrCodesComponent,
+    PositionSimulatorViewComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -126,6 +128,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MatTableModule,
     MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
+  
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

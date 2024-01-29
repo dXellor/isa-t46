@@ -1,5 +1,6 @@
 package com.isat46.isaback.service;
 
+import com.google.zxing.WriterException;
 import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.company.CompanyInfoDto;
 import com.isat46.isaback.dto.equipment.EquipmentDto;
@@ -13,6 +14,8 @@ import com.isat46.isaback.model.ReservationItem;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import com.isat46.isaback.repository.ReservationRepository;
+import com.isat46.isaback.util.FileSystemUtils;
+import com.isat46.isaback.util.QRCodeUtils;
 import com.isat46.isaback.util.PositionSimulatorCommand;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,8 +30,8 @@ import com.isat46.isaback.util.ReservationUtils;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
-
 import javax.persistence.OptimisticLockException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -296,4 +299,23 @@ public class ReservationService {
         return ReservationMapper.ReservationsToReservationDtos(reservations);
     }
 
+    public ReservationQRCodeDto generateQRCodeForReservation(ReservationDto reservationDto, int width, int height)
+            throws WriterException, IOException {
+        String qrCodeText = ReservationUtils.getReservationInformation(reservationDto, reservationItemService.findReservationItemsByReservationId(reservationDto.getId()));
+        String filename = "qrcodeid.png";
+
+        QRCodeUtils.generateReservationQRCodeImage(qrCodeText, width, height, filename);
+        byte[] qrCodeImageData = QRCodeUtils.getQRCodeImage(qrCodeText, width, height);
+        FileSystemUtils.deleteFile(QRCodeUtils.QR_CODE_IMAGE_PATH + "qrcodeid.png");
+        return new ReservationQRCodeDto(qrCodeImageData);
+    }
+
+    public List<ReservationDto> getPendingReservationsForUser(String userEmail){
+        List<Reservation> reservations = reservationRepository.findPendingByUser(userEmail);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+    public List<ReservationDto> getCancelledReservationsForUser(String userEmail){
+        List<Reservation> reservations = reservationRepository.findCancelledByUser(userEmail);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
 }
