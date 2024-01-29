@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { PagedResult } from '../model/paged-result.model';
 import { ReservationItem } from '../model/reservation/reservation-item.model';
 import { OutOfOrderReservation } from '../model/out-of-order-reservation-model';
+import { ReservationQRCode } from '../model/reservation-qr-code.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +63,29 @@ export class ReservationService {
       .set('date', sortByDateTime ? sortOrder : null);
 
     return this.http.get<Reservation[]>(url, { params });
+  }
+
+  getReservationsForEmployee(): Observable<PagedResult<Reservation>> {
+    return this.http.get<PagedResult<Reservation>>(`${this.url}/employee`);
+  }
+
+  generateQRCodeForReservation(reservation: Reservation, width: number, height: number): Observable<ReservationQRCode> {
+    const url = `${this.url}/generateQRCode`;
+
+    const params = new HttpParams()
+      .set('width', width.toString())
+      .set('height', height.toString());
+
+    return this.http.post<ReservationQRCode>(url, reservation, { params });
+  }
+
+  getPendingReservationsForUser(): Observable<Reservation[]> {
+    const url = `${this.url}/pendingReservations`;
+    return this.http.get<Reservation[]>(url);
+  }
+
+  getCancelledReservationsForUser(): Observable<Reservation[]> {
+    const url = `${this.url}/cancelledReservations`;
+    return this.http.get<Reservation[]>(url);
   }
 }

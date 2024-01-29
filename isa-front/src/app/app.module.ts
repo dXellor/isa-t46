@@ -52,6 +52,7 @@ import { CompanyInventoryManagementComponent } from './component/company-invento
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
+import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-codes/user-appointments-qr-codes.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { UserCompletedReservationsComponent } from './view/user-completed-reserv
     VisitorHomeViewComponent,
     EquipmentCardComponent,
     UserCompletedReservationsComponent,
+    UserAppointmentsQrCodesComponent,
   ],
   imports: [
     BrowserModule,
