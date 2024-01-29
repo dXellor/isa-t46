@@ -53,7 +53,18 @@ import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-
 import { EquipmentCardComponent } from './component/equipment-card/equipment-card.component';
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
 import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-codes/user-appointments-qr-codes.component';
+import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 
+const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: 'localhost',
+  port: 9001,
+  clean: true,
+  connectTimeout: 4000,
+  reconnectPeriod: 4000,
+  clientId: 'CONSUMER46',
+  protocol: 'ws'
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -84,7 +95,9 @@ import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-co
     EquipmentCardComponent,
     UserCompletedReservationsComponent,
     UserAppointmentsQrCodesComponent,
+    PositionSimulatorViewComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -112,8 +125,10 @@ import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-co
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTableModule
+    MatTableModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
   ],
+  
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

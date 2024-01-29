@@ -16,6 +16,8 @@ import { EmployeeReservationsViewComponent } from './view/employee-reservations-
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
 import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-codes/user-appointments-qr-codes.component'
+import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
+
 
 const routes: Routes = [
   { path: 'login', component: LoginViewComponent, },
@@ -32,7 +34,8 @@ const routes: Routes = [
   { path: 'employee-reservations', component: EmployeeReservationsViewComponent },
   { path: '', component: VisitorHomeViewComponent },
   { path: 'user-completed-reservations', component: UserCompletedReservationsComponent },
-  { path: 'user-appointments-qr-codes', component: UserAppointmentsQrCodesComponent}
+  { path: 'user-appointments-qr-codes', component: UserAppointmentsQrCodesComponent},
+  { path: 'position-simulator', component: PositionSimulatorViewComponent }
 ];
 
 @NgModule({
