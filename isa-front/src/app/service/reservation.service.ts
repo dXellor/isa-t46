@@ -93,4 +93,9 @@ export class ReservationService {
     const url = `${environment.apiUrl}/reservation-item/reservation/${reservationId}`;
     return this.http.get<any[]>(url);
   }
+
+  getConfirmedReservationsForUser(): Observable<Reservation[]> {
+    const url = `${this.url}/confirmedReservations`;
+    return this.http.get<Reservation[]>(url);
+  }
 }

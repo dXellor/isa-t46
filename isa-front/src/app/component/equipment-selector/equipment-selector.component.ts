@@ -11,6 +11,8 @@ import { ReservationItem } from 'src/app/model/reservation/reservation-item.mode
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Company } from 'src/app/model/company.model';
+import { UserService } from 'src/app/service/user.service';
+import { User } from 'src/app/model/user.model';
 
 @Component({
   selector: 'app-equipment-selector',
@@ -35,8 +37,9 @@ export class EquipmentSelectorComponent implements OnInit {
   selectedAppointment: Reservation = {} as Reservation;
   reservationNote: string = "";
   noteForm: FormGroup;
+  loggedUser: User;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService, private messageService: MessageService, private fb: FormBuilder) {
+  constructor(@Inject(MAT_DIALOG_DATA) public chosenEquipment: ReservationItem[], private dialog: MatDialog, private reservationService: ReservationService, private messageService: MessageService, private fb: FormBuilder, private userService: UserService) {
     this.noteForm = fb.group({
       note: ["", []],
     });
@@ -46,6 +49,7 @@ export class EquipmentSelectorComponent implements OnInit {
     this.reservationService.getAvailableAppointments(this.chosenEquipment[0].inventoryItem.company.id).subscribe(result => {
       this.predefinedAppointments = result;
     })
+    this.loggedUser = this.userService.getCurrentUser();
   }
 
   createNewAppointmentDate(): void {
@@ -72,6 +76,11 @@ export class EquipmentSelectorComponent implements OnInit {
   }
 
   createReservation(): void {
+    if(this.loggedUser.penalPoints > 2){
+      alert('Reservation not possible! You have 3 or more penal points.');
+      return;
+    }
+
     for (let reservationItem of this.chosenEquipment) {
       reservationItem.id = this.selectedAppointment.id
     }

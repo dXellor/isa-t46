@@ -67,8 +67,8 @@ export class UserAppointmentsQrCodesComponent {
   }
   
   filterReservations(): void {
-    if(this.selectedSortOrder === 'Completed'){
-      this.reservationService.getCompletedReservationsForUser().subscribe(result => {
+    if(this.selectedSortOrder === 'Confirmed'){
+      this.reservationService.getConfirmedReservationsForUser().subscribe(result => {
         this.dataSource = result;
         this.dataSource.forEach((reservation: Reservation) => {
           this.getQRCode(reservation);

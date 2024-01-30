@@ -340,4 +340,15 @@ public class ReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @Operation(summary = "get confirmed reservations for user", description = "get confirmed reservations for logged user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/confirmedReservations")
+    public ResponseEntity<List<ReservationDto>> getConfirmedReservationsForUser(Principal user){
+        List<ReservationDto> reservations = reservationService.getConfirmedReservationsForUser(user.getName());
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 }
