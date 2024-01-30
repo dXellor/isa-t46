@@ -54,6 +54,7 @@ import { EquipmentCardComponent } from './component/equipment-card/equipment-car
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
 import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { CompanyAdminReservationsViewComponent } from './view/company-admin-reservations-view/company-admin-reservations-view.component';
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'localhost',
@@ -95,6 +96,7 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     EquipmentCardComponent,
     UserCompletedReservationsComponent,
     PositionSimulatorViewComponent,
+    CompanyAdminReservationsViewComponent,
   ],
   imports: [
     BrowserModule,

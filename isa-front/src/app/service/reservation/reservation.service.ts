@@ -65,4 +65,16 @@ export class ReservationService {
   startPositionSimulator(reservationId: number): Observable<void> {
     return this.http.get<void>(`${this.url}/tracking/${reservationId}`);
   }
+
+  confirmReservation(reservationId: number): Observable<Reservation>{
+    return this.http.get<Reservation>(`${this.url}/confirm/${reservationId}`);
+  }
+
+  startDelivery(reservationId: number): Observable<Reservation>{
+    return this.http.get<Reservation>(`${this.url}/deliver/${reservationId}`);
+  }
+
+  getConfirmedReservations(): Observable<PagedResult<Reservation>>{
+    return this.http.get<PagedResult<Reservation>>(`${this.url}/get-confirmed`);
+  }
 }

@@ -2,18 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Reservation } from 'src/app/model/reservation.model';
 import { ReservationService } from 'src/app/service/reservation/reservation.service';
 import { MatTableModule } from '@angular/material/table';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-employee-reservations-view',
   templateUrl: './employee-reservations-view.component.html',
   styleUrls: ['./employee-reservations-view.component.css'],
+  providers: [MessageService]
 })
 export class EmployeeReservationsViewComponent implements OnInit {
   reservations: Reservation[] = [];
-  displayedColumns: string[] = ['dateTime', 'duration', 'companyAdmin', 'cancel'];
+  displayedColumns: string[] = ['dateTime', 'duration', 'companyAdmin', 'cancel', 'confirm'];
   dataSource: Reservation[] = [];
-  constructor(private reservationService: ReservationService) { }
-  
+  constructor(private reservationService: ReservationService, private messageService: MessageService) { }
+
   ngOnInit(): void {
     this.loadReservations();
   }
@@ -37,9 +39,18 @@ export class EmployeeReservationsViewComponent implements OnInit {
   }
 
   cancelReservation(reservationId: number): void{
-    if(window.confirm(`Are you sure you want to cancel the reservation? You will recieve penal points.`)){
+    if(window.confirm(`Are you sure you want to cancel the reservation? You will receive penal points.`)){
       this.reservationService.cancelReservation(reservationId).subscribe(res => {
         window.alert(`Reservation canceled`);
+        this.loadReservations();
+      });
+    }
+  }
+
+  confirmReservation(reservationId: number): void{
+    if(window.confirm(`Are you sure you want to confirm this reservation?`)){
+      this.reservationService.confirmReservation(reservationId).subscribe(res => {
+        this.messageService.add({severity:'success', summary:'Success', detail:'Reservation confirmed successfully.'});
         this.loadReservations();
       });
     }
@@ -50,4 +61,6 @@ export class EmployeeReservationsViewComponent implements OnInit {
       this.dataSource = result.content;
     })
   }
+
+  protected readonly confirm = confirm;
 }

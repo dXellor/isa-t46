@@ -16,6 +16,9 @@ import { EmployeeReservationsViewComponent } from './view/employee-reservations-
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
 import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
+import {
+  CompanyAdminReservationsViewComponent
+} from "./view/company-admin-reservations-view/company-admin-reservations-view.component";
 
 
 const routes: Routes = [
@@ -34,6 +37,7 @@ const routes: Routes = [
   { path: '', component: VisitorHomeViewComponent },
   { path: 'user-completed-reservations', component: UserCompletedReservationsComponent },
   { path: 'position-simulator', component: PositionSimulatorViewComponent },
+  { path: 'manage-reservations', component: CompanyAdminReservationsViewComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({

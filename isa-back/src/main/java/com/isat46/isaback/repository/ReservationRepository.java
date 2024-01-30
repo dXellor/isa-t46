@@ -1,5 +1,6 @@
 package com.isat46.isaback.repository;
 
+import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
@@ -68,6 +69,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("select r from Reservation r where r.id = :reservationId and r.status = 2")
     Reservation findReservationToDeliver(@Param("reservationId") int reservationId);
     
-    @Query("select r from Reservation r where r.status = 3 and r.companyAdmin.id =: adminId")
-    Reservation findInProgressDeliveryByAdmin(@Param("adminId") int adminId);
+    @Query("select r from Reservation r where r.status = 3 and r.companyAdmin.email = :email")
+    Reservation findInProgressDeliveryByAdmin(@Param("email") String email);
+
+    @Query("select r from Reservation r where r.status = 2 and r.companyAdmin.email = :email")
+    Page<Reservation> findConfirmedReservationsByAdmin(@Param("email") String email, Pageable page);
 }

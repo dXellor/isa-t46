@@ -37,6 +37,10 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 @Service
 public class ReservationService {
@@ -322,20 +326,35 @@ public class ReservationService {
         return ReservationMapper.ReservationToReservationDto(reservation);
     }
     
-    private boolean isAdminDelivering(int adminId){
-        return reservationRepository.findInProgressDeliveryByAdmin(adminId) != null;
+    private boolean isAdminDelivering(String email){
+        return reservationRepository.findInProgressDeliveryByAdmin(email) != null;
     }
 
+    @Transactional
     public ReservationDto deliverEquipment(int reservationId){
         Reservation reservation = reservationRepository.findReservationToDeliver(reservationId);
         if(reservation == null) {
             return null;
         }
         try {
-            int adminId = reservation.getCompanyAdmin().getId();
-            if (isAdminDelivering(adminId)) {
-                throw new OptimisticLockException();
+            String email = reservation.getCompanyAdmin().getEmail();
+            if (isAdminDelivering(email)) {
+                return null;
             }
+            reservation.setStatus(ReservationStatus.IN_PROGRESS);
+            reservationRepository.save(reservation);
+            
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            
+            Future<?> future = executor.submit(() -> {
+                try {
+                    Thread.sleep(reservation.getDuration()  * 1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            
+            future.get();
 
             reservation.setStatus(ReservationStatus.COMPLETED);
             reservationRepository.save(reservation);
@@ -345,7 +364,14 @@ public class ReservationService {
         catch (OptimisticLockException ex) {
             LOGGER.error("Company admin " + reservation.getCompanyAdmin().getFirstName() + " cannot be present at multiple deliveries at once!");
             return null;
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.error("Sleep interrupted");
+            return null;
         }
+    }
+    
+    public Page<ReservationDto> findConfirmedReservationsByAdmin(String email, Pageable page){
+        return reservationRepository.findConfirmedReservationsByAdmin(email, page).map(ReservationMapper::ReservationToReservationDto);
     }
 
 

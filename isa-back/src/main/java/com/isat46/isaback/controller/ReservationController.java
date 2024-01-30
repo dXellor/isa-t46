@@ -246,7 +246,7 @@ public class ReservationController {
 
     @Operation(summary = "get completed reservations for user sorted", description = "get completed reservations for logged user sorted")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+            @ApiResponse(responseCode = "200", description = "reservations returned successfully")
     })
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/completedReservationsSort")
@@ -277,6 +277,20 @@ public class ReservationController {
         ReservationDto reservation = reservationService.deliverEquipment(reservationId);
         if (reservation != null) {
             return new ResponseEntity<>(reservation, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "get confirmed reservations for company admin", description = "get confirmed reservations for company admin")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "reservations loaded")})
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/get-confirmed")
+    public ResponseEntity<Page<ReservationDto>> deliverEquipment(Principal user, Pageable page){
+        Page<ReservationDto> reservations = reservationService.findConfirmedReservationsByAdmin(user.getName(), page);
+        if (reservations != null) {
+            return new ResponseEntity<>(reservations, HttpStatus.OK);
         }
         else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
