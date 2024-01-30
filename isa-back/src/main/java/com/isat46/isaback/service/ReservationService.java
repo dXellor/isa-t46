@@ -282,7 +282,8 @@ public class ReservationService {
     @Transactional
     public void startTracking(Integer reservationId, String employeeEmail){
         Reservation reservation = reservationRepository.findById(reservationId).orElseGet(null);
-        if(reservation == null || !reservation.getEmployee().getEmail().equals(employeeEmail)){
+        if(reservation == null){
+//            || !reservation.getEmployee().getEmail().equals(employeeEmail)
             return;
         }
 
