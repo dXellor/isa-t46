@@ -15,6 +15,7 @@ import { CompanyInfoViewComponent } from "./view/company-info-view/company-info-
 import { EmployeeReservationsViewComponent } from './view/employee-reservations-view/employee-reservations-view.component';
 import { VisitorHomeViewComponent } from './view/visitor-home-view/visitor-home-view.component';
 import { UserCompletedReservationsComponent } from './view/user-completed-reservations/user-completed-reservations.component';
+import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-codes/user-appointments-qr-codes.component'
 import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
 import {
   CompanyAdminReservationsViewComponent
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'user-completed-reservations', component: UserCompletedReservationsComponent },
   { path: 'position-simulator', component: PositionSimulatorViewComponent },
   { path: 'manage-reservations', component: CompanyAdminReservationsViewComponent, canActivate: [authGuard] },
+  { path: 'user-appointments-qr-codes', component: UserAppointmentsQrCodesComponent},
 ];
 
 @NgModule({

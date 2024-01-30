@@ -74,4 +74,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
 
     @Query("select r from Reservation r where r.status = 2 and r.companyAdmin.email = :email")
     Page<Reservation> findConfirmedReservationsByAdmin(@Param("email") String email, Pageable page);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 1")
+    List<Reservation> findPendingByUser(@Param("employeeEmail") String employeeEmail);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 3")
+    List<Reservation> findCancelledByUser(@Param("employeeEmail") String employeeEmail);
 }

@@ -1,5 +1,6 @@
 package com.isat46.isaback.controller;
 
+import com.google.zxing.WriterException;
 import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.equipment.EquipmentDto;
 import com.isat46.isaback.dto.reservation.*;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -296,4 +298,46 @@ public class ReservationController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Operation(summary = "get qr code for reservation", description = "get qr code for reservation")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "qr code generated sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/generateQRCode")
+    public ResponseEntity<ReservationQRCodeDto> generateQRCodeForReservation(
+            @RequestBody ReservationDto reservationDto,
+            @RequestParam int width,
+            @RequestParam int height) {
+        try {
+            ReservationQRCodeDto qrCodeDto = reservationService.generateQRCodeForReservation(reservationDto, width, height);
+            return ResponseEntity.ok(qrCodeDto);
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Operation(summary = "get pending reservations for user", description = "get completed pending for logged user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/pendingReservations")
+    public ResponseEntity<List<ReservationDto>> getPendingReservationsForUser(Principal user){
+        List<ReservationDto> reservations = reservationService.getPendingReservationsForUser(user.getName());
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get cancelled reservations for user", description = "get cancelled reservations for logged user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/cancelledReservations")
+    public ResponseEntity<List<ReservationDto>> getCancelledReservationsForUser(Principal user){
+        List<ReservationDto> reservations = reservationService.getCancelledReservationsForUser(user.getName());
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 }

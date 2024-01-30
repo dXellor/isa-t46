@@ -25,6 +25,8 @@
             routerLink="/manage-users"><mat-icon>people_outline</mat-icon>Manage users</button>
           <button *ngIf="currentUser && hasRole('ROLE_USER')" class="btn" (click)="closeOverlay()" mat-flat-button
             [routerLink]="['user-completed-reservations']"><mat-icon>done</mat-icon>My completed reservations</button>
+            <button *ngIf="currentUser && hasRole('ROLE_USER')" class="btn" (click)="closeOverlay()" mat-flat-button
+            [routerLink]="['user-appointments-qr-codes']"><mat-icon>work</mat-icon>My appointments</button>
           <button *ngIf="currentUser && hasRole('ROLE_USER')" class="btn" (click)="closeOverlay()" mat-flat-button
           routerLink=""><mat-icon>store</mat-icon>Companies</button>
           <button *ngIf="currentUser && hasRole('ROLE_USER')" class="btn" (click)="closeOverlay()" mat-flat-button
