@@ -59,7 +59,6 @@ export class UserAppointmentsQrCodesComponent {
   }
 
   getQRCodeImageDataUrl(qrCode: ReservationQRCode): string | undefined {
-    console.log(this.reservationQrCodes);
     if (qrCode.qrCodeImageData) {
       return `data:image/png;base64,${qrCode.qrCodeImageData}`;
     }
@@ -67,8 +66,8 @@ export class UserAppointmentsQrCodesComponent {
   }
   
   filterReservations(): void {
-    if(this.selectedSortOrder === 'Completed'){
-      this.reservationService.getCompletedReservationsForUser().subscribe(result => {
+    if(this.selectedSortOrder === 'Confirmed'){
+      this.reservationService.getConfirmedReservationsForUser().subscribe(result => {
         this.dataSource = result;
         this.dataSource.forEach((reservation: Reservation) => {
           this.getQRCode(reservation);

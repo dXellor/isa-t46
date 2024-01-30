@@ -8,6 +8,7 @@ import { ReservationItem } from 'src/app/model/reservation/reservation-item.mode
 import { Company } from 'src/app/model/company.model';
 import { OutOfOrderReservation } from 'src/app/model/out-of-order-reservation-model';
 import { User } from 'src/app/model/user.model';
+import { UserService } from 'src/app/service/user.service';
 
 @Component({
   selector: 'app-user-appointment-form',
@@ -34,13 +35,15 @@ export class UserAppointmentFormComponent implements OnInit {
   chosenEquipment: ReservationItem[]=[];
   company : Company;
   outOfOrderReservation : OutOfOrderReservation={} as OutOfOrderReservation;
+  loggedUser: User;
 
-  constructor(@Inject(MAT_DIALOG_DATA) data: any, private reservationService: ReservationService, private dialogRef: MatDialogRef<UserAppointmentFormComponent>){
+  constructor(@Inject(MAT_DIALOG_DATA) data: any, private reservationService: ReservationService, private dialogRef: MatDialogRef<UserAppointmentFormComponent>, private userService: UserService){
     this.chosenEquipment = data.chosenEquipment;
     this.company = data.companyInfo;
   }
   
   ngOnInit(): void {
+    this.loggedUser = this.userService.getCurrentUser();
   }
 
   loadTimeSlots(...args: any[]) {
@@ -58,12 +61,17 @@ export class UserAppointmentFormComponent implements OnInit {
   }
 
   createReservation(reservation: Reservation) {
+    if(this.loggedUser.penalPoints > 2){
+      alert('Reservation not possible! You have 3 or more penal points.');
+      this.dialogRef.close({ note: 'Reservation not possible! You have 3 or more penal points.' });
+      return;
+    }
     reservation.company = this.company;
     this.outOfOrderReservation.reservation = reservation;
     this.outOfOrderReservation.reservation_items = this.chosenEquipment;
     this.reservationService.createReservationWithOutOfOrderAppointment(this.outOfOrderReservation).subscribe(
       (createdReservation: Reservation) => {
-        console.log('Reservation created successfully!');
+        window.alert('Reservation created successfully!');
         this.dialogRef.close({ note: 'Reservation created successfully!' });
       },
       

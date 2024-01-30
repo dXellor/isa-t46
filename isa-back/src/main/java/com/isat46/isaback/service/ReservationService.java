@@ -93,6 +93,10 @@ public class ReservationService {
         if(employee == null)
             return null;
 
+        if(employee.getPenalPoints() > 2){
+            throw new NotFoundException("Reservation not possible! You have 3 or more penal points.");
+        }
+
         ReservationDto reservationDto = ReservationMapper.ReservationToReservationDto(reservationRepository.findById(reservationCreationDto.getReservationId()).orElseGet(null));
         if(reservationDto == null)
             //Predefined appointment does not exist
@@ -207,7 +211,7 @@ public class ReservationService {
 
         while (!wantedDateTime.toLocalTime().isAfter(endTime.minusMinutes(slotDurationMinutes))) {
             timeSlots.add(wantedDateTime);
-            wantedDateTime = wantedDateTime.plusMinutes(slotDurationMinutes);
+            wantedDateTime = wantedDateTime.plusMinutes(slotDurationMinutes).plusSeconds(1);
         }
 
         return timeSlots;
@@ -218,6 +222,9 @@ public class ReservationService {
         List<ReservationItemDto> selectedEquipment = outOfOrderReservationDto.getReservationItems();
 
         UserDto loggedUser = userService.findByEmail(userEmail);
+        if(loggedUser.getPenalPoints() > 2){
+            throw new NotFoundException("Reservation not possible! You have 3 or more penal points.");
+        }
         CompanyDto company = companyService.findById(reservationDto.getCompany().getId());
         List<UserDto> admins = company.getAdmins();
         UserDto companyAdmin = null;
@@ -396,6 +403,11 @@ public class ReservationService {
     }
     public List<ReservationDto> getCancelledReservationsForUser(String userEmail){
         List<Reservation> reservations = reservationRepository.findCancelledByUser(userEmail);
+        return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+
+    public List<ReservationDto> getConfirmedReservationsForUser(String userEmail){
+        List<Reservation> reservations = reservationRepository.findConfirmedByUser(userEmail);
         return ReservationMapper.ReservationsToReservationDtos(reservations);
     }
 }
