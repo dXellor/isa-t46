@@ -2,16 +2,11 @@ package com.isat46.isaback.service;
 
 import com.google.zxing.WriterException;
 import com.isat46.isaback.dto.company.CompanyDto;
-import com.isat46.isaback.dto.company.CompanyInfoDto;
-import com.isat46.isaback.dto.equipment.EquipmentDto;
 import com.isat46.isaback.dto.reservation.*;
 import com.isat46.isaback.dto.user.UserDto;
 import com.isat46.isaback.mappers.CompanyMapper;
 import com.isat46.isaback.mappers.ReservationMapper;
-import com.isat46.isaback.model.Equipment;
 import com.isat46.isaback.model.Reservation;
-import com.isat46.isaback.model.ReservationItem;
-import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import com.isat46.isaback.repository.ReservationRepository;
 import com.isat46.isaback.util.FileSystemUtils;
@@ -20,15 +15,13 @@ import com.isat46.isaback.util.PositionSimulatorCommand;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import com.isat46.isaback.mappers.ReservationMapper;
 import com.isat46.isaback.util.ReservationUtils;
 import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 import javax.persistence.OptimisticLockException;
@@ -65,7 +58,7 @@ public class ReservationService {
 
     @Autowired
     MqttService mqttService;
-
+    
     protected final Log LOGGER = LogFactory.getLog(getClass());
 
     public Page<ReservationDto> findAllPaged(Pageable page){
@@ -332,23 +325,33 @@ public class ReservationService {
     private boolean isAdminDelivering(String email){
         return reservationRepository.findInProgressDeliveryByAdmin(email) != null;
     }
-
     @Transactional
-    public ReservationDto deliverEquipment(int reservationId){
+    public void startDelivery(int reservationId) {
         Reservation reservation = reservationRepository.findReservationToDeliver(reservationId);
         if(reservation == null) {
-            return null;
+            return;
         }
         try {
             String email = reservation.getCompanyAdmin().getEmail();
             if (isAdminDelivering(email)) {
-                return null;
+                return;
             }
             reservation.setStatus(ReservationStatus.IN_PROGRESS);
             reservationRepository.save(reservation);
             
+        } catch (OptimisticLockException ex) {
+            LOGGER.error("Company admin " + reservation.getCompanyAdmin().getFirstName() + " cannot be present at multiple deliveries at once!");
+        }
+        
+    }
+    @Transactional
+    public Reservation completeDelivery(int reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
+        if(reservation == null) {
+            return null;
+        }
+        try {
             ExecutorService executor = Executors.newSingleThreadExecutor();
-            
             Future<?> future = executor.submit(() -> {
                 try {
                     Thread.sleep(reservation.getDuration()  * 1000);
@@ -356,27 +359,25 @@ public class ReservationService {
                     Thread.currentThread().interrupt();
                 }
             });
-            
             future.get();
-
             reservation.setStatus(ReservationStatus.COMPLETED);
             reservationRepository.save(reservation);
-
-            return ReservationMapper.ReservationToReservationDto(reservation);
-        }
-        catch (OptimisticLockException ex) {
-            LOGGER.error("Company admin " + reservation.getCompanyAdmin().getFirstName() + " cannot be present at multiple deliveries at once!");
-            return null;
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error("Sleep interrupted");
-            return null;
         }
+        return reservation;
+    }
+
+    
+    public ReservationDto deliverEquipment(int reservationId) {
+        startDelivery(reservationId);
+        Reservation completedReservation = completeDelivery(reservationId);
+        return ReservationMapper.ReservationToReservationDto(completedReservation);
     }
     
     public Page<ReservationDto> findConfirmedReservationsByAdmin(String email, Pageable page){
         return reservationRepository.findConfirmedReservationsByAdmin(email, page).map(ReservationMapper::ReservationToReservationDto);
     }
-
 
     public ReservationQRCodeDto generateQRCodeForReservation(ReservationDto reservationDto, int width, int height)
             throws WriterException, IOException {
