@@ -8,8 +8,10 @@ import com.isat46.isaback.model.User;
 import com.isat46.isaback.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -45,8 +47,21 @@ public class UserService {
         int timeDifference = reservation.getDateTime().getHour() - LocalDateTime.now().getHour();
         int penalPointsToGive = timeDifference < 24 ? 2 : 1;
 
+        return punishUser(userToPunish, penalPointsToGive);
+    }
+
+    public UserDto punishUser(User userToPunish, int penalPointsToGive){
         userToPunish.setPenalPoints(userToPunish.getPenalPoints() + penalPointsToGive);
         userRepository.save(userToPunish);
         return UserMapper.UserToUserDto(userToPunish);
+    }
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 1 1/1 *")
+    public void resetPenaltyPoints() {
+        for (User user: userRepository.findAll()) {
+            user.setPenalPoints(0);
+            userRepository.save(user);
+        }
     }
 }

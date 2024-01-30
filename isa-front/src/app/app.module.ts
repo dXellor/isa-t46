@@ -55,6 +55,8 @@ import { UserCompletedReservationsComponent } from './view/user-completed-reserv
 import { UserAppointmentsQrCodesComponent } from './view/user-appointments-qr-codes/user-appointments-qr-codes.component';
 import { PositionSimulatorViewComponent } from './view/position-simulator-view/position-simulator-view.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { CompanyAdminReservationsViewComponent } from './view/company-admin-reservations-view/company-admin-reservations-view.component';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'localhost',
@@ -94,8 +96,9 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     VisitorHomeViewComponent,
     EquipmentCardComponent,
     UserCompletedReservationsComponent,
+    PositionSimulatorViewComponent,
+    CompanyAdminReservationsViewComponent,
     UserAppointmentsQrCodesComponent,
-    PositionSimulatorViewComponent
   ],
 
   imports: [
@@ -126,9 +129,10 @@ const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS)
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
+    ConfirmDialogModule
   ],
-  
+
   providers: [
     {
       provide: HTTP_INTERCEPTORS,

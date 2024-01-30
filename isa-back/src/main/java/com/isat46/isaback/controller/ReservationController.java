@@ -5,6 +5,7 @@ import com.isat46.isaback.dto.company.CompanyDto;
 import com.isat46.isaback.dto.equipment.EquipmentDto;
 import com.isat46.isaback.dto.reservation.*;
 import com.isat46.isaback.model.Equipment;
+import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.service.ReservationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -247,13 +248,55 @@ public class ReservationController {
 
     @Operation(summary = "get completed reservations for user sorted", description = "get completed reservations for logged user sorted")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+            @ApiResponse(responseCode = "200", description = "reservations returned successfully")
     })
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/completedReservationsSort")
     public ResponseEntity<List<ReservationDto>> sortReservationsByDurationAndDate(Principal user, @RequestParam(required = false) String duration, @RequestParam(required = false) String date){
         List<ReservationDto> reservations = reservationService.sortReservationsByDurationAndDate(user.getName(), duration, date);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+    
+    @Operation(summary = "confirm reservation as a employee", description = "confirm reservation as a employee")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "reservation confirmed successfully")})
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/confirm/{reservationId}")
+    public ResponseEntity<ReservationDto> confirmReservation(@PathVariable Integer reservationId, Principal user){
+        ReservationDto reservation = reservationService.confirmReservation(reservationId, user.getName());
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "deliver reservation equipment as a company admin", description = "deliver reservation equipment as a company admin")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "reservation delivered successfully")})
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/deliver/{reservationId}")
+    public ResponseEntity<ReservationDto> deliverEquipment(@PathVariable Integer reservationId){
+        ReservationDto reservation = reservationService.deliverEquipment(reservationId);
+        if (reservation != null) {
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @Operation(summary = "get confirmed reservations for company admin", description = "get confirmed reservations for company admin")
+    @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "reservations loaded")})
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @GetMapping(value = "/get-confirmed")
+    public ResponseEntity<Page<ReservationDto>> deliverEquipment(Principal user, Pageable page){
+        Page<ReservationDto> reservations = reservationService.findConfirmedReservationsByAdmin(user.getName(), page);
+        if (reservations != null) {
+            return new ResponseEntity<>(reservations, HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Operation(summary = "get qr code for reservation", description = "get qr code for reservation")
@@ -294,6 +337,17 @@ public class ReservationController {
     @GetMapping(value = "/cancelledReservations")
     public ResponseEntity<List<ReservationDto>> getCancelledReservationsForUser(Principal user){
         List<ReservationDto> reservations = reservationService.getCancelledReservationsForUser(user.getName());
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
+    @Operation(summary = "get confirmed reservations for user", description = "get confirmed reservations for logged user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations returned sucessfully")
+    })
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(value = "/confirmedReservations")
+    public ResponseEntity<List<ReservationDto>> getConfirmedReservationsForUser(Principal user){
+        List<ReservationDto> reservations = reservationService.getConfirmedReservationsForUser(user.getName());
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 

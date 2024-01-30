@@ -12,6 +12,23 @@
 
 .btn {
     padding: 5%;
-    color: white;
     background-color: darkred;
+    color: white;
 }
+
+
+.btn-confirm{
+  padding: 5%;
+  background-color: #4BB463;
+  color: white;
+}
+
+.btn:disabled{
+  background-color:slategray;
+}
+
+.btn-confirm:disabled{
+  background-color:slategray;
+}
+
+

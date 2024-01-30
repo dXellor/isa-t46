@@ -1,11 +1,13 @@
 package com.isat46.isaback.repository;
 
+import com.isat46.isaback.dto.reservation.ReservationDto;
 import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.model.enums.ReservationStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -42,10 +44,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r WHERE r.id = :reservationId AND r.employee.email = :employeeEmail AND r.status = 1")
     Reservation findReservationToCancel(@Param("reservationId") int reservationId, @Param("employeeEmail") String employeeEmail);
 
-    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2")
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 4")
     List<Reservation> findCompletedByUser(@Param("employeeEmail") String employeeEmail);
 
-    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2"
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2")
+    List<Reservation> findConfirmedByUser(@Param("employeeEmail") String employeeEmail);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 4"
             + "ORDER BY "
             + "CASE WHEN :orderByDuration IS NOT NULL AND :orderByDuration = 'asc' THEN r.duration END ASC, "
             + "CASE WHEN :orderByDuration IS NOT NULL AND :orderByDuration = 'desc' THEN r.duration END DESC, "
@@ -56,9 +61,26 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
             @Param("orderByDuration") String orderByDuration,
             @Param("orderByDateTime") String orderByDateTime);
 
+    @Modifying
+    @Query("UPDATE Reservation r SET r.status = 6 WHERE r.status = 1 AND r.dateTime < CURRENT_TIMESTAMP")
+    int invalidateOutdatedReservations();
+
+    @Query("SELECT r FROM Reservation r WHERE r.status = 6 AND r.dateTime < CURRENT_TIMESTAMP")
+    List<Reservation> findExpiredReservations();
+    
+    
+    @Query("select r from Reservation r where r.id = :reservationId and r.status = 2")
+    Reservation findReservationToDeliver(@Param("reservationId") int reservationId);
+    
+    @Query("select r from Reservation r where r.status = 3 and r.companyAdmin.email = :email")
+    Reservation findInProgressDeliveryByAdmin(@Param("email") String email);
+
+    @Query("select r from Reservation r where r.status = 2 and r.companyAdmin.email = :email")
+    Page<Reservation> findConfirmedReservationsByAdmin(@Param("email") String email, Pageable page);
+
     @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 1")
     List<Reservation> findPendingByUser(@Param("employeeEmail") String employeeEmail);
 
-    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 3")
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 5")
     List<Reservation> findCancelledByUser(@Param("employeeEmail") String employeeEmail);
 }

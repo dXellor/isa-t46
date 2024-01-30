@@ -9,7 +9,7 @@
   <table>
     <tr *ngFor="let r of reservations">
       <td>{{ r.dateTime | date:'HH:mm' }}</td>
-      <td><button (click)="createReservation(r)">Select</button></td>  
+      <td><button mat-button (click)="createReservation(r)">Select</button></td>  
     </tr>
   </table>
 </div>

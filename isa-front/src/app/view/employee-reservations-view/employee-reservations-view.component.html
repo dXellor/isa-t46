@@ -4,22 +4,16 @@
         <h3 *ngIf="dataSource.length === 0">No pending reservations</h3>
         <table mat-table [dataSource]="dataSource" *ngIf="dataSource.length !== 0" class="mat-elevation-z8">
 
-            <!--- Note that these columns can be defined in any order.
-                  The actual rendered columns are set as a property on the row definition" -->
-
-            <!-- Position Column -->
             <ng-container matColumnDef="dateTime">
                 <th mat-header-cell *matHeaderCellDef> Date and time</th>
                 <td mat-cell *matCellDef="let element"> {{formatDate(element.dateTime)}} </td>
             </ng-container>
 
-            <!-- Name Column -->
             <ng-container matColumnDef="duration">
                 <th mat-header-cell *matHeaderCellDef> Duration </th>
                 <td mat-cell *matCellDef="let element"> {{element.duration}} min </td>
             </ng-container>
 
-            <!-- Weight Column -->
             <ng-container matColumnDef="companyAdmin">
                 <th mat-header-cell *matHeaderCellDef> Company Admin </th>
                 <td mat-cell *matCellDef="let element"> {{element.companyAdmin.firstName}}
@@ -27,16 +21,24 @@
                 </td>
             </ng-container>
 
-            <!-- Name Column -->
             <ng-container matColumnDef="cancel">
                 <th mat-header-cell *matHeaderCellDef> Cancel </th>
                 <td mat-cell *matCellDef="let element">
-                    <button class="btn" (click)="cancelReservation(element.id)">Cancel reservation</button>
+                    <button class="btn" (click)="cancelReservation(element.id)" [disabled]="element.status !== 'PENDING'">Cancel reservation</button>
                 </td>
             </ng-container>
+
+          <ng-container matColumnDef="confirm">
+            <th mat-header-cell *matHeaderCellDef> Confirm </th>
+            <td mat-cell *matCellDef="let element">
+              <button class="btn-confirm" (click)="confirmReservation(element.id)" [disabled]="element.status !== 'PENDING'">Confirm reservation</button>
+            </td>
+          </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </div>
 </div>
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
