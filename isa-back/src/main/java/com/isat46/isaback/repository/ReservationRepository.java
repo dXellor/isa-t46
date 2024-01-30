@@ -44,10 +44,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r WHERE r.id = :reservationId AND r.employee.email = :employeeEmail AND r.status = 1")
     Reservation findReservationToCancel(@Param("reservationId") int reservationId, @Param("employeeEmail") String employeeEmail);
 
-    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2")
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 4")
     List<Reservation> findCompletedByUser(@Param("employeeEmail") String employeeEmail);
 
-    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2"
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 2")
+    List<Reservation> findConfirmedByUser(@Param("employeeEmail") String employeeEmail);
+
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 4"
             + "ORDER BY "
             + "CASE WHEN :orderByDuration IS NOT NULL AND :orderByDuration = 'asc' THEN r.duration END ASC, "
             + "CASE WHEN :orderByDuration IS NOT NULL AND :orderByDuration = 'desc' THEN r.duration END DESC, "
@@ -78,6 +81,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 1")
     List<Reservation> findPendingByUser(@Param("employeeEmail") String employeeEmail);
 
-    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 3")
+    @Query("SELECT r FROM Reservation r WHERE r.employee.email = :employeeEmail AND r.status = 5")
     List<Reservation> findCancelledByUser(@Param("employeeEmail") String employeeEmail);
 }
