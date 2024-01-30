@@ -59,7 +59,6 @@ export class UserAppointmentsQrCodesComponent {
   }
 
   getQRCodeImageDataUrl(qrCode: ReservationQRCode): string | undefined {
-    console.log(this.reservationQrCodes);
     if (qrCode.qrCodeImageData) {
       return `data:image/png;base64,${qrCode.qrCodeImageData}`;
     }
