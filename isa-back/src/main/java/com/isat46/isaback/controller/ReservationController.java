@@ -351,4 +351,20 @@ public class ReservationController {
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
 
+    @Operation(summary = "complete reservation by qr code", description = "complete reservation by qr code")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "reservations completed successfully")
+    })
+    @PreAuthorize("hasRole('COMPADMIN')")
+    @PostMapping(value = "/confirmReservationByQRCode")
+    public ResponseEntity<ReservationDto> confirmReservationByQRCode(@RequestBody ReservationQRCodeDto qrCodeDto){
+        try {
+            //ReservationQRCodeDto qrCodeDto = null;
+            ReservationDto reservation = reservationService.confirmReservationByQRCode(qrCodeDto);
+            return ResponseEntity.ok(reservation);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+    }
+
 }

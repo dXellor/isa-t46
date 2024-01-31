@@ -1,8 +1,16 @@
 <div class="reservations-container">
   <h2>My reservations</h2>
-  <div class="table">
-    <h3 *ngIf="dataSource.length === 0">No pending reservations</h3>
-    <table mat-table [dataSource]="dataSource" *ngIf="dataSource.length !== 0" class="mat-elevation-z8">
+  <div class="qr-form-contiainer">
+    <h3 *ngIf="dataSource.length !== 0">Confirm reservation by QR Code</h3>  
+    <label for="qrCode">Upload QR code image:  </label>
+    <input type="file" id="qrCode" name="qrCode" (change)="onFileSelected($event)"> 
+
+    <button (click)="confirmReservationbyQR()">Confirm reservation</button>
+  </div>
+<div class="table"> 
+  <h3 *ngIf="dataSource.length === 0">No pending reservations</h3>
+  <h3 *ngIf="dataSource.length !== 0">Аll reservations</h3>  
+  <table mat-table [dataSource]="dataSource" *ngIf="dataSource.length !== 0" class="mat-elevation-z8">
 
       <ng-container matColumnDef="dateTime">
         <th mat-header-cell *matHeaderCellDef> Date and time</th>
@@ -33,3 +41,5 @@
     </table>
   </div>
 </div>
+<p-toast position="bottom-center"></p-toast>
+
