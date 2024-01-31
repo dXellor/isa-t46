@@ -85,4 +85,14 @@ public class UserController {
         UserDto updatedUser = userService.update(user);
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
+
+    @Operation(summary = "test L2 cache", description = "this method serves only to test L2 cache")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "cache size")
+    })
+    @GetMapping(value = "testL2Cache")
+    public ResponseEntity<Integer> testL2Cache(){
+        int size = userService.testL2Cache();
+        return new ResponseEntity<Integer>(size, HttpStatus.OK);
+    }
 }
