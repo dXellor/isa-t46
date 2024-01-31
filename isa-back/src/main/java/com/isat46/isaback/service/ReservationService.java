@@ -64,7 +64,7 @@ public class ReservationService {
     public Page<ReservationDto> findAllPaged(Pageable page){
         return reservationRepository.findAll(page).map(ReservationMapper::ReservationToReservationDto);
     }
-
+    @Transactional
     public ReservationDto createNewAppointment(AppointmentCreationDto appointmentCreationDto){
         UserDto admin = userService.findOne(appointmentCreationDto.getCompanyAdminId());
         if(admin == null)
@@ -84,10 +84,16 @@ public class ReservationService {
         reservationDto.setCompanyAdmin(admin);
         reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
         reservationDto.setStatus("APPOINTMENT");
-        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
-        return ReservationMapper.ReservationToReservationDto(reservation);
-    }
 
+        try {
+            Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+            return ReservationMapper.ReservationToReservationDto(reservation);
+        } catch (OptimisticLockException ex) {
+            LOGGER.error("Optimistic lock exception updating reservation: " + ex);
+            return null;
+        }
+    }
+    @Transactional
     public ReservationDto createReservationWithPredefinedAppointment(ReservationCreationDto reservationCreationDto, String employeeEmail){
         UserDto employee = userService.findByEmail(employeeEmail);
         if(employee == null)
@@ -216,7 +222,7 @@ public class ReservationService {
 
         return timeSlots;
     }
-
+    @Transactional
     public ReservationDto createReservationWithOutOfOrderAppointment(OutOfOrderReservationDto outOfOrderReservationDto, String userEmail){
         ReservationDto reservationDto = outOfOrderReservationDto.getReservation();
         List<ReservationItemDto> selectedEquipment = outOfOrderReservationDto.getReservationItems();
@@ -246,9 +252,14 @@ public class ReservationService {
         reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
         reservationDto.setCompanyAdmin(companyAdmin);
 
-        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
-        reservationItemService.addReservationItems(selectedEquipment, reservation);
-        return ReservationMapper.ReservationToReservationDto(reservation);
+        try {
+            Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+            reservationItemService.addReservationItems(selectedEquipment, reservation);
+            return ReservationMapper.ReservationToReservationDto(reservation);
+        } catch (OptimisticLockException ex) {
+            LOGGER.error("Optimistic lock exception updating reservation: " + ex);
+            return null;
+        }
     }
 
     public Page<ReservationDto> findByEmployee(Pageable page, String email){
