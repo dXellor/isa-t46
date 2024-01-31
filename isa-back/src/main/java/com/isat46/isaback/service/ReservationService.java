@@ -94,7 +94,8 @@ public class ReservationService {
             return null;
         }
     }
-
+  
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ReservationDto createReservationWithPredefinedAppointment(ReservationCreationDto reservationCreationDto, String employeeEmail){
         UserDto employee = userService.findByEmail(employeeEmail);
         if(employee == null)
@@ -223,7 +224,7 @@ public class ReservationService {
 
         return timeSlots;
     }
-
+    @Transactional
     public ReservationDto createReservationWithOutOfOrderAppointment(OutOfOrderReservationDto outOfOrderReservationDto, String userEmail){
         ReservationDto reservationDto = outOfOrderReservationDto.getReservation();
         List<ReservationItemDto> selectedEquipment = outOfOrderReservationDto.getReservationItems();
@@ -253,9 +254,14 @@ public class ReservationService {
         reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
         reservationDto.setCompanyAdmin(companyAdmin);
 
-        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
-        reservationItemService.addReservationItems(selectedEquipment, reservation);
-        return ReservationMapper.ReservationToReservationDto(reservation);
+        try {
+            Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+            reservationItemService.addReservationItems(selectedEquipment, reservation);
+            return ReservationMapper.ReservationToReservationDto(reservation);
+        } catch (OptimisticLockException ex) {
+            LOGGER.error("Optimistic lock exception updating reservation: " + ex);
+            return null;
+        }
     }
 
     public Page<ReservationDto> findByEmployee(Pageable page, String email){
@@ -420,5 +426,26 @@ public class ReservationService {
     public List<ReservationDto> getConfirmedReservationsForUser(String userEmail){
         List<Reservation> reservations = reservationRepository.findConfirmedByUser(userEmail);
         return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+
+    public ReservationDto confirmReservationByQRCode(ReservationQRCodeDto qrCodeDto) {
+        String reservationInfo = QRCodeUtils.decodeQR(qrCodeDto.getQrCodeImageData());
+        int reservationId = extractReservationId(reservationInfo);
+        Reservation reservation = reservationRepository.findById(reservationId).orElseGet(null);
+
+        if(reservation.getStatus() == ReservationStatus.COMPLETED) {
+            throw new IllegalStateException();
+        }
+
+        reservation.setStatus(ReservationStatus.COMPLETED);
+        reservationRepository.save(reservation);
+        return ReservationMapper.ReservationToReservationDto(reservation);
+    }
+
+    private int extractReservationId(String reservationInfo) {
+        String[] lines  = reservationInfo.split("\n");
+        String id = lines[0].replace("Reservation Id: ", "");
+
+        return Integer.parseInt(id);
     }
 }
