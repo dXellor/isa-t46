@@ -38,6 +38,7 @@ public class AuthenticationService {
         newUser.setEnabled(false);
         List<Role> roles = roleRepository.findByName("ROLE_USER");
         newUser.setRoles(roles);
+        newUser.setPendingPasswordReset(false);
         return UserMapper.UserToUserDto(userRepository.save(newUser));
     }
 
@@ -47,6 +48,17 @@ public class AuthenticationService {
         newAdmin.setEnabled(true);
         List<Role> roles = roleRepository.findByName("ROLE_COMPADMIN");
         newAdmin.setRoles(roles);
+        newAdmin.setPendingPasswordReset(true);
+        return UserMapper.UserToUserDto(userRepository.save(newAdmin));
+    }
+
+    public UserDto registerNewSystemAdmin(AdminRegistrationDto adminRegistrationDto){
+        User newAdmin = UserMapper.AdminRegistrationDtoToUser(adminRegistrationDto);
+        newAdmin.setPassword(passwordEncoder.encode(ADMIN_DEFAULT_PASSWORD));
+        newAdmin.setEnabled(true);
+        List<Role> roles = roleRepository.findByName("ROLE_SYSADMIN");
+        newAdmin.setRoles(roles);
+        newAdmin.setPendingPasswordReset(true);
         return UserMapper.UserToUserDto(userRepository.save(newAdmin));
     }
 
@@ -64,5 +76,15 @@ public class AuthenticationService {
         user.setEnabled(true);
         userRepository.save(user);
         return UserMapper.UserToUserDto(user);
+    }
+
+    public UserDto changePassword(String email, String newPassword){
+        User user = userRepository.findByEmail(email);
+        if(user == null) return null;
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setPendingPasswordReset(false);
+        userRepository.save(user);
+        return UserMapper.UserToUserDto(userRepository.save(user));
     }
 }

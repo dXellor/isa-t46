@@ -54,15 +54,21 @@ public class UserDto {
     private String companyInformation;
 
     @JsonProperty("roles")
-    private List<Role> roles;
+    private List<RoleDto> roles;
+
+    @JsonProperty("pendingPasswordReset")
+    private boolean pendingPasswordReset;
+
+    @JsonProperty("penalPoints")
+    private int penalPoints;
 
     public UserDto(){}
     public UserDto(User user){
         this(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), user.getCity(), user.getCountry(),
-                user.getPhoneNumber(), user.getProfession(), user.getCompanyInformation());
+                user.getPhoneNumber(), user.getProfession(), user.getCompanyInformation(), user.getPendingPasswordReset());
     }
 
-    public UserDto(Integer id, String email, String firstName, String lastName, String city, String country, String phoneNumber, String profession, String companyInformation) {
+    public UserDto(Integer id, String email, String firstName, String lastName, String city, String country, String phoneNumber, String profession, String companyInformation, boolean pendingPasswordReset) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -72,5 +78,6 @@ public class UserDto {
         this.phoneNumber = phoneNumber;
         this.profession = profession;
         this.companyInformation = companyInformation;
+        this.pendingPasswordReset = pendingPasswordReset;
     }
 }

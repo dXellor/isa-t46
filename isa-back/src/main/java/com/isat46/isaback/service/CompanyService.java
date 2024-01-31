@@ -66,5 +66,10 @@ public class CompanyService {
         Company company = companyRepository.findByAdminId(adminId);
         return CompanyMapper.CompanyToCompanyDto(company);
     }
+
+    public CompanyDto findById(int id){
+        Company company = companyRepository.findById(id);
+        return CompanyMapper.CompanyToCompanyDto(company);
+    }
 }
 

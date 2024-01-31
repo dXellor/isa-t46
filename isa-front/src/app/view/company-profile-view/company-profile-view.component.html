@@ -1,74 +1,63 @@
-<div fxLayout="row" fxLayoutGap="20px">
-    <!-- Form part 1 -->
-    <div fxFlex="33">
-        <div *ngIf="companyForm&&user">
-            <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
-                <div *ngFor="let controlName of ['name', 'description', 'averageRating']">
-                    <mat-form-field appearance="fill">
-                        <mat-label>{{ controlName }}</mat-label>
-                        <input matInput [formControlName]="controlName" [readonly]="!editMode">
-                        <mat-error *ngIf="companyForm.get(controlName).hasError('required')">
-                            reting is required.
-                        </mat-error>
-                        <mat-error *ngIf="companyForm.get(controlName).hasError('min')">
-                            rating must be at least 1.
-                        </mat-error>
-                        <mat-error *ngIf="companyForm.get(controlName).hasError('max')">
-                            rating must be at most 5.
-                        </mat-error>
-                    </mat-form-field>
-                </div>
-                <div formArrayName="equipment">
-                    <div *ngFor="let equipment of companyForm.get('equipment').value; let i = index">
-                        <mat-form-field appearance="fill">
-                            <mat-label>Equipment {{ i + 1 }}</mat-label>
-                            <input matInput [value]="equipment.name" readonly="">
-                        </mat-form-field>
-                        <button mat-icon-button color="warn" (click)="removeEquipment(i)" *ngIf="editMode">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-                    </div>
-                </div>
-                <button mat-raised-button color="primary" type="submit" [disabled]="companyForm.invalid"
-                    *ngIf="editMode">Save</button>
-                <button mat-raised-button color="warn" type="button" (click)="toggleEditMode()"
-                    *ngIf="!editMode">Edit</button>
-                <button mat-raised-button color="warn" type="button" (click)="toggleEditMode()"
-                    *ngIf="editMode">Cancel</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Address section -->
-    <div fxFlex="33">
-        <h2>Address</h2>
-        <div *ngIf="companyForm&&user">
-            <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
-                <div formGroupName="address">
-                    <div *ngFor="let controlName of ['street', 'city', 'country', 'zipCode']">
+<div class="container">
+    <div fxLayout="row" fxLayoutGap="20px">
+        <!-- Company info section -->
+        <div fxFlex="33">
+            <div *ngIf="companyForm&&user">
+                <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+                    <div *ngFor="let controlName of ['name', 'description', 'averageRating']">
                         <mat-form-field appearance="fill">
                             <mat-label>{{ controlName }}</mat-label>
-                            <input matInput [formControlName]="controlName" [readonly]="!editMode">
-                            <mat-error *ngIf="companyForm.get('address').get(controlName).hasError('required')">
-                                {{ controlName }} is required.
-                            </mat-error>
-                            <mat-error *ngIf="companyForm.get('address').get(controlName).hasError('pattern')">
-                                {{ controlName }} must be exactly 5 digits.
-                            </mat-error>
+                            <input matInput [formControlName]="controlName"
+                                [readonly]="!editMode || isRatingField(controlName)" placeholder="rating">
                         </mat-form-field>
                     </div>
-                </div>
-            </form>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="companyForm.invalid"
+                        *ngIf="editMode">Save</button>
+                    <button mat-raised-button color="warn" type="button" (click)="toggleEditMode()"
+                        *ngIf="!editMode">Edit</button>
+                    <button mat-raised-button color="warn" type="button" (click)="toggleEditMode()"
+                        *ngIf="editMode">Cancel</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Address section -->
+        <div fxFlex="33">
+            <h2>Address</h2>
+            <div *ngIf="companyForm&&user">
+                <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+                    <div formGroupName="address">
+                        <div *ngFor="let controlName of ['street', 'city', 'country', 'zipCode']">
+                            <mat-form-field appearance="fill">
+                                <mat-label>{{ controlName }}</mat-label>
+                                <input matInput [formControlName]="controlName" [readonly]="!editMode"
+                                    placeholder="zipCode">
+                                <mat-error *ngIf="companyForm.get('address').get(controlName).hasError('required')">
+                                    {{ controlName }} is required.
+                                </mat-error>
+                                <mat-error *ngIf="companyForm.get('address').get(controlName).hasError('pattern')">
+                                    {{ controlName }} must be exactly 5 digits.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <app-map [address]="company.address" *ngIf="company?.address"></app-map>
+        </div>
+
+        <!-- Admins section -->
+        <div fxFlex="33" *ngIf="company?.admins">
+            <h2>Company Admins</h2>
+            <div *ngFor="let admin of this.company.admins; let i = index">
+                <mat-card class="admin-card">
+                    <mat-card-title>{{admin.firstName + ' ' + admin.lastName}}</mat-card-title>
+                </mat-card>
+            </div>
         </div>
     </div>
 
-    <!-- Admins section -->
-    <div fxFlex="33">
-        <h2>Company Admins</h2>
-        <div *ngFor="let admin of this.company.admins; let i = index">
-            <mat-card class="admin-card">
-                <mat-card-title>{{admin.firstName + ' ' + admin.lastName}}</mat-card-title>
-            </mat-card>
-        </div>
-    </div>
+
+    <button class="equipment" mat-flat-button (click)="openEquipmentSection()">Equipment management</button>
+    <button class="appointments" mat-flat-button (click)="openAppointmentsSection()">Appointments management</button>
 </div>

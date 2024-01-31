@@ -30,4 +30,9 @@ public class AddressDto {
     @JsonProperty("zipCode")
     @Pattern(regexp = "^[0-9]{5}$")
     private String zipCode;
+
+    @Override
+    public String toString() {
+        return  street + ", " + city + " " + zipCode + ", " + country;
+    }
 }

@@ -1,4 +1,11 @@
-.main{
-    padding: 0.5rem;
+.main {
+  padding: 0.5rem;
 }
 
+.doctor {
+  height: 200px;
+  width: 200px;
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+}

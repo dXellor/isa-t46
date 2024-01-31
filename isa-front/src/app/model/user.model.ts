@@ -1,3 +1,16 @@
+export const roleRoutes: { [role: string]: string } = {
+  'ROLE_USER': '/user-home',
+  'ROLE_COMPADMIN': '/company-profile',
+  'ROLE_SYSADMIN': '/manage-companies',
+  'NO_ROLE': '/' 
+};
+
+export interface UserRole {
+  id?: number,
+  name: string,
+  authority: string
+}
+
 export interface User{
     id?: number,
     email: string,
@@ -7,5 +20,8 @@ export interface User{
     country: string,
     phoneNumber: string,
     profession: string,
-    companyInformation: string
+    companyInformation: string,
+    roles?: UserRole[],
+    pendingPasswordReset?: boolean,
+    penalPoints?: number
 }

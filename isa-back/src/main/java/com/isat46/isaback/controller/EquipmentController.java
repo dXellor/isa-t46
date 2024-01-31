@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(value = "/equipment")
+@RequestMapping(value = "api/equipment")
 public class EquipmentController {
 
     @Autowired
@@ -50,7 +50,6 @@ public class EquipmentController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "page of filtered equipment returned successfully")
     })
-    @PreAuthorize("hasAnyRole('USER', 'SYSADMIN', 'COMPADMIN')")
     @GetMapping(value = "")
     public ResponseEntity<Page<EquipmentDto>> getFilteredEquipment(@RequestParam(required = false, defaultValue = "") String name,
                                                                    @RequestParam(required = false, defaultValue = "") String type,

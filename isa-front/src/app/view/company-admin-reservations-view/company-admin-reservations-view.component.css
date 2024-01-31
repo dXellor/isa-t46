@@ -1,0 +1,41 @@
+.table {
+  width: 50%;
+}
+
+.reservations-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.btn {
+  padding: 5%;
+  background-color: darkred;
+  color: white;
+}
+
+
+.btn-confirm{
+  padding: 5%;
+  background-color: #4BB463;
+  color: white;
+}
+
+.btn:disabled{
+  background-color:slategray;
+}
+
+.btn-confirm:disabled{
+  background-color:slategray;
+}
+
+.qr-form-contiainer {
+  margin-bottom: 20px;
+}
+
+.qr-form-contiainer label {
+  margin-right: 10px;
+}
+

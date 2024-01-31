@@ -1,0 +1,44 @@
+.main-container {
+  display: flex;
+  padding: 0.5rem;
+}
+
+.sub-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.company-equipment {
+  width: 2000px;
+  margin-left: 0.5rem;
+}
+
+.company-info h1 {
+  text-align: center;
+}
+
+.equipment {
+  display: flex;
+  max-width: 30%;
+  text-align: center;
+  padding: 10px;
+}
+
+.rating {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+mat-icon {
+  color: gold;
+}
+
+.equipment mat-card {
+  text-align: left;
+}
+
+app-map {
+  width: 50%;
+  height: 50%;
+}

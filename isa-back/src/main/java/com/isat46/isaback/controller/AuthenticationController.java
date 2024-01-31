@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "api/auth")
@@ -75,6 +76,23 @@ public class AuthenticationController {
         }
     }
 
+    @Operation(summary = "creates new system admin", description = "creates new system admin")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "company admin created successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PreAuthorize("hasRole('SYSADMIN')")
+    @PostMapping(value = "/register/sa", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> registerNewSystemAdmin(@Parameter(required = true) @Valid @RequestBody AdminRegistrationDto adminRegistrationDto){
+        UserDto newUser = authenticationService.registerNewSystemAdmin(adminRegistrationDto);
+        if(newUser != null)
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @Operation(summary = "verifies new user", description = "verifies new user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "user verified successfully",
@@ -109,5 +127,21 @@ public class AuthenticationController {
         long expiresIn = tokenUtils.getExpiredIn();
 
         return new ResponseEntity<>(new JwtDto(jwt, expiresIn), HttpStatus.OK);
+    }
+
+    @Operation(summary = "password change", description = "password change")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "password changed successfully",
+                    content ={ @Content(mediaType = "application/json", schema = @Schema(implementation = UserDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "bad request")
+    })
+    @PostMapping("/changePassword")
+    public ResponseEntity<JwtDto> changePassword(Principal user, @RequestBody String newPassword) {
+        UserDto updatedUser = authenticationService.changePassword(user.getName(), newPassword);
+        if(updatedUser != null)
+            return new ResponseEntity<>(HttpStatus.OK);
+        else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

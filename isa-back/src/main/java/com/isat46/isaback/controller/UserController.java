@@ -19,6 +19,7 @@ import com.isat46.isaback.model.User;
 
 
 @Controller
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "api/user")
 public class UserController {
 
@@ -66,7 +67,7 @@ public class UserController {
     @PostMapping(consumes = "application/json")
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
 
-        User user = userService.findOne(userDto.getId());
+        UserDto user = userService.findOne(userDto.getId());
 
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -81,7 +82,17 @@ public class UserController {
         user.setProfession(userDto.getProfession());
         user.setCompanyInformation(userDto.getCompanyInformation());
 
-        user = userService.update(user);
-        return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
+        UserDto updatedUser = userService.update(user);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
+
+    @Operation(summary = "test L2 cache", description = "this method serves only to test L2 cache")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "cache size")
+    })
+    @GetMapping(value = "testL2Cache")
+    public ResponseEntity<Integer> testL2Cache(){
+        int size = userService.testL2Cache();
+        return new ResponseEntity<Integer>(size, HttpStatus.OK);
     }
 }

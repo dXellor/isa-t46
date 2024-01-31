@@ -2,15 +2,19 @@ package com.isat46.isaback.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "company")
 @Table(name = "company")
 public class Company {
 
@@ -31,16 +35,22 @@ public class Company {
     @Column(name = "average_rating", nullable = false)
     private double averageRating;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    //Deprecated
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable(name = "company_equipment",
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "equipment_id", referencedColumnName = "id"))
     private List<Equipment> equipment;
 
-    @OneToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "company_admin",
             joinColumns = @JoinColumn(name = "company_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "admin_id", referencedColumnName = "id"))
     private List<User> admins;
+
+    @Column(name = "start_work", nullable = false)
+    private LocalTime startWork;
+    @Column(name = "end_work", nullable = false)
+    private LocalTime endWork;
 }

@@ -1,0 +1,112 @@
+<p>Your Calendar</p>
+
+<div class="calendar-header">
+    <div>
+        <div class="btn-group">
+          <button
+            mat-raised-button
+            mwlCalendarPreviousView
+            [view]="view"
+            [(viewDate)]="currentDate"
+            (click)="calendarMoveClicked()"
+          >
+            Previous
+          </button>
+          <button
+            color="primary"
+            mat-raised-button
+            mwlCalendarToday
+            [(viewDate)]="currentDate"
+            (click)="calendarMoveClicked()"
+          >
+            Today
+          </button>
+          <button
+            mat-raised-button
+            mwlCalendarNextView
+            [view]="view"
+            [(viewDate)]="currentDate"
+            (click)="calendarMoveClicked()"
+          >
+            Next
+          </button>
+        </div>
+    </div>
+    <div>
+        <h3>{{ currentDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+    </div>
+    <div>
+        <div class="btn-group">
+          <button
+            mat-raised-button
+            (click)="setYearlyView()"
+          >
+            Year
+          </button>
+          <button
+            mat-raised-button
+            (click)="setView(CalendarView.Month)"
+            [class.active]="view === CalendarView.Month"
+          >
+            Month
+          </button>
+          <button
+            mat-raised-button
+            (click)="setView(CalendarView.Week)"
+            [class.active]="view === CalendarView.Week"
+          >
+            Week
+          </button>
+          <button
+            mat-raised-button
+            (click)="setView(CalendarView.Day)"
+            [class.active]="view === CalendarView.Day"
+          >
+            Day
+          </button>
+        </div>
+      </div>
+</div>
+
+
+<div *ngIf="!yearView" [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="CalendarView.Month"
+      [viewDate]="currentDate"
+      [events]="events"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="CalendarView.Week"
+      [viewDate]="currentDate"
+      [events]="events"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="CalendarView.Day"
+      [viewDate]="currentDate"
+      [events]="events"
+      [refresh]="refresh"
+    >
+    </mwl-calendar-day-view>
+</div>
+
+<div *ngIf="yearView">
+    <table>
+        <thead>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Person</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let e of events">
+                <td>{{ e.start | date: "dd.MM.y hh:mm"}}</td>
+                <td>{{ e.end | date: "dd.MM.y hh:mm"}}</td>
+                <td>{{e.title}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

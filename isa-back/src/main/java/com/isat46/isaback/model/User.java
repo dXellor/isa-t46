@@ -3,6 +3,8 @@ package com.isat46.isaback.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,6 +18,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "user")
 @Table(name = "user")
 public class User implements UserDetails {
 
@@ -57,22 +61,28 @@ public class User implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
+    @Column(name = "pending_password_reset")
+    private boolean pendingPasswordReset;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
+    @Column(name = "penal_points")
+    private int penalPoints;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(city, user.city) && Objects.equals(country, user.country) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(profession, user.profession) && Objects.equals(companyInformation, user.companyInformation);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(firstName, user.firstName) && Objects.equals(lastName, user.lastName) && Objects.equals(city, user.city) && Objects.equals(country, user.country) && Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(profession, user.profession) && Objects.equals(companyInformation, user.companyInformation) && Objects.equals(penalPoints, user.penalPoints);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, city, country, phoneNumber, profession, companyInformation);
+        return Objects.hash(id, email, firstName, lastName, city, country, phoneNumber, profession, companyInformation, penalPoints);
     }
 
     @Override
@@ -87,6 +97,7 @@ public class User implements UserDetails {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", profession='" + profession + '\'' +
                 ", companyInformation='" + companyInformation + '\'' +
+                ", penalPoints='" + penalPoints + '\'' +
                 '}';
     }
 
@@ -135,95 +146,11 @@ public class User implements UserDetails {
         return enabled;
     }
 
-    public Integer getId() {
-        return id;
+    public boolean getPendingPasswordReset() {
+        return pendingPasswordReset;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getProfession() {
-        return profession;
-    }
-
-    public void setProfession(String profession) {
-        this.profession = profession;
-    }
-
-    public String getCompanyInformation() {
-        return companyInformation;
-    }
-
-    public void setCompanyInformation(String companyInformation) {
-        this.companyInformation = companyInformation;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Timestamp getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setPendingPasswordReset(boolean pendingPasswordReset) {
+        this.pendingPasswordReset = pendingPasswordReset;
     }
 }

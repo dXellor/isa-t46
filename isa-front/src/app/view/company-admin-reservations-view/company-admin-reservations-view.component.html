@@ -1,0 +1,45 @@
+<div class="reservations-container">
+  <h2>My reservations</h2>
+  <div class="qr-form-contiainer">
+    <h3 *ngIf="dataSource.length !== 0">Confirm reservation by QR Code</h3>
+    <label for="qrCode">Upload QR code image:  </label>
+    <input type="file" id="qrCode" name="qrCode" (change)="onFileSelected($event)">
+
+    <button (click)="confirmReservationbyQR()">Confirm reservation</button>
+  </div>
+<div class="table">
+  <h3 *ngIf="dataSource.length === 0">No pending reservations</h3>
+  <h3 *ngIf="dataSource.length !== 0">Аll reservations</h3>
+  <table mat-table [dataSource]="dataSource" *ngIf="dataSource.length !== 0" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="dateTime">
+        <th mat-header-cell *matHeaderCellDef> Date and time</th>
+        <td mat-cell *matCellDef="let element"> {{formatDate(element.dateTime)}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef> Duration </th>
+        <td mat-cell *matCellDef="let element"> {{element.duration}} min </td>
+      </ng-container>
+
+      <ng-container matColumnDef="companyAdmin">
+        <th mat-header-cell *matHeaderCellDef> Company Admin </th>
+        <td mat-cell *matCellDef="let element"> {{element.companyAdmin.firstName}}
+          {{element.companyAdmin.lastName}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="start">
+        <th mat-header-cell *matHeaderCellDef> Confirm </th>
+        <td mat-cell *matCellDef="let element">
+          <button class="btn-confirm" (click)="startDelivery(element.id)">Confirm reservation</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
+<p-toast position="bottom-center"></p-toast>
+

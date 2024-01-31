@@ -1,41 +1,42 @@
-<form [formGroup]="editUserForm">
+<form [formGroup]="editUserForm" *ngIf="dataLoaded">
     <div class="formHolder">
-        <mat-form-field>
-            <input formControlName="firstName" matInput [(ngModel)]="user.firstName" required type="firstName">
+        <mat-form-field *ngIf="user?.firstName">
+            <input formControlName="firstName" matInput required type="firstName" placeholder="first name">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="lastName" matInput [(ngModel)]="user.lastName" required type="lastName">
+        <mat-form-field *ngIf="user?.lastName">
+            <input formControlName="lastName" matInput required type="lastName" placeholder="last name">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="email" matInput [(ngModel)]="user.email" required readonly="true" >
+        <mat-form-field *ngIf="user?.email">
+            <input formControlName="email" matInput required readonly="true" placeholder="email">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="city" matInput [(ngModel)]="user.city"  required type="city">
+        <mat-form-field *ngIf="user?.city">
+            <input formControlName="city" matInput required type="city" placeholder="city">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="country" matInput [(ngModel)]="user.country"  required type="country">
+        <mat-form-field *ngIf="user?.country">
+            <input formControlName="country" matInput required type="country" placeholder="country">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="phoneNumber" matInput [(ngModel)]="user.phoneNumber"  required type="phoneNumber">
+        <mat-form-field *ngIf="user?.phoneNumber">
+            <input formControlName="phoneNumber" matInput required type="phoneNumber" placeholder="phone number">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="profession" matInput [(ngModel)]="user.profession"  required type="profession">
+        <mat-form-field *ngIf="user?.profession">
+            <input formControlName="profession" matInput required type="profession" placeholder="profession">
         </mat-form-field>
 
-        <mat-form-field>
-            <input formControlName="companyInformation" matInput [(ngModel)]="user.companyInformation"  required type="companyInformation">
+        <mat-form-field *ngIf="user?.companyInformation">
+            <input formControlName="companyInformation" matInput required type="companyInformation"
+                placeholder="company information">
         </mat-form-field>
     </div>
 </form>
-<button [disabled]="!editUserForm.valid" color="primary" mat-raised-button (click)="updateUser()">Edit</button>
+<p-toast [position]="'bottom-center'"></p-toast>
+<button [disabled]="!editUserForm?.valid" color="primary" mat-raised-button (click)="updateUser()">Edit</button>
 
 <div class="user-info">
-    <p>Loyalty program: Silver</p>
-    <p>Penal points: 1</p>
+    <p>Penal points: {{user.penalPoints}}</p>
 </div>

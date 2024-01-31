@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 1400px;
+    height: 600px;
+    justify-content: space-evenly;
+}
+
+.company-equipment {
+    display: flex;
+    flex-direction: column;
+}
+
+.avaliable-equipment {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.add-equipment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 700px;
+}
+
+.company-equipment {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.input-count {
+    width: 50px;
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.input-field {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

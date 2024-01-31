@@ -4,11 +4,13 @@ import { CompanyService } from '../../service/company.service';
 import { PagedResult } from '../../model/paged-result.model';
 import { UserService } from '../../service/user.service';
 import { User } from '../../model/user.model';
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-company-managing-view',
   templateUrl: './company-managing-view.component.html',
-  styleUrls: ['./company-managing-view.component.css']
+  styleUrls: ['./company-managing-view.component.css'],
+  providers: [MessageService]
 })
 export class CompanyManagingViewComponent {
   public companies: Company[];
@@ -28,7 +30,7 @@ export class CompanyManagingViewComponent {
   avgRatingMin: null;
   avgRatingMax: null;
 
-  constructor(private companyService: CompanyService, private userService: UserService) { }
+  constructor(private companyService: CompanyService, private userService: UserService, private messageService: MessageService) { }
 
   ngOnInit(): void {
       this.getAllCompanies();
@@ -84,7 +86,10 @@ export class CompanyManagingViewComponent {
 
     this.companyService.updateCompany(this.selectedCompany).subscribe({
       next: (response: Company) => {
-        alert("Updated");
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Successfully updated',
+        });
       }
     });
     this.showCompanyAdmins = false;
