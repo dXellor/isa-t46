@@ -24,5 +24,5 @@ public interface CompanyRepository extends JpaRepository<Company, Integer> {
     @Query("SELECT c FROM Company c JOIN c.admins a WHERE a.id = :adminId")
     Company findByAdminId(@Param("adminId") Integer adminId);
 
-    Company findById(int id);
+    Company findById(int id);    
 }

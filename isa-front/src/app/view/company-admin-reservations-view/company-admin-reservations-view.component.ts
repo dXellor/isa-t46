@@ -76,7 +76,7 @@ export class CompanyAdminReservationsViewComponent implements OnInit{
         }
     });
     }
-  } 
+  }
 
   confirmReservationbyQR(): void {
     console.log("YES");
