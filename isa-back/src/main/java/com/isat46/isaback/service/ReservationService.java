@@ -93,7 +93,8 @@ public class ReservationService {
             return null;
         }
     }
-    @Transactional
+  
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public ReservationDto createReservationWithPredefinedAppointment(ReservationCreationDto reservationCreationDto, String employeeEmail){
         UserDto employee = userService.findByEmail(employeeEmail);
         if(employee == null)
@@ -421,5 +422,26 @@ public class ReservationService {
     public List<ReservationDto> getConfirmedReservationsForUser(String userEmail){
         List<Reservation> reservations = reservationRepository.findConfirmedByUser(userEmail);
         return ReservationMapper.ReservationsToReservationDtos(reservations);
+    }
+
+    public ReservationDto confirmReservationByQRCode(ReservationQRCodeDto qrCodeDto) {
+        String reservationInfo = QRCodeUtils.decodeQR(qrCodeDto.getQrCodeImageData());
+        int reservationId = extractReservationId(reservationInfo);
+        Reservation reservation = reservationRepository.findById(reservationId).orElseGet(null);
+
+        if(reservation.getStatus() == ReservationStatus.COMPLETED) {
+            throw new IllegalStateException();
+        }
+
+        reservation.setStatus(ReservationStatus.COMPLETED);
+        reservationRepository.save(reservation);
+        return ReservationMapper.ReservationToReservationDto(reservation);
+    }
+
+    private int extractReservationId(String reservationInfo) {
+        String[] lines  = reservationInfo.split("\n");
+        String id = lines[0].replace("Reservation Id: ", "");
+
+        return Integer.parseInt(id);
     }
 }

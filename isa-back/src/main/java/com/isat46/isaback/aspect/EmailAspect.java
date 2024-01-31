@@ -158,5 +158,23 @@ public class EmailAspect {
         }
     }
 
+    @Async
+    @AfterReturning(pointcut = "execution(* com.isat46.isaback.service.ReservationService.confirmReservationByQRCode(..))", returning = "result")
+    public void sendConfirmedReservationEmail(JoinPoint joinPoint, Object result){
+        ReservationDto reservation = ((ReservationDto) result);
+        String employeeEmail = reservation.getEmployee().getEmail();
+        LOGGER.info("Sending reservation confirmation email to " + employeeEmail);
 
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, "utf-8");
+        try {
+            message.setContent(String.format(ReservationUtils.confirmationEmailTemplate, reservation.getId(), reservation.getCompanyAdmin().getFirstName(), reservation.getCompanyAdmin().getLastName(), reservation.getEmployee().getFirstName(), reservation.getEmployee().getLastName(), reservation.getDateTime().toString()), "text/html");
+            messageHelper.setTo(employeeEmail);
+            messageHelper.setFrom("${spring.mail.username}");
+            messageHelper.setSubject("Reservation pickup confirmation");
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

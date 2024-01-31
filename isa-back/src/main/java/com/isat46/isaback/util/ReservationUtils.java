@@ -19,6 +19,22 @@ public class ReservationUtils {
             </html>
             """;
 
+    public static String confirmationEmailTemplate = """
+            <html>
+                <head>
+                </head>
+                <body>
+                    <h2>Thank you for trusting us</h2>
+                    <p>You have successfully picked up your reservation.</p>   
+                    <p>--RESERVATION INFO--</p> 
+                    <p>Reservation Id: %d</p>          
+                    <p>Company admin in charge of reservation: %s %s</p>          
+                    <p>Employee: %s %s</p>          
+                    <p>Date and time: %s</p>      
+                </body>
+            </html>
+            """;
+
     private static String reservationInformationTemplate = """
             Reservation Id: %d
             

@@ -7,6 +7,7 @@ import { ReservationRequest } from 'src/app/model/reservation/reservation-reques
 import { Reservation } from 'src/app/model/reservation/reservation.model';
 import { environment } from 'src/environments/environment';
 import { ReservationItem } from './reservation-item.model';
+import { ReservationQRCode } from 'src/app/model/reservation-qr-code.model';
 
 @Injectable({
   providedIn: 'root'
@@ -76,5 +77,10 @@ export class ReservationService {
 
   getConfirmedReservations(): Observable<PagedResult<Reservation>>{
     return this.http.get<PagedResult<Reservation>>(`${this.url}/get-confirmed`);
+  }
+
+  confirmReservationByQRCode(qrCode: ReservationQRCode): Observable<Reservation> {
+    const url = `${this.url}/confirmReservationByQRCode`;
+    return this.http.post<Reservation>(url, qrCode);
   }
 }
