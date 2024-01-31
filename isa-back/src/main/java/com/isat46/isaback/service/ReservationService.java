@@ -453,7 +453,8 @@ public class ReservationService {
     }
 
     //Rate limiter fallback
-    private void reservationRLFallback(RequestNotPermitted requestNotPermitted){
+    public ReservationDto reservationRLFallback(RequestNotPermitted requestNotPermitted){
         LOGGER.warn("Rate limiter activated at ReservationService");
+        return null;
     }
 }

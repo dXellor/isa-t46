@@ -94,7 +94,7 @@ export class EquipmentSelectorComponent implements OnInit {
         this.dialog.closeAll();
       }, error => {
         this.messageService.add({severity:'error', summary:'Success', detail:'There was an error while receiving you request, please try again.'});
-        window.location.reload();
+        // window.location.reload();
       });
     } else {
       this.messageService.add({severity:'warn', summary:'Success', detail:'Select appointment before you confirm reservation.'});
