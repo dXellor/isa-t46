@@ -2,8 +2,10 @@ package com.isat46.isaback.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.cache.annotation.Cacheable;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -12,6 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE, region = "company")
 @Table(name = "company")
 public class Company {
 

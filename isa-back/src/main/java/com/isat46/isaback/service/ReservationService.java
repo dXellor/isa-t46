@@ -12,6 +12,8 @@ import com.isat46.isaback.repository.ReservationRepository;
 import com.isat46.isaback.util.FileSystemUtils;
 import com.isat46.isaback.util.QRCodeUtils;
 import com.isat46.isaback.util.PositionSimulatorCommand;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,8 @@ public class ReservationService {
     public Page<ReservationDto> findAllPaged(Pageable page){
         return reservationRepository.findAll(page).map(ReservationMapper::ReservationToReservationDto);
     }
-    
+
+    @RateLimiter(name = "reservationRL", fallbackMethod = "reservationRLFallback")
     @Transactional
     public ReservationDto createNewAppointment(AppointmentCreationDto appointmentCreationDto){
         UserDto admin = userService.findOne(appointmentCreationDto.getCompanyAdminId());
@@ -94,7 +97,8 @@ public class ReservationService {
             return null;
         }
     }
-  
+
+    @RateLimiter(name = "reservationRL", fallbackMethod = "reservationRLFallback")
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public ReservationDto createReservationWithPredefinedAppointment(ReservationCreationDto reservationCreationDto, String employeeEmail){
         UserDto employee = userService.findByEmail(employeeEmail);
@@ -224,6 +228,8 @@ public class ReservationService {
 
         return timeSlots;
     }
+    
+    @RateLimiter(name = "reservationRL", fallbackMethod = "reservationRLFallback")
     @Transactional
     public ReservationDto createReservationWithOutOfOrderAppointment(OutOfOrderReservationDto outOfOrderReservationDto, String userEmail){
         ReservationDto reservationDto = outOfOrderReservationDto.getReservation();
@@ -447,5 +453,11 @@ public class ReservationService {
         String id = lines[0].replace("Reservation Id: ", "");
 
         return Integer.parseInt(id);
+    }
+
+    //Rate limiter fallback
+    public ReservationDto reservationRLFallback(RequestNotPermitted requestNotPermitted){
+        LOGGER.warn("Rate limiter activated at ReservationService");
+        return null;
     }
 }

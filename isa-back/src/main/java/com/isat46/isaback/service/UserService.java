@@ -6,6 +6,7 @@ import com.isat46.isaback.mappers.UserMapper;
 import com.isat46.isaback.model.Reservation;
 import com.isat46.isaback.model.User;
 import com.isat46.isaback.repository.UserRepository;
+import net.sf.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -63,5 +65,10 @@ public class UserService {
             user.setPenalPoints(0);
             userRepository.save(user);
         }
+    }
+
+    public int testL2Cache(){
+        List<User> users = userRepository.findAll();
+        return CacheManager.ALL_CACHE_MANAGERS.get(0).getCache("user").getSize();
     }
 }
