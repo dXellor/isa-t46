@@ -64,7 +64,8 @@ public class ReservationService {
     public Page<ReservationDto> findAllPaged(Pageable page){
         return reservationRepository.findAll(page).map(ReservationMapper::ReservationToReservationDto);
     }
-
+    
+    @Transactional
     public ReservationDto createNewAppointment(AppointmentCreationDto appointmentCreationDto){
         UserDto admin = userService.findOne(appointmentCreationDto.getCompanyAdminId());
         if(admin == null)
@@ -84,8 +85,14 @@ public class ReservationService {
         reservationDto.setCompanyAdmin(admin);
         reservationDto.setCompany(CompanyMapper.CompanyDtoToCompanyInfoDto(company));
         reservationDto.setStatus("APPOINTMENT");
-        Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
-        return ReservationMapper.ReservationToReservationDto(reservation);
+        
+        try {
+            Reservation reservation = reservationRepository.save(ReservationMapper.ReservationDtoToReservation(reservationDto));
+            return ReservationMapper.ReservationToReservationDto(reservation);
+        } catch (OptimisticLockException ex){
+            LOGGER.error("Optimistic lock exception creating new appointment: " + ex);
+            return null;
+        }
     }
 
     public ReservationDto createReservationWithPredefinedAppointment(ReservationCreationDto reservationCreationDto, String employeeEmail){
@@ -252,7 +259,7 @@ public class ReservationService {
     }
 
     public Page<ReservationDto> findByEmployee(Pageable page, String email){
-        return reservationRepository.findByEmployeeEmailAndEmployeeNotNull(page, email).map(ReservationMapper::ReservationToReservationDto);
+        return reservationRepository.findByEmployee(page, email).map(ReservationMapper::ReservationToReservationDto);
     }
 
     public Page<ReservationDto> findByCompanyAdmin(Pageable page){
@@ -334,21 +341,23 @@ public class ReservationService {
         return reservationRepository.findInProgressDeliveryByAdmin(email) != null;
     }
     @Transactional
-    public void startDelivery(int reservationId) {
+    public boolean startDelivery(int reservationId) {
         Reservation reservation = reservationRepository.findReservationToDeliver(reservationId);
         if(reservation == null) {
-            return;
+            return false;
         }
         try {
             String email = reservation.getCompanyAdmin().getEmail();
             if (isAdminDelivering(email)) {
-                return;
+                return false;
             }
             reservation.setStatus(ReservationStatus.IN_PROGRESS);
             reservationRepository.save(reservation);
+            return true;
             
         } catch (OptimisticLockException ex) {
             LOGGER.error("Company admin " + reservation.getCompanyAdmin().getFirstName() + " cannot be present at multiple deliveries at once!");
+            return false;
         }
         
     }
@@ -362,7 +371,7 @@ public class ReservationService {
             ExecutorService executor = Executors.newSingleThreadExecutor();
             Future<?> future = executor.submit(() -> {
                 try {
-                    Thread.sleep(reservation.getDuration()  * 1000);
+                    Thread.sleep(reservation.getDuration() * 60 * 1000);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
@@ -378,7 +387,8 @@ public class ReservationService {
 
     
     public ReservationDto deliverEquipment(int reservationId) {
-        startDelivery(reservationId);
+        if(!startDelivery(reservationId))
+            return null;
         Reservation completedReservation = completeDelivery(reservationId);
         return ReservationMapper.ReservationToReservationDto(completedReservation);
     }

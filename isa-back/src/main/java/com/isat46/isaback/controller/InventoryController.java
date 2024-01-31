@@ -32,7 +32,7 @@ public class InventoryController {
             @ApiResponse(responseCode = "200", description = "inventory page returned successfully"),
             @ApiResponse(responseCode = "400", description = "bad request")
     })
-    @PreAuthorize("hasAnyRole('USER', 'COMPADMIN', 'SYSADMIN')")
+
     @GetMapping(value = "/company/{companyId}")
     public ResponseEntity<Page<InventoryItemDto>> getInventoryByCompanyId(@PathVariable Integer companyId, Pageable page){
         Page<InventoryItemDto> items = inventoryService.findByCompanyIdPaged(companyId, page);
