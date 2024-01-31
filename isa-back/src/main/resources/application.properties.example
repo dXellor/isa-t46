@@ -31,3 +31,7 @@ mqtt.port=redacted
 
 pos.sim.command.topic=redacted
 pos.sim.command.delay=5
+
+resilience4j.ratelimiter.instances.standard.limitForPeriod=1
+resilience4j.ratelimiter.instances.standard.limitRefreshPeriod=5s
+resilience4j.ratelimiter.instances.standard.timeoutDuration=0
